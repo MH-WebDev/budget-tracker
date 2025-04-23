@@ -12,15 +12,15 @@ function Hero() {
                 feel poor!
             </h1>
 
-            <p className="mt-4 text-base text-pretty text-gray-700 sm:text-lg/relaxed">
+            {/* <p className="mt-4 text-base text-pretty text-gray-700 sm:text-lg/relaxed">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, nisi. Natus, provident
                 accusamus impedit minima harum corporis iusto.
-            </p>
+            </p> */}
 
-            <div className="mt-4 flex justify-center gap-4 sm:mt-6">
+            <div className="mt-4 pt-10 flex justify-center gap-4 sm:mt-6">
                 <a
                 className="inline-block rounded-md border border-purple-700 bg-purple-700 px-7 py-3 font-medium text-white shadow-sm transition-colors hover:bg-purple-600"
-                href="#"
+                href="/sign-up"
                 >
                 Get Started
                 </a>
