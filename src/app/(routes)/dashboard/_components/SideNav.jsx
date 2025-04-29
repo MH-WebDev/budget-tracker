@@ -1,9 +1,11 @@
 'use client'
+import { Button } from '@/components/ui/button';
 import { UserButton } from '@clerk/nextjs'
 import { Banknote, BanknoteArrowDown, BanknoteArrowUp, CalendarClock, HandCoins, LayoutGrid, LogOut, PiggyBank, Settings, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react'
+import SettingsModal from './SettingsModal';
 
 function SideNav() {
     const menuLinks = [
@@ -48,12 +50,6 @@ function SideNav() {
             name: 'Goals',
             icon: PiggyBank,
             path: '/dashboard/goals'
-        },
-        {
-            id: 8,
-            name: 'Settings',
-            icon: Settings,
-            path: '/dashboard/settings'
         }
     ]
     const currentLinkHighlight = usePathname();
@@ -64,7 +60,7 @@ function SideNav() {
 
   return (
     <div className="h-screen p-5 border-r shadow-md bg-gray-100 font-semibold">Logo Here!
-        <div className="pt-10">
+        <div className="pt-10 flex flex-col gap-1">
             {menuLinks.map((menu, index)=>(
                 <Link key={index} href={menu.path}>
                     <h2 className={`flex flex-row gap-5 
@@ -76,6 +72,7 @@ function SideNav() {
                     </h2>
                 </Link>
             ))}
+            <SettingsModal />
         </div>
         <div className="fixed bottom-0 flex flex-row gap-5 items-center py-5 cursor-pointer hover:text-purple-500">
             <UserButton /> Profile

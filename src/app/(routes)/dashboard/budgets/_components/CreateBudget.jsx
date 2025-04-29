@@ -8,7 +8,6 @@ import { useUser } from '@clerk/nextjs'
 import { db } from '../../../../../../utils/dbConfig'
 import { toast } from 'sonner'
 
-
 function CreateBudget() {
 
     const [name, setName] = useState();
@@ -17,10 +16,14 @@ function CreateBudget() {
     const {user} = useUser()
     // FUNCTION FOR CREATING NEW BUDGETS
     const onCreateBudget = async () => {
+
         const result = await db.insert(budgets).values({
             budgetName:name,
             amount:amount,
-            createdBy:user?.primaryEmailAddress?.emailAddress
+            createdBy:user?.primaryEmailAddress?.emailAddress,
+            userFirstName: user?.firstName,
+            userLastName: user?.lastName,
+            userID: user?.id
         }).returning({insertedId:budgets.id})
 
         if(result) {
@@ -29,7 +32,6 @@ function CreateBudget() {
     }
   return (
     <div className="p-5">
-       
          <Dialog> {/* POPUP DIALOG FOR CREATING BUDGETS */}
             <DialogTrigger asChild> 
                 <div className="border rounded-md text-center p-5 flex flex-col justify-center items-center w-48 shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
