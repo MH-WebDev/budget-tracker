@@ -34,12 +34,16 @@ function BudgetList() {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
-          {budgetList.map((budget, index) => (
+          {budgetList?.length > 0 ? budgetList.map((budget, index) => (
             <BudgetItem key={budget.id} budget={budget} index={index} />
+          )) : [1].map((item, index) => (
+            <div key={index} className="w-full bg-gray-100 rounded-lg h-40 animate-pulse">
+            </div>
           ))}
       </div>
       <div className="flex justify-center">
-        <CreateBudget />
+        <CreateBudget 
+        refreshData={() => getBudgetsList()}/>
       </div>
     </>
   )

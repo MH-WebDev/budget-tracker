@@ -8,7 +8,7 @@ import { useUser } from '@clerk/nextjs'
 import { db } from '../../../../../../utils/dbConfig'
 import { toast } from 'sonner'
 
-function CreateBudget() {
+function CreateBudget({refreshData}) {
 
     const [name, setName] = useState();
     const [amount, setAmount] = useState();
@@ -27,6 +27,7 @@ function CreateBudget() {
         }).returning({insertedId:budgets.id})
 
         if(result) {
+            refreshData()
             toast('New Budget Created Successfully!')
         }
     }
