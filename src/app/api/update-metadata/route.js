@@ -6,12 +6,13 @@ export async function POST(req) {
   const client = await clerkClient()
   try {
     // Parse the request body
-    const { userId, preferredCurrency } = await req.json();
+    const { userId, preferredCurrency, currencySymbol } = await req.json();
 
     // Update the user's public metadata
     await client.users.updateUserMetadata(userId, {
       publicMetadata: {
         preferredCurrency,
+        currencySymbol,
       },
     });
     return NextResponse.json({ success: true });

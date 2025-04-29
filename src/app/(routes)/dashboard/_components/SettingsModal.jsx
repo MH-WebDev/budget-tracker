@@ -1,6 +1,6 @@
 'use client'
-import React, { useState } from 'react'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog'
+import React, { useState, useEffect } from 'react'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
 import { toast } from 'sonner'
@@ -12,8 +12,37 @@ import { Settings } from 'lucide-react'
 
 function SettingsModal() {
 
+  const currencies = [ //LIST OF  MOST POPULAR CURRENCIES GENERATED FOR SETTINGS
+    { id: "1", currencyName: "United States Dollar", currencySymbol: "$" },
+    { id: "2", currencyName: "Euro", currencySymbol: "€" },
+    { id: "3", currencyName: "Japanese Yen", currencySymbol: "¥" },
+    { id: "4", currencyName: "British Pound Sterling", currencySymbol: "£" },
+    { id: "5", currencyName: "Australian Dollar", currencySymbol: "$" },
+    { id: "6", currencyName: "Canadian Dollar", currencySymbol: "$" },
+    { id: "7", currencyName: "Swiss Franc", currencySymbol: "CHF" },
+    { id: "8", currencyName: "Chinese Yuan Renminbi", currencySymbol: "¥" },
+    { id: "9", currencyName: "Swedish Krona", currencySymbol: "kr" },
+    { id: "10", currencyName: "New Zealand Dollar", currencySymbol: "$" }
+  ]
+
     const { user } = useUser();
     const [selectedCurrency, setSelectedCurrency] = useState('');
+
+    // Fetch the preferred currency from Clerk metadata on component mount
+    useEffect(() => {
+      if (user?.publicMetadata?.preferredCurrency) {
+        setSelectedCurrency(user.publicMetadata.preferredCurrency);
+      }
+    }, [user]);
+
+    const getCurrencySymbol = (currencyName) => {
+      const currency = currencies.find((c) => c.currencyName === currencyName);
+      return currency ? currency.currencySymbol : null;
+    };
+    
+    // Retrieve the symbol for the selected currency
+    const selectedSymbol = getCurrencySymbol(selectedCurrency);
+    console.log(`Selected Currency Symbol: ${selectedSymbol}`);
 
     const updateCurrency = async () => {
         if (!selectedCurrency) {
@@ -30,6 +59,7 @@ function SettingsModal() {
             body: JSON.stringify({
               userId: user.id, // Pass the user's ID
               preferredCurrency: selectedCurrency,
+              currencySymbol: selectedSymbol,
             }),
           });
 
@@ -44,64 +74,9 @@ function SettingsModal() {
           console.error('Error updating currency:', error);
           alert('An error occurred. Please try again.');
         }
-        console.log('Payload:', {
-            userId: user.id,
-            preferredCurrency: selectedCurrency,
-          });
       };
 
-    const currencies = [ //LIST OF  MOST POPULAR CURRENCIES GENERATED FOR SETTINGS
-        {
-          "id": "1",
-          "currencyName": "United States Dollar",
-          "currencySymbol": "$"
-        },
-        {
-          "id": "2",
-          "currencyName": "Euro",
-          "currencySymbol": "€"
-        },
-        {
-          "id": "3",
-          "currencyName": "Japanese Yen",
-          "currencySymbol": "¥"
-        },
-        {
-          "id": "4",
-          "currencyName": "British Pound Sterling",
-          "currencySymbol": "£"
-        },
-        {
-          "id": "5",
-          "currencyName": "Australian Dollar",
-          "currencySymbol": "$"
-        },
-        {
-          "id": "6",
-          "currencyName": "Canadian Dollar",
-          "currencySymbol": "$"
-        },
-        {
-          "id": "7",
-          "currencyName": "Swiss Franc",
-          "currencySymbol": "CHF"
-        },
-        {
-          "id": "8",
-          "currencyName": "Chinese Yuan Renminbi",
-          "currencySymbol": "¥"
-        },
-        {
-          "id": "9",
-          "currencyName": "Swedish Krona",
-          "currencySymbol": "kr"
-        },
-        {
-          "id": "10",
-          "currencyName": "New Zealand Dollar",
-          "currencySymbol": "$"
-        }
-      ]
+    
 
   return (
     <div className="pt-1">
@@ -111,7 +86,7 @@ function SettingsModal() {
                         <Settings /> Settings
                     </button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className=" h-64">
                     <DialogHeader>
                         <DialogTitle>Settings</DialogTitle>
                         <div className="py-6">
@@ -122,15 +97,17 @@ function SettingsModal() {
                                     value={selectedCurrency}
                                     onChange={(e) => setSelectedCurrency(e.target.value)}
                                 >
-                                        {currencies.map(({id, currencyName, currencySymbol, index}) => (
-                                        <option key={index} value={currencyName} id={currencyName}>{currencyName} ({currencySymbol})</option>
+                                        {currencies.map(({ id, currencyName, currencySymbol }) => (
+                                        <option key={id} value={currencyName} id={currencyName}>{currencyName} ({currencySymbol})</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
-                        <DialogClose asChild>
-                            <Button className="bg-gray-700" onClick={updateCurrency}>Apply</Button>
-                        </DialogClose>
+                        <DialogFooter className="fixed bottom-0 w-3/4 mx-auto pb-5 left-0 right-0">
+                          <DialogClose asChild>
+                              <Button className="bg-gray-700 w-full" onClick={updateCurrency}>Apply</Button>
+                          </DialogClose>
+                        </DialogFooter>
                     </DialogHeader>
                 </DialogContent>
             </Dialog>

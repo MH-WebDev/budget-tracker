@@ -24,7 +24,7 @@ function BudgetList() {
     })
     .from(budgets)
     .leftJoin(expenses,eq(budgets.id,expenses.budgetId))
-    .where(eq(budgets.createdBy,user?.firstName))
+    .where(eq(budgets.createdBy,user?.primaryEmailAddress?.emailAddress))
     .groupBy(budgets.id);
 
       setBudgetList(result);
@@ -33,7 +33,7 @@ function BudgetList() {
 
   return (
     <>
-      <div className="flex flex-wrap gap-5 p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
           {budgetList.map((budget, index) => (
             <BudgetItem key={budget.id} budget={budget} index={index} />
           ))}
