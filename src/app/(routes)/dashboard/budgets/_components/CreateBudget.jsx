@@ -35,7 +35,7 @@ function CreateBudget({refreshData}) {
     <div className="p-5">
          <Dialog> {/* POPUP DIALOG FOR CREATING BUDGETS */}
             <DialogTrigger asChild> 
-                <div className="border rounded-md text-center p-5 flex flex-col justify-center items-center w-48 shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
+                <div className="border rounded-md text-center p-5 flex flex-col justify-center items-center shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
                     <h2 className="text-2xl font-bold">+</h2>
                     <h2 className="text-md">Create New Budget</h2>
                 </div>
