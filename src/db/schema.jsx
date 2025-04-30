@@ -9,7 +9,6 @@ export const budgets = pgTable('budgets', {
   createdBy: varchar('created_by').notNull(),
   userFirstName: varchar().notNull(),
   userLastName: varchar().notNull(),
-  userID: varchar().notNull()
 })
 export const expenses = pgTable('expenses', {
   id: serial().primaryKey(),

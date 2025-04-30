@@ -7,6 +7,7 @@ import { budgets } from '@/db/schema'
 import { useUser } from '@clerk/nextjs'
 import { db } from '../../../../../../utils/dbConfig'
 import { toast } from 'sonner'
+import EmojiPicker from 'emoji-picker-react';
 
 function CreateBudget({refreshData}) {
 
@@ -18,12 +19,12 @@ function CreateBudget({refreshData}) {
     const onCreateBudget = async () => {
 
         const result = await db.insert(budgets).values({
-            budgetName:name,
-            amount:amount,
-            createdBy:user?.primaryEmailAddress?.emailAddress,
+            budgetName: name,
+            icon: emojiIcon,
+            amount: amount,
+            createdBy: user?.id,
             userFirstName: user?.firstName,
             userLastName: user?.lastName,
-            userID: user?.id
         }).returning({insertedId:budgets.id})
 
         if(result) {
@@ -31,11 +32,14 @@ function CreateBudget({refreshData}) {
             toast('New Budget Created Successfully!')
         }
     }
+    
+    const [emojiIcon,setEmojiIcon] = useState('🏡');
+    const [openEmojiPicker, setOpenEmojiPicker] = useState(false)
   return (
-    <div className="p-5">
+    <>
          <Dialog> {/* POPUP DIALOG FOR CREATING BUDGETS */}
             <DialogTrigger asChild> 
-                <div className="border rounded-md text-center p-5 flex flex-col justify-center items-center shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
+                <div className="border rounded-md text-center p-5 flex flex-col justify-center items-center h-[200px] shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
                     <h2 className="text-2xl font-bold">+</h2>
                     <h2 className="text-md">Create New Budget</h2>
                 </div>
@@ -44,6 +48,16 @@ function CreateBudget({refreshData}) {
                 <DialogHeader>
                     <DialogTitle>New Budget</DialogTitle>
                     <div className="py-6">
+                        <Button variant="outline" size="lg" className="text-lg" onClick={() => setOpenEmojiPicker(!openEmojiPicker)}>
+                            {emojiIcon}
+                        </Button>
+                        <div className="absolute z-50">
+                            <EmojiPicker open={openEmojiPicker} onEmojiClick={(e) => {
+                                setEmojiIcon(e.emoji)
+                                setOpenEmojiPicker(false)
+                            }}/>
+                        </div>
+
                         <div className="grid grid-cols-6 gap-5 items-center py-2">
                             <h2 className="col-span-2 text-right">Budget Name:</h2>
                             <Input placeholder="e.g 'Home Renovations'" className="col-span-4" onChange={(e) => setName(e.target.value)}/>
@@ -59,7 +73,7 @@ function CreateBudget({refreshData}) {
                 </DialogHeader>
             </DialogContent>
         </Dialog>
-    </div>
+    </>
   )
 }
 

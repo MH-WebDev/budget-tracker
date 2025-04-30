@@ -24,7 +24,7 @@ function BudgetList() {
     })
     .from(budgets)
     .leftJoin(expenses,eq(budgets.id,expenses.budgetId))
-    .where(eq(budgets.createdBy,user?.primaryEmailAddress?.emailAddress))
+    .where(eq(budgets.createdBy,user?.id))
     .groupBy(budgets.id);
 
       setBudgetList(result);
@@ -40,7 +40,7 @@ function BudgetList() {
             <div key={index} className="w-full bg-gray-100 rounded-lg h-40 animate-pulse">
             </div>
           ))}
-          <CreateBudget refreshData={() => getBudgetsList()}/>
+           <CreateBudget refreshData={() => getBudgetsList()}/> {/*Refreshes page after creating a new budget */}
       </div>
       <div className="flex justify-center">
         
