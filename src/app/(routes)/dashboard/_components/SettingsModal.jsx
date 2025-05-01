@@ -42,7 +42,6 @@ function SettingsModal() {
     
     // Retrieve the symbol for the selected currency
     const selectedSymbol = getCurrencySymbol(selectedCurrency);
-    console.log(`Selected Currency Symbol: ${selectedSymbol}`);
 
     const updateCurrency = async () => {
         if (!selectedCurrency) {

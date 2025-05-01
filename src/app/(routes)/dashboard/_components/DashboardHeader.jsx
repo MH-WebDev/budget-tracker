@@ -5,7 +5,6 @@ function DashboardHeader() {
 
   const {user} = useUser();
 
-  console.log("First Name:", user?.firstName)
   return (
     <div className="p-5 bg-purple-700 text-white font-semibold shadow-md
     ">
