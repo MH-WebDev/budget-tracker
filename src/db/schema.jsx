@@ -15,6 +15,7 @@ export const expenses = pgTable('expenses', {
   expenseName: varchar('name').notNull(),
   amount: numeric('amount').notNull(),
   budgetId: integer().references(() => budgets.id),
+  category: varchar().notNull(),
   icon: varchar(),
   description: varchar(),
   comment: varchar(),

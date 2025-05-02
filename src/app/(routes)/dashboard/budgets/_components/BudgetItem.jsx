@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button';
 function BudgetItem({budget, index}) {
   
       const {user} = useUser()
-      const preferredCurrency = user?.publicMetadata?.currencySymbol || 'USD'; // Default to USD if not set
+      const preferredCurrency = user?.publicMetadata?.currencySymbol || 'USD'; // Default to USD if preferred currency not set
 
-      const [percentage, setPercentage] = useState(0); // Setup for percentage bar calculation
+      const [percentage, setPercentage] = useState(0); // Percentage bar calculation
 
       useEffect(() => {
         if (budget.amount > 0) {
