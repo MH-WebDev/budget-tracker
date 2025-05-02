@@ -5,14 +5,14 @@ import { eq, getTableColumns, sql } from 'drizzle-orm';
 import { useUser } from '@clerk/nextjs';
 import { budgets, expenses } from '@/db/schema';
 
-function page({ params }) {
+function ExpensesModule({ params }) {
   const { user } = useUser();
 
   useEffect(() => {
     if (user) {
       getBudgetInfo();
     }
-  }, [user]); // Ensure this runs only when `user` is available
+  }, [user]); // Script runs only when `user` is available
 
   const getBudgetInfo = async () => {
     const resolvedParams = await params; // Await params before using it
@@ -26,12 +26,10 @@ function page({ params }) {
       })
       .from(budgets)
       .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
-      .where(eq(budgets.createdBy, String(user?.id)))
-      .where(eq(budgets.id, Number(resolvedParams.id))) // Use resolved params here
+      .where(eq(budgets.createdBy, user?.id))
+      .where(eq(budgets.id, resolvedParams.id)) // Use resolved params here
       .groupBy(budgets.id);
 
-    console.log('Budget Info:', result);
-    // Handle the result (e.g., set state)
   };
 
   return (
@@ -39,8 +37,11 @@ function page({ params }) {
       <div>
         <h2 className="text-xl p-5 font-semibold">*firstName*'s Expenses</h2>
       </div>
+      <div>
+        
+      </div>
     </>
   );
 }
 
-export default page;
+export default ExpensesModule;
