@@ -18,7 +18,7 @@ function DashboardLayout({children}) {
   }, [user])
 
   const checkIfUserBudgets = async () => {
-    const result = await db.select().from(budgets).where(eq(budgets.id,user?.id)); //budgets.createdBy,user?.primaryEmailAddress?.emailAddress
+    const result = await db.select().from(budgets).where(eq(budgets.createdBy,user?.id)); //budgets.createdBy,user?.primaryEmailAddress?.emailAddress
 
     console.log(result);
     if(result?.length === 0) {

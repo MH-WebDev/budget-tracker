@@ -25,25 +25,13 @@ function BudgetList() {
     })
     .from(budgets)
     .leftJoin(expenses,eq(budgets.id,expenses.budgetId))
-    .where(eq(budgets.createdBy,user?.id))
+    .where(eq(budgets.createdBy, user?.id))
     .groupBy(budgets.id)
     .orderBy(desc(budgets.id));
 
       setBudgetList(result);
   }
-  console.log(
-    db.select({
-      ...getTableColumns(budgets),
-      totalSpend: sql`sum(${expenses.amount})`.mapWith(Number),
-      totalItems: sql`count(${expenses.id})`.mapWith(Number),
-    })
-    .from(budgets)
-    .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
-    .where(eq(budgets.createdBy, user?.id))
-    .groupBy(budgets.id)
-    .orderBy(desc(budgets.id))
-    .toSQL()
-  );
+  
 
   return (
     <>
