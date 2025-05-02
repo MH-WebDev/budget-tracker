@@ -10,22 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { expenses } from "@/db/schema";
-import { useUser } from "@clerk/nextjs";
+import { budgets, expenses } from "@/db/schema";
 import { db } from "../../../../../../utils/dbConfig";
 import { toast } from "sonner";
 
-function AddExpense({refreshData}) {
+function AddExpense({refreshData, budgetId, user }) {
   const [name, setName] = useState();
   const [amount, setAmount] = useState();
   const [category, setCategory] = useState();
   const [description, setDescription] = useState();
   const [comment, setComment] = useState();
 
-  
-  const { user } = useUser();
   // FUNCTION FOR CREATING NEW EXPENSES & PUSHING TO DB
-  const onCreateExpense = async () => {
+  const createExpense = async () => {
     const currentDateAndTime = new Date().toISOString();
 
     const result = await db
@@ -37,18 +34,19 @@ function AddExpense({refreshData}) {
         category: category,
         userFirstName: user?.firstName,
         userLastName: user?.lastName,
+        budgetId: budgetId,
         createdAt: currentDateAndTime,
         description: description,
         comment: comment,
       })
-      .returning({ insertedId: expenses.id });
-
+      .returning({ insertedId: budgets.id });
+      console.log("Added expense:", result)
     if (result) {
       refreshData();
       toast("Expense Added Successfully!");
     }
   };
-
+  const preferredCurrency = user?.publicMetadata?.currencySymbol;
   return (
     <>
       <Dialog>
@@ -63,7 +61,7 @@ function AddExpense({refreshData}) {
             <DialogTitle>Add Expense</DialogTitle>
             <div className="py-6">
               <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Expense Name:</h2>
+                <h2 className="col-span-2 text-right">Expense Name*:</h2>
                 <Input
                   placeholder="e.g 'Home Renovations'"
                   className="col-span-4 border-gray-300"
@@ -90,10 +88,11 @@ function AddExpense({refreshData}) {
                 ></textarea>
               </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Amount:</h2>
+                <h2 className="col-span-2 text-right">Amount*:</h2>
                 <Input
                   type="number"
                   className="col-span-4"
+                  placeholder={`e.g ${preferredCurrency}99.99`}
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
@@ -104,12 +103,13 @@ function AddExpense({refreshData}) {
                   placeholder="e.g 'From shared acc.'"
                 ></textarea>
               </div>
+              <p className="text-xs text-right">Required input*</p>
             </div>
             <DialogClose asChild>
               <Button
                 disabled={!(name && amount)}
                 className="bg-gray-700"
-                onClick={() => onCreateExpense()}
+                onClick={() => createExpense()}
               >
                 Add Expense
               </Button>
