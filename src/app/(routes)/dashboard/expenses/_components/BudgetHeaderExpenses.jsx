@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 
 function BudgetHeaderExpenses({budget}, index) {
-    
-    console.log("budget header", budget)
+    // This component displays the budget header for expenses, including the budget name, total amount, and a progress bar showing the percentage spent.
       const {user} = useUser()
       const preferredCurrency = user?.publicMetadata?.currencySymbol || 'USD'; // Default to USD if not set
 

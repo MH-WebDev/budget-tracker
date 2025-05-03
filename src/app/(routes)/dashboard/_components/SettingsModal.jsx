@@ -27,23 +27,27 @@ function SettingsModal() {
 
     const { user } = useUser();
     const [selectedCurrency, setSelectedCurrency] = useState('');
+    const [selectedDateFormat, setSelectedDateFormat] = useState(''); 
 
     // Fetch the preferred currency from Clerk metadata on component mount
     useEffect(() => {
       if (user?.publicMetadata?.preferredCurrency) {
         setSelectedCurrency(user.publicMetadata.preferredCurrency);
       }
+      if (user?.publicMetadata?.selectedDateFormat) {
+        setSelectedDateFormat(user.publicMetadata.selectedDateFormat);
+      }
     }, [user]);
 
-    const getCurrencySymbol = (currencyName) => {
+    const getCurrencySymbol = (currencyName) => { // Converts the selected currency name to the appropriate symbol
       const currency = currencies.find((c) => c.currencyName === currencyName);
       return currency ? currency.currencySymbol : null;
     };
-    
+
     // Retrieve the symbol for the selected currency
     const selectedSymbol = getCurrencySymbol(selectedCurrency);
 
-    const updateCurrency = async () => {
+    const updateSettings = async () => {
         if (!selectedCurrency) {
           alert('Please select a currency.');
           return;
@@ -59,23 +63,21 @@ function SettingsModal() {
               userId: user.id, // Pass the user's ID
               preferredCurrency: selectedCurrency,
               currencySymbol: selectedSymbol,
+              selectedDateFormat: selectedDateFormat,
             }),
           });
 
           const data = await response.json();
 
           if (data.success) {
-            alert('Currency updated successfully!');
+            alert('Settings updated successfully!');
           } else {
-            alert('Failed to update currency. Please try again.');
+            alert('Failed to update settings. Please try again.');
           }
         } catch (error) {
-          console.error('Error updating currency:', error);
           alert('An error occurred. Please try again.');
         }
       };
-
-    
 
   return (
     <div className="pt-1">
@@ -89,22 +91,38 @@ function SettingsModal() {
                     <DialogHeader>
                         <DialogTitle>Settings</DialogTitle>
                         <div className="py-6">
-                            <div className="flex flex-row gap-8 items-center">
-                                <label htmlFor="currency">Currency:</label>
-                                <select
-                                    id="currency"
-                                    value={selectedCurrency}
-                                    onChange={(e) => setSelectedCurrency(e.target.value)}
-                                >
-                                        {currencies.map(({ id, currencyName, currencySymbol }) => (
-                                        <option key={id} value={currencyName} id={currencyName}>{currencyName} ({currencySymbol})</option>
-                                    ))}
-                                </select>
+                            <div className="flex flex-col gap-5">
+                              <div className="grid grid-cols-6 gap-8 items-center">
+                                <label htmlFor="currency" className="col-span-2">Currency:</label>
+                                  <select
+                                      className="col-span-4 border border-gray-300 rounded-md px-4 py-1"
+                                      id="currency"
+                                      value={selectedCurrency}
+                                      onChange={(e) => setSelectedCurrency(e.target.value)}
+                                  >
+                                          {currencies.map(({ id, currencyName, currencySymbol }) => (
+                                          <option key={id} value={currencyName} id={currencyName}>{currencyName} ({currencySymbol})</option>
+                                      ))}
+                                  </select>
+                              </div>
+                              <div className="grid grid-cols-6 gap-8 items-center">
+                                <label htmlFor="date-format" className="col-span-2">Date Format:</label>
+                                  <select
+                                    className="col-span-4 border border-gray-300 rounded-md px-4 py-1"
+                                    id="date-format"
+                                    value={selectedDateFormat}
+                                    onChange={(e) => setSelectedDateFormat(e.target.value)}
+                                  >
+                                    <option value="yyyy/MM/dd">YYYY/MM/DD</option>
+                                    <option value="MM/dd/yyyy">MM/DD/YYYY</option>
+                                    <option value="dd/MM/yyyy">DD/MM/YYYY</option>
+                                  </select>
+                              </div>
                             </div>
                         </div>
                         <DialogFooter className="fixed bottom-0 w-3/4 mx-auto pb-5 left-0 right-0">
                           <DialogClose asChild>
-                              <Button className="bg-gray-700 w-full" onClick={updateCurrency}>Apply</Button>
+                              <Button className="bg-gray-700 w-full" onClick={updateSettings}>Apply</Button>
                           </DialogClose>
                         </DialogFooter>
                     </DialogHeader>

@@ -19,7 +19,6 @@ function AddExpense({refreshData, budgetId, user }) {
   const [amount, setAmount] = useState();
   const [category, setCategory] = useState();
   const [description, setDescription] = useState();
-  const [comment, setComment] = useState();
 
   // FUNCTION FOR CREATING NEW EXPENSES & PUSHING TO DB
   const createExpense = async () => {
@@ -37,7 +36,6 @@ function AddExpense({refreshData, budgetId, user }) {
         budgetId: budgetId,
         createdAt: currentDateAndTime,
         description: description,
-        comment: comment,
       })
       .returning({ insertedId: budgets.id });
       console.log("Added expense:", result)
@@ -61,7 +59,7 @@ function AddExpense({refreshData, budgetId, user }) {
             <DialogTitle>Add Expense</DialogTitle>
             <div className="py-6">
               <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Expense Name*:</h2>
+                <h2 className="col-span-2 text-right">Expense Name:</h2>
                 <Input
                   placeholder="e.g 'Home Renovations'"
                   className="col-span-4 border-gray-300"
@@ -70,25 +68,27 @@ function AddExpense({refreshData, budgetId, user }) {
               </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">
                 <h2 className="col-span-2 text-right">Category:</h2>
-                <select className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
+                <select className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
                 onChange={(e) => setCategory(e.target.value)}>
                   <option value="other">Other</option>
-                  <option value="purchase">Purchases</option>
-                  <option value="housing">Housing</option>
-                  <option value="utilities">Utilities</option>
-                  <option value="food">Food</option>
+                  <option value="entertainment">Entertainment</option>
                   <option value="finance">Finance</option>
+                  <option value="food">Food</option>
+                  <option value="housing">Housing</option>
+                  <option value="purchase">Purchases</option>
+                  <option value="travel">Travel</option>
+                  <option value="utilities">Utilities</option>
                 </select>
               </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Description:</h2>
+                <h2 className="col-span-2 text-right"><span className="text-xs align-super">(optional)</span> Description:</h2>
                 <textarea onChange={(e) => setDescription(e.target.value)}
                   className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
                   placeholder="e.g 'Car Payment'"
                 ></textarea>
               </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Amount*:</h2>
+                <h2 className="col-span-2 text-right">Amount:</h2>
                 <Input
                   type="number"
                   className="col-span-4"
@@ -96,14 +96,6 @@ function AddExpense({refreshData, budgetId, user }) {
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
-              <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Comment:</h2>
-                <textarea onChange={(e) => setComment(e.target.value)}
-                  className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
-                  placeholder="e.g 'From shared acc.'"
-                ></textarea>
-              </div>
-              <p className="text-xs text-right">Required input*</p>
             </div>
             <DialogClose asChild>
               <Button
