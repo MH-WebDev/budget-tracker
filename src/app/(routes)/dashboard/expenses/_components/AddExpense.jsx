@@ -47,11 +47,12 @@ function AddExpense({refreshData, budgetId, user }) {
   const preferredCurrency = user?.publicMetadata?.currencySymbol;
   return (
     <>
-      <Dialog>
+      <Dialog className="p-5">
         {/* POPUP DIALOG FOR CREATING EXPENSES */}
         <DialogTrigger asChild>
-          <div className="border rounded-md text-center px-5 py-1 shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
-            <h2 className="text-md">+ Add Expense</h2>
+          <div className="flex flex-col justify-center items-center border rounded-md text-center px-5 py-1 shadow-sm hover:bg-gray-50 hover:shadow-md">
+            <p className="text-xl">+</p>
+            <h2 className="text-md">Add Expense</h2>
           </div>
         </DialogTrigger>
         <DialogContent>
@@ -70,14 +71,14 @@ function AddExpense({refreshData, budgetId, user }) {
                 <h2 className="col-span-2 text-right">Category:</h2>
                 <select className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
                 onChange={(e) => setCategory(e.target.value)}>
-                  <option value="other">Other</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="finance">Finance</option>
-                  <option value="food">Food</option>
-                  <option value="housing">Housing</option>
-                  <option value="purchase">Purchases</option>
-                  <option value="travel">Travel</option>
-                  <option value="utilities">Utilities</option>
+                  <option value="Other">Other</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Food">Food</option>
+                  <option value="Housing">Housing</option>
+                  <option value="Pets">Pets</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Utilities">Utilities</option>
                 </select>
               </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">

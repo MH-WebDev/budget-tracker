@@ -55,7 +55,7 @@ function SideNav() {
     const currentLinkHighlight = usePathname();
 
     useEffect(() => {
-        console.log(currentLinkHighlight)
+        //console.log(currentLinkHighlight)
     }, [currentLinkHighlight])
 
   return (

@@ -12,23 +12,31 @@ function ExpensesTable({ expensesList, dateFormat }) {
   };
   return (
     <div>
-      <div className="grid grid-cols-6 text-center bg-gray-200 rounded-t-md">
-        <p>Name</p>
+      <div className="grid grid-cols-5 text-center bg-gray-200 rounded-t-md">
         <p>Category</p>
         <p>Amount</p>
-        <p>Created</p>
         <p>Comment</p>
+        <p>Created</p>
         <p>Delete</p>
       </div>
       <div>
         {expensesList.map((expenses, index) => (
-          <div key={index} className="grid grid-cols-6 text-center bg-gray-50">
-            <p className="border-x border-b border-gray-300 py-1">{expenses.expenseName}</p>
-            <p className="border-x border-b border-gray-300 py-1">{expenses.category}</p>
-            <p className="border-x border-b border-gray-300 py-1">{expenses.amount}</p>
-            <p className="border-x border-b border-gray-300 py-1">{formatDate(expenses.createdAt)}</p>
-            <p className="border-x border-b border-gray-300 py-1">{expenses.comment}</p>
-            <p className="border-x border-b border-gray-300 py-1"><Trash className="mx-auto"/></p>
+          <div key={index} className="grid grid-cols-5 text-center bg-gray-50">
+            <p className="border-x border-b border-gray-300 py-1">
+              {expenses.category}
+            </p>
+            <p className="border-x border-b border-gray-300 py-1">
+              {expenses.amount}
+            </p>
+            <p className="border-x border-b border-gray-300 py-1">
+              {expenses.comment}
+            </p>
+            <p className="border-x border-b border-gray-300 py-1">
+              {formatDate(expenses.createdAt)}
+            </p>
+            <p className="border-x border-b border-gray-300 py-1">
+              <Trash className="mx-auto" />
+            </p>
           </div>
         ))}
       </div>

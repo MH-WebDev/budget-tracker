@@ -9,7 +9,7 @@ function DashboardHeader() {
     <div className="p-5 bg-purple-700 text-white font-semibold shadow-md
     ">
         <div className="flex flex-row justify-between items-center">
-            <h1 className="text-lg py-1">*Username*'s Dashboard</h1>
+            <h1 className="text-lg py-1">{user ? `${user.firstName}'s Dashboard` : 'Loading...'}</h1>
             <UserButton/>
         </div>
     </div>
