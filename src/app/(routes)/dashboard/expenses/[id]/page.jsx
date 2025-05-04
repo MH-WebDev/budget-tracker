@@ -70,6 +70,7 @@ function ExpensesModule() {
         <ExpensesTable
           expensesList={expensesList}
           dateFormat={user?.publicMetadata?.selectedDateFormat || "YYYY-MM-DD"}
+          getExpensesList={getExpensesList} // Pass the function to refresh the list
         />
       </div>
     </>

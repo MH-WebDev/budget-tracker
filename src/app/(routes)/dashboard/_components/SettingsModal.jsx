@@ -44,8 +44,7 @@ function SettingsModal() {
       return currency ? currency.currencySymbol : null;
     };
 
-    // Retrieve the symbol for the selected currency
-    const selectedSymbol = getCurrencySymbol(selectedCurrency);
+    const selectedSymbol = getCurrencySymbol(selectedCurrency); // Retrieve the currency symbol for the selected currency
 
     const updateSettings = async () => {
         if (!selectedCurrency) {
@@ -54,13 +53,13 @@ function SettingsModal() {
         }
 
         try {
-          const response = await fetch('/api/update-metadata', {
+          const response = await fetch('/api/update-metadata', { // API endpoint for updating metadata. Sends user id, preferred currency, relevant symbol and chosen date format to clerk
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              userId: user.id, // Pass the user's ID
+              userId: user.id, 
               preferredCurrency: selectedCurrency,
               currencySymbol: selectedSymbol,
               selectedDateFormat: selectedDateFormat,

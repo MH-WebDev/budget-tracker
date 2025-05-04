@@ -9,8 +9,9 @@ import {
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import EditBudget from "./EditBudget";
 
-function BudgetItem({ budget, index }) {
+function BudgetItem({ budget, index, refreshData }) {
   const { user } = useUser();
   const preferredCurrency = user?.publicMetadata?.currencySymbol || "USD"; // Default to USD if preferred currency  not set
 
@@ -115,9 +116,9 @@ function BudgetItem({ budget, index }) {
             <Link className="w-full" href={"/dashboard/expenses/" + budget?.id}>
               <Button className="bg-gray-700 w-full">View Expenses</Button>
             </Link>
-            <Link className="w-full" href={"/dashboard/income/" + budget?.id}>
-              <Button className="bg-gray-700 w-full">View Incomes</Button>
-            </Link>
+          </div>
+          <div className="flex items-center justify-center gap-5">
+            <EditBudget budget={budget} refreshData={refreshData} />
           </div>
         </DialogHeader>
       </DialogContent>
