@@ -13,12 +13,12 @@ function BudgetHeaderExpenses({ budget }, index) {
       const calculatedPercentage = (
         (budget.totalSpend / budget.amount) *
         100
-      ).toFixed(0);
-      setPercentage(calculatedPercentage);
-    } else {
-      setPercentage(100);
+      ).toFixed(2);
+
+      // Ensure the percentage does not exceed 100
+      setPercentage(Math.min(calculatedPercentage, 100));
     }
-  });
+  }, [budget.amount, budget.totalSpend]); 
   return (
     <div className="">
       <div className="border rounded-md p-5 flex h-[220px] flex-col shadow-sm text-gray-700">
@@ -44,8 +44,8 @@ function BudgetHeaderExpenses({ budget }, index) {
             <h2 className="text-xs">
               ${budget.totalSpend ? budget.totalSpend : 0} Spent
             </h2>
-            <h2 className="text-xs">
-              ${budget.amount - budget.totalSpend} Remaining
+            <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
+              ${(budget.amount - budget.totalSpend).toFixed(2)} Remaining
             </h2>
           </div>
           <div className="w-full bg-slate-300 h-2 rounded-full">

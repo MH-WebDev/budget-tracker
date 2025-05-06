@@ -22,10 +22,13 @@ function BudgetItem({ budget, index, refreshData }) {
       const calculatedPercentage = (
         (budget.totalSpend / budget.amount) *
         100
-      ).toFixed(0);
-      setPercentage(calculatedPercentage);
+      ).toFixed(2);
+  
+      // Ensure the percentage does not exceed 100
+      setPercentage(Math.min(calculatedPercentage, 100));
     }
-  });
+  }, [budget.amount, budget.totalSpend]); // Add dependencies to avoid unnecessary re-renders
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -53,7 +56,7 @@ function BudgetItem({ budget, index, refreshData }) {
                 ${budget.totalSpend ? budget.totalSpend : 0} Spent
               </h2>
               <h2 className="text-xs">
-                ${budget.amount - budget.totalSpend} Remaining
+                ${(budget.amount - budget.totalSpend).toFixed(2)} Remaining
               </h2>
             </div>
             <div className="w-full bg-slate-300 h-2 rounded-full">

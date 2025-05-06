@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { budgets } from "@/db/schema";
+import { budgets, expenses } from "@/db/schema";
 import { useUser } from "@clerk/nextjs";
 import { db } from "../../../../../../utils/dbConfig";
 import { toast } from "sonner";
@@ -39,18 +39,37 @@ function EditBudget({ budget, refreshData }) {
     }
   };
 
-  // FUNCTION TO DELETE BUDGET
+  // FUNCTION TO DELETE BUDGET AND RELATED EXPENSES
   const onDeleteBudget = async () => {
-    const result = await db
-      .delete(budgets)
-      .where(eq(budgets.id, budget.id)) // Use `eq` for the condition
-      .returning();
+    if (
+      !confirm(
+        "Deleting a budget will remove all associated expenses and CANNOT be undone. Are you absolutely sure?"
+      )
+    )
+      return;
 
-    if (result) {
-      refreshData();
-      toast("Budget Deleted Successfully!");
+    try {
+      // Delete all expenses related to the budget
+      await db
+        .delete(expenses) // Assuming `expenses` is the table schema for expenses
+        .where(eq(expenses.budgetId, budget.id)); // Delete where `budgetId` matches the budget's ID
+
+      // Delete the budget itself
+      const result = await db
+        .delete(budgets)
+        .where(eq(budgets.id, budget.id)) // Delete the budget
+        .returning();
+
+      if (result) {
+        refreshData(); // Refresh the budget list
+        toast("Budget and related expenses deleted successfully!");
+      }
+    } catch (error) {
+      console.error("Error deleting budget and related expenses:", error);
+      toast.error("Failed to delete budget. Please try again.");
     }
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>

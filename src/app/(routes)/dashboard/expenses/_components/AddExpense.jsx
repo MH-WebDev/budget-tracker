@@ -17,7 +17,7 @@ import { toast } from "sonner";
 function AddExpense({refreshData, budgetId, user }) {
   const [name, setName] = useState();
   const [amount, setAmount] = useState();
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState("Other");
   const [description, setDescription] = useState();
 
   // FUNCTION FOR CREATING NEW EXPENSES & PUSHING TO DB
@@ -70,7 +70,7 @@ function AddExpense({refreshData, budgetId, user }) {
                 <h2 className="col-span-2 text-right">Category:</h2>
                 <select className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
                 onChange={(e) => setCategory(e.target.value)}>
-                  <option value="Other">Other</option>
+                  <option value="Other" defaultValue>Other</option>
                   <option value="Entertainment">Entertainment</option>
                   <option value="Finance">Finance</option>
                   <option value="Food">Food</option>
