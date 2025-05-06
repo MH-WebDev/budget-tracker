@@ -9,6 +9,17 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { budgets, expenses } from "@/db/schema";
@@ -16,6 +27,7 @@ import { useUser } from "@clerk/nextjs";
 import { db } from "../../../../../../utils/dbConfig";
 import { toast } from "sonner";
 import { eq } from "drizzle-orm";
+import Alert from "@/app/_components/Alert";
 
 function EditBudget({ budget, refreshData }) {
   const [name, setName] = useState(budget.budgetName);
@@ -41,13 +53,6 @@ function EditBudget({ budget, refreshData }) {
 
   // FUNCTION TO DELETE BUDGET AND RELATED EXPENSES
   const onDeleteBudget = async () => {
-    if (
-      !confirm(
-        "Deleting a budget will remove all associated expenses and CANNOT be undone. Are you absolutely sure?"
-      )
-    )
-      return;
-
     try {
       // Delete all expenses related to the budget
       await db
@@ -104,13 +109,15 @@ function EditBudget({ budget, refreshData }) {
           </div>
         </div>
         <div className="flex justify-between">
-          <Button
-            variant="destructive"
-            onClick={onDeleteBudget}
-            className="bg-red-600"
-          >
-            Delete Budget
-          </Button>
+        <Alert
+            title="Are you absolutely sure?"
+            description="Deleting a budget will remove all associated expenses and CANNOT be undone."
+            onConfirm={onDeleteBudget}
+            onCancel={() => toast("Delete action canceled.")} // Optional cancel action
+            triggerText={
+                "Delete Budget"
+            }
+          />
           <DialogClose asChild>
             <Button
               disabled={!(name && amount)}

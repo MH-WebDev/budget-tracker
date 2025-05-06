@@ -24,7 +24,6 @@ export const incomes = pgTable('incomes', {
   id: serial().primaryKey(),
   incomeName: varchar('name').notNull(),
   amount: numeric('amount').notNull(),
-  budgetId: integer().references(() => budgets.id),
   icon: varchar(),
   comment: varchar(),
   createdAt: varchar('created_at').notNull()
