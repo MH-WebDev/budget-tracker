@@ -12,12 +12,11 @@ export const budgets = pgTable('budgets', {
 })
 export const expenses = pgTable('expenses', {
   id: serial().primaryKey(),
-  expenseName: varchar('name').notNull(),
   amount: numeric('amount').notNull(),
   budgetId: integer().references(() => budgets.id),
   category: varchar().notNull(),
   icon: varchar(),
-  comment: varchar(),
+  description: varchar(),
   createdAt: varchar('created_at').notNull()
 })
 export const incomes = pgTable('incomes', {

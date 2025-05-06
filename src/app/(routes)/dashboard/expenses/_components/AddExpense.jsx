@@ -27,10 +27,10 @@ function AddExpense({refreshData, budgetId, user }) {
     const result = await db
       .insert(expenses)
       .values({
-        expenseName: name,
         amount: amount,
         createdBy: user?.id,
         category: category,
+        description: description,
         userFirstName: user?.firstName,
         userLastName: user?.lastName,
         budgetId: budgetId,
@@ -58,14 +58,6 @@ function AddExpense({refreshData, budgetId, user }) {
           <DialogHeader>
             <DialogTitle>Add Expense</DialogTitle>
             <div className="py-6">
-              <div className="grid grid-cols-6 gap-5 items-center py-2">
-                <h2 className="col-span-2 text-right">Expense Name:</h2>
-                <Input
-                  placeholder="e.g 'Home Renovations'"
-                  className="col-span-4 border-gray-300"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">
                 <h2 className="col-span-2 text-right">Category:</h2>
                 <select className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
@@ -99,7 +91,7 @@ function AddExpense({refreshData, budgetId, user }) {
             </div>
             <DialogClose asChild>
               <Button
-                disabled={!(name && amount)}
+                disabled={!(amount)}
                 className="bg-gray-700"
                 onClick={() => createExpense()}
               >

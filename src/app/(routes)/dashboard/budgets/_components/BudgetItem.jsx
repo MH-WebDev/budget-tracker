@@ -15,15 +15,15 @@ function BudgetItem({ budget, index, refreshData }) {
   const { user } = useUser();
   const preferredCurrency = user?.publicMetadata?.currencySymbol || "USD"; // Default to USD if preferred currency  not set
 
-  const [percentage, setPercentage] = useState(0); // Percentage bar calculation
-
+  const [percentage, setPercentage] = useState(0);
+// Percentage bar calculation based on starting budget and total spend
   useEffect(() => {
     if (budget.amount > 0) {
       const calculatedPercentage = (
         (budget.totalSpend / budget.amount) *
         100
       ).toFixed(2);
-  
+
       // Ensure the percentage does not exceed 100
       setPercentage(Math.min(calculatedPercentage, 100));
     }
@@ -32,8 +32,8 @@ function BudgetItem({ budget, index, refreshData }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="border rounded-md p-5 flex h-[220px] flex-col shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105 text-gray-700">
-          <div className="flex flex-row justify-between items-center w-auto pb-5">
+        <div className="border rounded-md p-5 flex h-[200px] flex-col justify-evenly shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105 text-gray-700">
+          <div className="flex flex-row justify-between items-center w-auto">
             <div className="flex flex-row items-center gap-5">
               <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
                 {budget?.icon}
@@ -55,7 +55,7 @@ function BudgetItem({ budget, index, refreshData }) {
               <h2 className="text-xs">
                 ${budget.totalSpend ? budget.totalSpend : 0} Spent
               </h2>
-              <h2 className="text-xs">
+              <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
                 ${(budget.amount - budget.totalSpend).toFixed(2)} Remaining
               </h2>
             </div>

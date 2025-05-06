@@ -1,12 +1,16 @@
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import React from "react";
+import React, { useState } from "react";
 import { eq } from "drizzle-orm";
 import { toast } from "sonner";
 import { db } from "../../../../../../utils/dbConfig";
 import { expenses } from "@/db/schema";
+import Alert from "@/app/_components/Alert";
 
 function ExpensesTable({ expensesList, dateFormat, getExpensesList }) {
+
+  const [expandedRow, setExpandedRow] = useState(null); // Track the expanded row
+
   const formatDate = (date) => {
     try {
       return format(new Date(date), dateFormat); // Format the date using the preferred format
@@ -15,51 +19,74 @@ function ExpensesTable({ expensesList, dateFormat, getExpensesList }) {
     }
   };
   const deleteExpense = async (expensesList) => {
-    if (!confirm("This action cannot be undone. Are you sure you wish to delete?")) return; // Confirm deletion
     const result = await db
       .delete(expenses)
       .where(eq(expenses.id, expensesList.id))
       .returning();
 
     if (result) {
-      getExpensesList(); // Refresh the expenses list after deletion
+      getExpensesList();
       toast("Expense deleted successfully");
     }
   };
+
+  const toggleRow = (index) => {
+    setExpandedRow(expandedRow === index ? null : index); // Toggle the expanded row
+  };
+
   return (
     <div>
       <div className="grid grid-cols-10 text-center bg-gray-100 rounded-t-md font-semibold py-1 border-t border-x border-gray-300">
         <p className="col-span-2">Category</p>
         <p className="col-span-2">Amount</p>
-        <p className="col-span-3">Comment</p>
+        <p className="col-span-3">Description</p>
         <p className="col-span-2">Date</p>
         <p className="col-span-1">Delete</p>
       </div>
       <div>
-        {expensesList.map((expenses, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-10 text-center bg-gray-50 even:bg-gray-100"
-          >
-            <p className="border-x border-b border-gray-300 py-1 col-span-2">
-              {expenses.category}
-            </p>
-            <p className="border-x border-b border-gray-300 py-1 col-span-2">
-              {expenses.amount}
-            </p>
-            <p className="border-x border-b border-gray-300 py-1 col-span-3">
-              {expenses.comment}
-            </p>
-            <p className="border-x border-b border-gray-300 py-1 col-span-2">
-              {formatDate(expenses.createdAt)}
-            </p>
-            <p className="border-x border-b border-gray-300 py-1 col-span-1 text-red-500">
-              <Trash
-                className="mx-auto cursor-pointer h-6"
-                onClick={() => deleteExpense(expenses)}
-              />
-            </p>
-          </div>
+        {expensesList.map((expense, index) => (
+          <React.Fragment key={index}>
+            {/* Main Row */}
+            <div
+              className="grid grid-cols-10 text-center bg-gray-50 even:bg-gray-100"
+            >
+              <p className="border-x border-b border-gray-300 py-1 col-span-2">
+                {expense.category}
+              </p>
+              <p className="border-x border-b border-gray-300 py-1 col-span-2">
+                {expense.amount}
+              </p>
+              <p
+                className="border-x border-b border-gray-300 py-1 col-span-3 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+                onClick={() => toggleRow(index)} // Toggle the expanded row on click
+                title="Click to expand"
+              >
+                {expense.description}
+              </p>
+              <p className="border-x border-b border-gray-300 py-1 col-span-2">
+                {formatDate(expense.createdAt)}
+              </p>
+              <p className="border-x border-b border-gray-300 py-1 col-span-1 text-red-500">
+                <Alert
+                  title="Are you absolutely sure?"
+                  description="Deleting an expense will remove the data from the server and cannot be undone."
+                  onConfirm={() => deleteExpense(expense)}
+                  onCancel={() => toast("Delete action canceled.")}
+                  triggerText={<Trash2 />}
+                  variant="ghost"
+                />
+              </p>
+            </div>
+
+            {/* Expanded Row */}
+            {expandedRow === index && (
+              <div className="bg-gray-50 border-b border-gray-300">
+                <p className="p-3 text-left col-span-10">
+                  <strong>Full Description:</strong> {expense.description}
+                </p>
+              </div>
+            )}
+          </React.Fragment>
         ))}
       </div>
     </div>

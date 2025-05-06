@@ -17,8 +17,14 @@ function BudgetList() {
   },[user])
   // FETCHES BUDGETS FROM DB
 
+  
+  
+  
+  
+  
   const getBudgetsList = async () => {
-    const result = await db.select({
+    const result = await db
+    .select({
       ...getTableColumns(budgets),
       totalSpend: sql `sum(${expenses.amount})`.mapWith(Number),
       totalItems: sql `count(${expenses.id})`.mapWith(Number)

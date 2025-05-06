@@ -52,7 +52,7 @@ function ExpensesModule() {
   return (
     <>
       <div>
-        <h2 className="text-xl p-5 font-semibold">{budgetInfo.budgetName} - Expenses Sheet</h2>
+        <h2 className="text-xl p-5 font-semibold">Expenses Sheet</h2>
       </div>
       <div className="grid grid-cols-2 p-5 gap-5">
         {budgetInfo ? ( // Render only when budgetInfo is available

@@ -9,17 +9,6 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { budgets, expenses } from "@/db/schema";
@@ -28,6 +17,7 @@ import { db } from "../../../../../../utils/dbConfig";
 import { toast } from "sonner";
 import { eq } from "drizzle-orm";
 import Alert from "@/app/_components/Alert";
+import EmojiPicker from 'emoji-picker-react';
 
 function EditBudget({ budget, refreshData }) {
   const [name, setName] = useState(budget.budgetName);
@@ -39,6 +29,7 @@ function EditBudget({ budget, refreshData }) {
     const result = await db
       .update(budgets)
       .set({
+        icon: emojiIcon,
         budgetName: name,
         amount: amount,
       })
@@ -51,13 +42,13 @@ function EditBudget({ budget, refreshData }) {
     }
   };
 
-  // FUNCTION TO DELETE BUDGET AND RELATED EXPENSES
+  // DELETE BUDGET AND RELATED EXPENSES
   const onDeleteBudget = async () => {
     try {
       // Delete all expenses related to the budget
       await db
-        .delete(expenses) // Assuming `expenses` is the table schema for expenses
-        .where(eq(expenses.budgetId, budget.id)); // Delete where `budgetId` matches the budget's ID
+        .delete(expenses)
+        .where(eq(expenses.budgetId, budget.id)); // Delete any expense where column `budgetId` matches the relevant budget's ID
 
       // Delete the budget itself
       const result = await db
@@ -66,7 +57,7 @@ function EditBudget({ budget, refreshData }) {
         .returning();
 
       if (result) {
-        refreshData(); // Refresh the budget list
+        refreshData(); // Refresh the budget list on completion
         toast("Budget and related expenses deleted successfully!");
       }
     } catch (error) {
@@ -74,7 +65,9 @@ function EditBudget({ budget, refreshData }) {
       toast.error("Failed to delete budget. Please try again.");
     }
   };
-
+  
+      const [emojiIcon,setEmojiIcon] = useState('🏡');
+      const [openEmojiPicker, setOpenEmojiPicker] = useState(false)
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -83,11 +76,17 @@ function EditBudget({ budget, refreshData }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Budget</DialogTitle>
-          <DialogDescription>
-            Modify the budget details or delete it.
-          </DialogDescription>
         </DialogHeader>
-        <div className="py-6">
+        <div className="pb-6">
+          <Button variant="outline" size="lg" className="text-lg" onClick={() => setOpenEmojiPicker(!openEmojiPicker)}>
+              {emojiIcon}
+          </Button>
+          <div className="absolute z-50">
+              <EmojiPicker open={openEmojiPicker} onEmojiClick={(e) => {
+                  setEmojiIcon(e.emoji)
+                  setOpenEmojiPicker(false)
+              }}/>
+          </div>
           <div className="grid grid-cols-6 gap-5 items-center py-2">
             <h2 className="col-span-2 text-right">Budget Name:</h2>
             <Input
@@ -112,11 +111,12 @@ function EditBudget({ budget, refreshData }) {
         <Alert
             title="Are you absolutely sure?"
             description="Deleting a budget will remove all associated expenses and CANNOT be undone."
-            onConfirm={onDeleteBudget}
+            onConfirm={() => onDeleteBudget}
             onCancel={() => toast("Delete action canceled.")} // Optional cancel action
             triggerText={
                 "Delete Budget"
             }
+            variant={"destructive"}
           />
           <DialogClose asChild>
             <Button

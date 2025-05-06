@@ -47,7 +47,8 @@ function CreateBudget({refreshData}) {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>New Budget</DialogTitle>
-                    <div className="py-6">
+                </DialogHeader>
+                    <div className="pb-6">
                         <Button variant="outline" size="lg" className="text-lg" onClick={() => setOpenEmojiPicker(!openEmojiPicker)}>
                             {emojiIcon}
                         </Button>
@@ -70,7 +71,6 @@ function CreateBudget({refreshData}) {
                     <DialogClose asChild>
                         <Button disabled={!(name&&amount)} className="bg-gray-700" onClick={()=>onCreateBudget()}>Create Budget</Button>
                     </DialogClose>
-                </DialogHeader>
             </DialogContent>
         </Dialog>
     </>

@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-function Alert({ title, description, onConfirm, onCancel, triggerText }) {
+function Alert({ title, description, onConfirm, onCancel, triggerText, variant }) {
   return (
     <AlertDialog>
-        <AlertDialogTrigger>
-            <Button variant="destructive">{triggerText}</Button>
+        <AlertDialogTrigger asChild>
+            <Button variant={variant}>{triggerText}</Button>
         </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
