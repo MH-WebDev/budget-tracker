@@ -35,6 +35,7 @@ function AddExpense({refreshData, budgetId, user }) {
         userLastName: user?.lastName,
         budgetId: budgetId,
         createdAt: currentDateAndTime,
+        createdBy: user?.id,
       })
       .returning({ insertedId: budgets.id });
       console.log("Added expense:", result)

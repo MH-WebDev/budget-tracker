@@ -13,7 +13,7 @@ import EditBudget from "./EditBudget";
 
 function BudgetItem({ budget, index, refreshData }) {
   const { user } = useUser();
-  const preferredCurrency = user?.publicMetadata?.currencySymbol || "USD"; // Default to USD if preferred currency  not set
+  const preferredCurrency = user?.publicMetadata?.currencySymbol || "$"; // Default to USD if preferred currency  not set
 
   const [percentage, setPercentage] = useState(0);
 // Percentage bar calculation based on starting budget and total spend

@@ -17,11 +17,11 @@ function BudgetList() {
   },[user])
   // FETCHES BUDGETS FROM DB
 
-  
-  
-  
-  
-  
+
+
+
+
+
   const getBudgetsList = async () => {
     const result = await db
     .select({

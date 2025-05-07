@@ -17,6 +17,7 @@ export const expenses = pgTable('expenses', {
   category: varchar().notNull(),
   icon: varchar(),
   description: varchar(),
+  createdBy: varchar('created_by').notNull(),
   createdAt: varchar('created_at').notNull()
 })
 export const incomes = pgTable('incomes', {
@@ -25,5 +26,6 @@ export const incomes = pgTable('incomes', {
   amount: numeric('amount').notNull(),
   icon: varchar(),
   comment: varchar(),
+  createdBy: varchar('created_by').notNull(),
   createdAt: varchar('created_at').notNull()
 })
