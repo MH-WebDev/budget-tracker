@@ -1,7 +1,7 @@
 import { UserButton, useUser } from '@clerk/nextjs'
 import React from 'react'
 
-function DashboardHeader() {
+function DashboardHeader( {children} ) {
 
   const {user} = useUser();
 

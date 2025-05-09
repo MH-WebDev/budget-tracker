@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "npx drizzle-kit push",
-    "db:studio": "npx drizzle-kit studio"
+    "db:studio": "npx drizzle-kit studio",
+    "domain": "ngrok http --url=equal-hedgehog-broadly.ngrok-free.app 3000"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.18.0",

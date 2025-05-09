@@ -1,40 +1,38 @@
-'use client'
-import React, { useEffect } from 'react'
-import SideNav from './_components/SideNav'
-import DashboardHeader from './_components/DashboardHeader'
-import { db } from '../../../../utils/dbConfig'
-import { budgets } from '@/db/schema.jsx'
-import { useUser } from '@clerk/nextjs'
-import { eq } from 'drizzle-orm'
-import { useRouter } from 'next/navigation'
+"use client"
+import React, { useEffect } from 'react';
+import { DatabaseProvider, useDatabase } from '@/context/DatabaseContext';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import DashboardHeader from './_components/DashboardHeader';
+import SideNav from './_components/SideNav';
 
 function DashboardLayout({children}) {
+    const {user} = useUser();
+    const router = useRouter();
+    const { userData, loading, fetchUserData } = useDatabase(); // HOOK TO CHECKIFUSERBUDGETS
 
-  const {user} = useUser();
-  const router = useRouter();
+     useEffect(()=> {
+         user&&checkIfUserBudgets();
+       }, [user, loading, userData])
 
-  useEffect(()=> {
-    user&&checkIfUserBudgets();
-  }, [user])
+       const checkIfUserBudgets = () => {
+        const userBudgets = userData.filter((budget) => budget.createdBy === user.id);
 
-  const checkIfUserBudgets = async () => {
-    const result = await db.select().from(budgets).where(eq(budgets.createdBy,user?.id)); //budgets.createdBy,user?.primaryEmailAddress?.emailAddress
-
-    //console.log(result);
-    if(result?.length === 0) {
-      router.replace('/dashboard/budgets')
-    }
-  }
+        if (userBudgets.length === 0) {
+         console.log('No budgets, redirecting');
+         router.replace('/dashboard/budgets');
+        }
+       }
 
   return (
-    <div>
-        <div className="fixed md:w-64 hidden md:block">
-            <SideNav />
-        </div>
-        <div className="md:ml-64">
+    <div className="flex flex-row"> 
+      <div>{/*fixed md:w-54 hidden md:block*/}
+          <SideNav />
+      </div>
+      <div className="w-full">{/*md:ml-54*/}
           <DashboardHeader />
-            {children}
-        </div>
+          {children}
+      </div>
     </div>
   )
 }
