@@ -101,7 +101,7 @@ function BudgetCard({ budget, user, expenses }) {
       <div className="w-full">
         <div className="flex flex-row justify-between px-1 items-center mb-2">
           <h2 className="text-xs">
-            {/* ${budget.totalSpend} Spent */}
+            ${budget.totalSpend} Spent
           </h2>
           <h2 className="text-xs">
             ${budget.amount - budget.totalSpend} Remaining

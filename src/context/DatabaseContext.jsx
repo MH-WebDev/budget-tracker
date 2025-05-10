@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { db } from '@/utils/dbConfig';
 import { user_data, budget_data, expense_data, income_data } from '@/db/schema';
 import { useUser } from '@clerk/nextjs';
-import { eq, getTableColumns } from 'drizzle-orm';
+import { desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 
 const DatabaseContext = createContext();
@@ -57,7 +57,7 @@ export const DatabaseProvider = ({ children }) => {
       console.warn('User object or ID is not available.');
       return null;
     }
-
+  
     console.log('Fetching budgets and expenses for user ID:', user.id);
   
     try {
@@ -69,19 +69,32 @@ export const DatabaseProvider = ({ children }) => {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
   
-      // Fetch budgets and expenses in parallel
-      const [budgets, expenses] = await Promise.all([
-        db.select().from(budget_data).where(eq(budget_data.user_id, user.id)),
-        db.select().from(expense_data).where(eq(expense_data.user_id, user.id)),
-      ]);
+      // Fetch budgets with aggregated expense data
+      const budgetsWithAggregates = await db
+        .select({
+          ...getTableColumns(budget_data),
+          totalSpend: sql`SUM(${expense_data.amount})`.mapWith(Number),
+          totalItems: sql`COUNT(${expense_data.id})`.mapWith(Number),
+        })
+        .from(budget_data)
+        .leftJoin(expense_data, eq(budget_data.id, expense_data.budget_id))
+        .where(eq(budget_data.user_id, user.id))
+        .groupBy(budget_data.id)
+        .orderBy(desc(budget_data.id));
   
-      setbudgetData(budgets); // Update renamed state variable
-      setexpenseData(expenses); // Update renamed state variable
+      // Fetch raw expenses
+      const expenses = await db
+        .select()
+        .from(expense_data)
+        .where(eq(expense_data.user_id, user.id));
   
-      console.log('Fetched budgets:', budgets);
+      setbudgetData(budgetsWithAggregates); // Update budgets with aggregated data
+      setexpenseData(expenses); // Update expenses
+  
+      console.log('Fetched budgets with aggregates:', budgetsWithAggregates);
       console.log('Fetched expenses:', expenses);
   
-      return { budgets, expenses };
+      return { budgets: budgetsWithAggregates, expenses };
     } catch (error) {
       console.error('Error fetching budgets and expenses:', error);
       return null;
