@@ -1,9 +1,9 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { db } from '@/utils/dbConfig';
-import { users, budgets, expenses, incomes } from '@/db/schema';
+import { user_data, budget_data, expense_data, income_data } from '@/db/schema';
 import { useUser } from '@clerk/nextjs';
-import { eq } from 'drizzle-orm';
+import { eq, getTableColumns } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 
 const DatabaseContext = createContext();
@@ -12,121 +12,111 @@ export const DatabaseProvider = ({ children }) => {
 
   const { user } = useUser();
   const [userData, setUserData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [budgetData, setbudgetData] = useState([]);
+  const [expenseData, setexpenseData] = useState([])
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingBudgets, setLoadingBudgets] = useState(false);
+  const [loadingExpenses, setLoadingExpenses] = useState(false);
 
+  // VERIFY IF USER IS LOGGED IN
+  const isUserAvailable = () => {
+    if (!user) {
+      console.warn('User object is not yet available.');
+      return false;
+    }
+    return true;
+  };
+
+  //
+  // DATA FETCH FUNCTIONS
+  //
   // FETCH USER DATA
   const fetchUserData = async () => {
-    console.log('User object:', user); // Debugging log
-    if (!user) {
-      console.warn('User object is not yet available. Waiting for user data...');
-      return null; // Return early if the user object is not available
-    }
+
+    if (!isUserAvailable()) return null;
+
     try {
-      setLoading(true); // Set loading state
+      setLoadingUser(true); // Set loading state
       const data = await db
         .select()
-        .from(users)
-        .where(eq(users.user_id, user.id)); // Query the users table for the logged-in user
-      console.log('Context fetched user data:', data); // Debugging log
+        .from(user_data)
+        .where(eq(user_data.user_id, user.id)); // Query the users table for the logged-in user
       setUserData(data); // Update the userData state
       return data;
     } catch (error) {
       console.error('Error fetching user data:', error); // Log any errors
       return null;
     } finally {
-      setLoading(false); // Reset loading state
+      setLoadingUser(false); // Reset loading state
     }
   };
 
-
-  // FETCH BUDGETS - Budgets are linked to users via user_id.
-  const fetchUserBudgets = useCallback(async () => {
-    console.log('User object in fetchUserBudgets:', user); // Debugging log
-    if (!user) {
-      console.warn('User object is not yet available. Waiting for user data...');
-      return null; // Return early if the user object is not available
+  // FETCH BUDGETS & EXPENSES - Budgets & Expenses are linked to users via user_id.
+  const fetchBudgetExpenseData = async () => {
+    if (!user || !user.id) {
+      console.warn('User object or ID is not available.');
+      return null;
     }
+
+    console.log('Fetching budgets and expenses for user ID:', user.id);
   
     try {
-      setLoading(true); // Set loading state
-      const budgetsData = await db
-        .select()
-        .from(budgets)
-        .where(eq(budgets.user_id, user.id)); // Query the budgets table for the logged-in user
-      console.log('Fetched user budgets:', budgetsData); // Debugging log
-      return budgetsData;
-    } catch (error) {
-      console.error('Error fetching user budgets:', error); // Log any errors
-      return null;
-    } finally {
-      setLoading(false); // Reset loading state
-    }
-  }, [user]); // Memoize based on the `user` object
-
-
-  // FETCH EXPENSES - Budgets are linked to budgets via user_id.
-  const fetchUserExpenses = async () => {
-    console.log('User object:', user); // Debugging log
-    if (!user) {
-      console.warn('User object is not yet available. Waiting for user data...');
-      return null; // Return early if the user object is not available
-    }
+      setLoadingBudgets(true);
+      setLoadingExpenses(true);
   
-    try {
-      setLoading(true); // Set loading state
-      const expensesData = await db
-        .select()
-        .from(expenses)
-        .where(eq(expenses.user_id, user.id)); // Query the expenses table for the logged-in user
-      console.log('Fetched user expenses:', expensesData); // Debugging log
-      return expensesData;
+      // Ensure user.id is a string
+      if (typeof user.id !== 'string') {
+        throw new Error(`Invalid user ID: ${user.id}`);
+      }
+  
+      // Fetch budgets and expenses in parallel
+      const [budgets, expenses] = await Promise.all([
+        db.select().from(budget_data).where(eq(budget_data.user_id, user.id)),
+        db.select().from(expense_data).where(eq(expense_data.user_id, user.id)),
+      ]);
+  
+      setbudgetData(budgets); // Update renamed state variable
+      setexpenseData(expenses); // Update renamed state variable
+  
+      console.log('Fetched budgets:', budgets);
+      console.log('Fetched expenses:', expenses);
+  
+      return { budgets, expenses };
     } catch (error) {
-      console.error('Error fetching user expenses:', error); // Log any errors
+      console.error('Error fetching budgets and expenses:', error);
       return null;
     } finally {
-      setLoading(false); // Reset loading state
+      setLoadingBudgets(false);
+      setLoadingExpenses(false);
     }
   };
-
-
+  
   // FETCH INCOMES - Incomes are linked to users via user_id
   const fetchUserIncomes = async () => {
+    console.warn('fetchUserIncomes function is not implemented yet.');
   };
 
 
-  // UPDATE USER SETTINGS
-  const updateUserSettings = async (user_id, settings) => {
-    try {
-      await db
-        .update(users)
-        .set(settings)
-        .where(eq(users.user_id, user.id)); // Update the user's settings in the database
-      console.log('User settings updated successfully.');
-      await fetchUserData(); // Refresh the user data after the update
-    } catch (error) {
-      console.error('Error updating user settings:', error);
-    }
-  };
+  //
+  // FUNCTIONS FOR ADDING DATA TO DATABASE
+  //
 
   const addBudget = async (budget) => {
-    console.log('Adding budget:', budget); // Debugging log
-    if (!user) {
-      console.warn('User object is not yet available. Cannot add budget.');
-      return null;
-    }
+    
+    if (!isUserAvailable()) return null;
 
     try {
       const newBudget = await db
-        .insert(budgets)
+        .insert(budget_data)
         .values({
           user_id: user.id, // Associate the budget with the logged-in user
           budget_name: budget.name,
           amount: parseFloat(budget.amount), // Ensure the amount is a number
           icon: budget.icon || '🏡', // Default icon if none is provided
-          created_at: new Date(), // Optional: Add a timestamp
+          budget_created_timestamp: new Date(), // Optional: Add a timestamp
         })
         .returning(); // Return the inserted budget
-      console.log('Budget added successfully:', newBudget);
+      //console.log('Budget added successfully:', newBudget);
       return newBudget;
     } catch (error) {
       console.error('Error adding budget:', error);
@@ -134,26 +124,56 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const addExpense = async (expenses) => {};
+  const addExpense = async (expenses) => {
+    console.warn('addExpense function is not implemented yet.');
+  };
 
-  const addIncome = async (incomes) => {};
+  const addIncome = async (incomes) => {
+    console.warn('addIncome function is not implemented yet.');
+  };
 
-  const deleteBudget = async () => {};
+  const deleteBudget = async () => {
+    console.warn('deleteBudget function is not implemented yet.');
+  };
 
-  const deleteExpense = async () => {};
+  const deleteExpense = async () => {
+    console.warn('deleteExpense function is not implemented yet.');
+  };
 
-  const deleteIncome = async () => {};
+  const deleteIncome = async () => {
+    console.warn('deleteIncome function is not implemented yet.');
+  };
+  //
+  // FUNCTIONS TO UPDATE DATA IN THE DATABASE
+  //
+  // UPDATE USER SETTINGS
+  const updateUserSettings = async (user_id, settings) => {
+    try {
+      await db
+        .update(user_data)
+        .set(settings)
+        .where(eq(user_data.user_id, user.id)); // Update the user's settings in the database
+      //console.log('User settings updated successfully.');
+      await fetchUserData(); // Refresh the user data after the update
+    } catch (error) {
+      console.error('Error updating user settings:', error);
+    }
+  };
+  const updateBudget = async () => {
+    console.warn('updateBudget function is not implemented yet.');
+  };
 
-  const updateBudget = async () => {};
+  const updateIncome = async () => {
+    console.warn('updateIncome function is not implemented yet.');
+  };
 
-  const updateIncome = async () => {};
 
   // Fetch data when the user logs in
   useEffect(() => {
     if (user) {
-      fetchUserData();// Fetch user data only when the user object is available
-      fetchUserBudgets();
-      fetchUserExpenses();
+      fetchUserData(); // Fetch user data only when the user object is available
+      fetchBudgetExpenseData();
+      //fetchUserIncomes();
     }
   }, [user]); // Trigger fetchUserData when the user changes
 
@@ -161,11 +181,16 @@ export const DatabaseProvider = ({ children }) => {
     <DatabaseContext.Provider
       value={{
         userData,
-        loading,
+        budgets: budgetData,
+        expenses: expenseData,
+        //incomes: incomeData,
+        loadingUser,
+        loadingBudgets,
+        loadingExpenses,
+        //loadingIncomes,
         fetchUserData,
-        fetchUserBudgets,
-        fetchUserExpenses,
-        updateUserSettings,
+        fetchBudgetExpenseData,
+        fetchUserIncomes,
         addBudget,
       }}
     >
@@ -175,3 +200,5 @@ export const DatabaseProvider = ({ children }) => {
 }
 // Custom hook to use DatabaseContext
 export const useDatabase = () => useContext(DatabaseContext);
+
+

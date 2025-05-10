@@ -6,71 +6,72 @@ import {
   integer,
   numeric,
   timestamp,
-  index
+  index,
+  columns
 } from "drizzle-orm/pg-core";
 
-export const users = pgTable('users', {
+export const user_data = pgTable('user_data', {
   id: serial().primaryKey(),
   first_name: varchar('first_name', { length: 64 }).notNull(),
   last_name: varchar('last_name', { length: 64 }),
-  user_id: varchar('user_id', { length: 255 }).notNull().unique(), // Unique index is automatically created
-  email_address: varchar('email_address').notNull().unique(), // Unique index is automatically created
+  user_id: varchar('user_id', { length: 255 }).notNull().unique(),
+  email_address: varchar('email_address').notNull().unique(),
   account_created_timestamp: timestamp('account_created_timestamp').defaultNow().notNull(),
   preferred_currency: varchar('preferred_currency').default('USD').notNull(),
   preferred_currency_symbol: varchar('preferred_currency_symbol').default('$').notNull(),
   selected_date_format: varchar('selected_date_format').default('MM/DD/YYYY').notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull()
-}, (users) => ({
-  userIdIndex: index('user_id_idx').on(users.user_id), // Index on userId
-  emailIndex: index('email_idx').on(users.email_address) // Index on emailAddress
+}, (columns) => ({
+  userIdIndex: index('user_id_idx').on(columns.user_id), // Use columns parameter
+  emailIndex: index('email_idx').on(columns.email_address) // Use columns parameter
 }));
 
-export const budgets = pgTable('budgets', {
+export const budget_data = pgTable('budget_data', {
   id: serial().primaryKey(),
-  user_id: varchar('user_id', { length: 255 }).references(() => users.user_id, { onDelete: 'cascade' }).notNull(),
+  user_id: varchar('user_id', { length: 255 }).references(() => user_data.user_id, { onDelete: 'cascade' }).notNull(),
   budget_name: varchar('budget_name', { length: 30 }).notNull(),
   amount: numeric('amount').notNull(),
   icon: varchar().default('💸'),
   status: varchar('status').default('active').notNull(),
   budget_created_timestamp: timestamp('budget_created_timestamp').defaultNow().notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull()
-}, (budgets) => ({
-  userIdIndex: index('budget_user_id_idx').on(budgets.user_id), // Index on userId
-  checks: [
-    `amount >= 0` // Table-level CHECK constraint for amount
-  ] // Checks amount is valid and non-negative
-}));
-
-export const expenses = pgTable('expenses', {
-  id: serial().primaryKey(),
-  user_id: varchar('user_id', { length: 255 }).references(() => users.user_id, { onDelete: 'cascade' }).notNull(), // New user_id column
-  amount: numeric('amount').notNull(),
-  budget_id: integer().references(() => budgets.id, { onDelete: 'cascade' }).notNull(),
-  category: varchar().notNull(),
-  icon: varchar().default('💸'),
-  description: varchar(),
-  expense_created_timestamp: timestamp('expense_created_timestamp').defaultNow().notNull(),
-  updated_at: timestamp('updated_at').defaultNow().notNull()
-}, (expenses) => ({
-  userIdIndex: index('expense_user_id_idx').on(expenses.user_id), // Index on user_id
-  budgetIdIndex: index('expense_budget_id_idx').on(expenses.budget_id), // Index on budget_id
+}, (columns) => ({
+  userIdIndex: index('budget_user_id_idx').on(columns.user_id), // Use columns parameter
   checks: [
     `amount >= 0` // Table-level CHECK constraint for amount
   ]
 }));
 
-export const incomes = pgTable('incomes', {
+export const expense_data = pgTable('expense_data', {
   id: serial().primaryKey(),
-  user_id: varchar('user_id', { length: 255 }).references(() => users.user_id, { onDelete: 'cascade' }).notNull(), // New user_id column
+  user_id: varchar('user_id', { length: 255 }).references(() => user_data.user_id, { onDelete: 'cascade' }).notNull(),
+  amount: numeric('amount').notNull(),
+  budget_id: integer().references(() => budget_data.id, { onDelete: 'cascade' }).notNull(),
+  category: varchar().notNull(),
+  icon: varchar().default('💸'),
+  description: varchar(),
+  expense_created_timestamp: timestamp('expense_created_timestamp').defaultNow().notNull(),
+  updated_at: timestamp('updated_at').defaultNow().notNull()
+}, (columns) => ({
+  userIdIndex: index('expense_user_id_idx').on(columns.user_id), // Use columns parameter
+  budgetIdIndex: index('expense_budget_id_idx').on(columns.budget_id), // Use columns parameter
+  checks: [
+    `amount >= 0` // Table-level CHECK constraint for amount
+  ]
+}));
+
+export const income_data = pgTable('income_data', {
+  id: serial().primaryKey(),
+  user_id: varchar('user_id', { length: 255 }).references(() => user_data.user_id, { onDelete: 'cascade' }).notNull(),
   income_name: varchar('income_name', { length: 30 }).notNull(),
   amount: numeric('amount').notNull(),
   icon: varchar().default('💸'),
   comment: varchar(),
   income_created_timestamp: timestamp('income_created_timestamp').defaultNow().notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull()
-}, (incomes) => ({
-  userIdIndex: index('income_user_id_idx').on(incomes.user_id), // Index on userId
+}, (columns) => ({
+  userIdIndex: index('income_user_id_idx').on(columns.user_id), // Use columns parameter
   checks: [
     `amount >= 0` // Table-level CHECK constraint for amount
-  ] // Checks amount is valid and non-negative
+  ]
 }));

@@ -9,9 +9,10 @@ import {
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { sum } from "drizzle-orm";
 //import EditBudget from "./EditBudget";
 
-function BudgetCard({ budgets, user, expenses }) {
+function BudgetCard({ budget, user, expenses }) {
     const [ percentage, setPercentage ] = useState(0);
 
     // useEffect(() => {
@@ -21,8 +22,8 @@ function BudgetCard({ budgets, user, expenses }) {
     //     }
     // }, [budgets.amount, budgets.totalSpend]);
 
-  console.log("User Info", user);
-  console.log("expenses info", expenses)
+
+  const transactionCount = expenses.length;
 
   // PULL USER EXPENSES DATA MATCHING CURRENT BUDGET ID & SET RESULT TO TOTALSPENT, SET NUMBER OF EXPENSES TO TOTALITEMS.
 
@@ -34,9 +35,9 @@ function BudgetCard({ budgets, user, expenses }) {
       <div className="flex flex-row justify-between items-center w-auto">
         <div className="flex flex-row items-center gap-5">
           <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
-            {budgets?.icon}
+            {budget?.icon}
           </p>
-          <h2 className="text-lg font-semibold">{budgets.budget_name}</h2>
+          <h2 className="text-lg font-semibold">{budget.budget_name}</h2>
         </div>
       </div>
       <div className="py-5">
@@ -44,17 +45,17 @@ function BudgetCard({ budgets, user, expenses }) {
           Total Amount:{" "}
           <span className="font-normal">
             {preferredCurrencySymbol}
-            {budgets.amount}
+            {budget.amount}
           </span>
         </h3>
       </div>
       <div className="w-full">
         <div className="flex flex-row justify-between px-1 items-center mb-2">
           <h2 className="text-xs">
-            ${budgets.totalSpend ? budgets.totalSpend : 0} Spent
+            ${budget.totalSpend ? budget.totalSpend : 0} Spent
           </h2>
-          <h2 className={`text-xs ${(budgets.amount - budgets.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
-            ${(budgets.amount - budgets.totalSpend).toFixed(2)} Remaining
+          <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
+            ${(budget.amount - budget.totalSpend).toFixed(2)} Remaining
           </h2>
         </div>
         <div className="w-full bg-slate-300 h-2 rounded-full">
@@ -70,9 +71,9 @@ function BudgetCard({ budgets, user, expenses }) {
     <DialogHeader>
       <DialogTitle className="flex gap-10 items-center">
         <span className="text-2xl flex justify-center items-center border border-gray-300 rounded-md w-12 h-12">
-          {budgets.icon}
+          {budget.icon}
         </span>
-        <span className="text-left">{budgets.budgetName}</span>
+        <span className="text-left">{budget.budgetName}</span>
       </DialogTitle>
       <div className="flex gap-10 justify-between py-5">
         <div>
@@ -80,14 +81,14 @@ function BudgetCard({ budgets, user, expenses }) {
             Starting Budget:
             <span className=" pl-3 font-semibold">
               {preferredCurrencySymbol}
-              {budgets.amount}
+              {budget.amount}
             </span>
           </p>
         </div>
         <div>
           <h3>
-            Transaction Count:{" "}
-            <span className=" pl-3 font-semibold">{budgets.totalItems}</span>
+            Transaction Count: {transactionCount}
+            <span className=" pl-3 font-semibold">{budget.totalItems}</span>
           </h3>
           <h4>
             Created By:{" "}
@@ -100,10 +101,10 @@ function BudgetCard({ budgets, user, expenses }) {
       <div className="w-full">
         <div className="flex flex-row justify-between px-1 items-center mb-2">
           <h2 className="text-xs">
-            ${budgets.totalSpend ? budgets.totalSpend : 0} Spent
+            {/* ${budget.totalSpend} Spent */}
           </h2>
           <h2 className="text-xs">
-            ${budgets.amount - budgets.totalSpend} Remaining
+            ${budget.amount - budget.totalSpend} Remaining
           </h2>
         </div>
         <div className="w-full bg-slate-300 h-2 rounded-full">
@@ -114,7 +115,7 @@ function BudgetCard({ budgets, user, expenses }) {
         </div>
       </div>
       <div className="flex flex-row justify-evenly items-center gap-5">
-        <Link className="w-full" href={"/dashboard/expenses/" + budgets?.id}>
+        <Link className="w-full" href={"/dashboard/expenses/" + budget?.id}>
           <Button className="bg-gray-700 w-full">View Expenses</Button>
         </Link>
       </div>

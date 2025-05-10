@@ -1,41 +1,37 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { useDatabase } from "@/context/DatabaseContext";
+'use client';
+import React, { useEffect } from 'react';
+import { useDatabase } from '@/context/DatabaseContext';
 import BudgetCard from './BudgetCard';
 import CreateBudget from './CreateBudget';
 
-function BudgetList( {children} ) {
-    const { fetchUserData, fetchUserBudgets, fetchUserExpenses } = useDatabase(); // Access user data and update function from DatabaseProvider
-    const [budgets, setBudgets] = useState([]);
-    const [user, setUser] = useState();
-    const [expenses, setExpenses] = useState([]);
+function BudgetList() {
+  const { budgets, expenses, userData, fetchBudgetExpenseData } = useDatabase(); // Access data and fetch function from DatabaseProvider
 
-    const refreshBudgets = async () => {
-      const budgetInfo = await fetchUserBudgets();
-      if (budgetInfo) {
-        setBudgets(budgetInfo);
-      }
-      const userInfo = await fetchUserData();
-      if (userInfo) {
-        setUser(userInfo[0])
-      }
-      const expensesInfo = await fetchUserExpenses();
-      if (expensesInfo) {
-        setExpenses(expensesInfo);
-      }
-    };
+  // Refresh budgets and expenses
+  const refreshBudgetsAndExpenses = async () => {
+    console.log('Refreshing budgets and expenses...');
+    await fetchBudgetExpenseData(); // Fetch budgets and expenses from the context
+  };
 
-    useEffect(() => {
-      refreshBudgets();
-       console.log("Refreshing Budgets...")
-    }, [fetchUserBudgets]);
+  // Fetch data when the component mounts
+  useEffect(() => {
+    refreshBudgetsAndExpenses();
+  }, []);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
-        {budgets.map((budgets, index) =>(<BudgetCard key={budgets.id} user={user} budgets={budgets} expenses={expenses} index={index} />))} {/* Passing fetched database info to BudgetCard */}
-        <CreateBudget onBudgetCreated={refreshBudgets}/>
+      {budgets.map((budget, index) => (
+        <BudgetCard
+          key={budget.id}
+          user={userData[0]} // Pass the first user object
+          budget={budget} // Pass the current budget
+          expenses={expenses.filter((expense) => expense.budget_id === budget.id)} // Filter expenses by budget ID
+          index={index}
+        />
+      ))}
+      <CreateBudget onBudgetCreated={refreshBudgetsAndExpenses} />
     </div>
-  )
+  );
 }
 
-export default BudgetList
+export default BudgetList;

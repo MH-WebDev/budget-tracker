@@ -1,10 +1,12 @@
-import { users } from '@/db/schema'
+import { user_data } from '@/db/schema'
 import { db } from '@/utils/dbConfig'
 import { verifyWebhook } from '@clerk/nextjs/webhooks'
 
 export async function POST(req) {
   try {
-    const evt = await verifyWebhook(req)
+    const evt = await verifyWebhook(req, {
+      secret: process.env.CLERK_WEBHOOK_SECRET,
+    })
 
     // Do something with payload
     // For this guide, log payload to console
@@ -15,13 +17,13 @@ export async function POST(req) {
 
     if (eventType === 'user.created') {
       const { id: userId, first_name, last_name, email_addresses } = evt.data;
+      const email = email_addresses?.[0]?.email_address || 'unknown@example.com';
 
-      // Insert the user into the database
-      await db.insert(users).values({
-        userId,
-        firstName: first_name || '',
-        lastName: last_name || '',
-        emailAddress: email_addresses[0]?.email_address || '',
+      await db.insert(user_data).values({
+        user_id: userId,
+        first_name: first_name || '',
+        last_name: last_name || '',
+        email_address: email,
       });
 
       console.log('User successfully added to the database.');
