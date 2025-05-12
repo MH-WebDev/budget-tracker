@@ -10,24 +10,23 @@ import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { sum } from "drizzle-orm";
+import EditBudget from "./EditBudget";
 //import EditBudget from "./EditBudget";
 
-function BudgetCard({ budget, user, expenses }) {
+function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateBudget, refreshData }) {
     const [ percentage, setPercentage ] = useState(0);
 
-    // useEffect(() => {
-    //     if (budgets.amount > 0) {
-    //         const calculatedPercentage = ((budgets.totalSpent / budgets.amount) * 100).toFixed(0);
-    //         setPercentage(calculatedPercentage);
-    //     }
-    // }, [budgets.amount, budgets.totalSpend]);
-
-
-  const transactionCount = expenses.length;
-
-  // PULL USER EXPENSES DATA MATCHING CURRENT BUDGET ID & SET RESULT TO TOTALSPENT, SET NUMBER OF EXPENSES TO TOTALITEMS.
+     useEffect(() => {
+         if (budget.amount > 0) {
+             const calculatedPercentage = ((budget.totalSpend / budget.amount) * 100).toFixed(0);
+             setPercentage(Math.min(calculatedPercentage, 100));
+         }
+     }, [budget.amount, budget.totalSpend]);
+     
+  
 
   const preferredCurrencySymbol = user?.preferred_currency_symbol || " ";
+
   return (
   <Dialog>
   <DialogTrigger asChild>
@@ -55,7 +54,7 @@ function BudgetCard({ budget, user, expenses }) {
             ${budget.totalSpend ? budget.totalSpend : 0} Spent
           </h2>
           <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
-            ${(budget.amount - budget.totalSpend).toFixed(2)} Remaining
+            ${Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
           </h2>
         </div>
         <div className="w-full bg-slate-300 h-2 rounded-full">
@@ -87,7 +86,7 @@ function BudgetCard({ budget, user, expenses }) {
         </div>
         <div>
           <h3>
-            Transaction Count: {transactionCount}
+            Transaction Count:
             <span className=" pl-3 font-semibold">{budget.totalItems}</span>
           </h3>
           <h4>
@@ -103,8 +102,8 @@ function BudgetCard({ budget, user, expenses }) {
           <h2 className="text-xs">
             ${budget.totalSpend} Spent
           </h2>
-          <h2 className="text-xs">
-            ${budget.amount - budget.totalSpend} Remaining
+          <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
+            ${Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
           </h2>
         </div>
         <div className="w-full bg-slate-300 h-2 rounded-full">
@@ -120,7 +119,10 @@ function BudgetCard({ budget, user, expenses }) {
         </Link>
       </div>
       <div className="flex items-center justify-center gap-5">
-        {/* <EditBudget budgets={budgets} refreshData={refreshData} /> */}
+        <EditBudget 
+          budget={budget}
+          updateBudget={updateBudget}
+          refreshData={refreshData} />
       </div>
     </DialogHeader>
   </DialogContent>

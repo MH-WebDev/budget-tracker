@@ -5,7 +5,8 @@ import BudgetCard from './BudgetCard';
 import CreateBudget from './CreateBudget';
 
 function BudgetList() {
-  const { budgets, expenses, userData, fetchBudgetExpenseData } = useDatabase(); // Access data and fetch function from DatabaseProvider
+  const { budgets, expenses, userData, fetchBudgetExpenseData, updateBudget } = useDatabase(); // Access data and fetch function from DatabaseProvider
+
 
   // Refresh budgets and expenses
   const refreshBudgetsAndExpenses = async () => {
@@ -17,6 +18,7 @@ function BudgetList() {
   useEffect(() => {
     refreshBudgetsAndExpenses();
   }, []);
+  console.log("updateBudget in BudgetList:", updateBudget);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
@@ -27,6 +29,8 @@ function BudgetList() {
           budget={budget} // Pass the current budget
           expenses={expenses.filter((expense) => expense.budget_id === budget.id)} // Filter expenses by budget ID
           index={index}
+          refreshData={refreshBudgetsAndExpenses}
+          updateBudget={updateBudget}
         />
       ))}
       <CreateBudget onBudgetCreated={refreshBudgetsAndExpenses} />

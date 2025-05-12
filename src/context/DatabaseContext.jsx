@@ -17,6 +17,7 @@ export const DatabaseProvider = ({ children }) => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingBudgets, setLoadingBudgets] = useState(false);
   const [loadingExpenses, setLoadingExpenses] = useState(false);
+  const [loadingIncomes, setLoadingIncomes] = useState(false);
 
   // VERIFY IF USER IS LOGGED IN
   const isUserAvailable = () => {
@@ -27,8 +28,8 @@ export const DatabaseProvider = ({ children }) => {
     return true;
   };
 
-  //
   // DATA FETCH FUNCTIONS
+  //
   //
   // FETCH USER DATA
   const fetchUserData = async () => {
@@ -57,22 +58,22 @@ export const DatabaseProvider = ({ children }) => {
       console.warn('User object or ID is not available.');
       return null;
     }
-  
     console.log('Fetching budgets and expenses for user ID:', user.id);
-  
+
     try {
       setLoadingBudgets(true);
       setLoadingExpenses(true);
-  
+
       // Ensure user.id is a string
       if (typeof user.id !== 'string') {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
-  
+
       // Fetch budgets with aggregated expense data
       const budgetsWithAggregates = await db
         .select({
           ...getTableColumns(budget_data),
+          amount: sql`${budget_data.amount}`.mapWith(Number),
           totalSpend: sql`SUM(${expense_data.amount})`.mapWith(Number),
           totalItems: sql`COUNT(${expense_data.id})`.mapWith(Number),
         })
@@ -103,19 +104,80 @@ export const DatabaseProvider = ({ children }) => {
       setLoadingExpenses(false);
     }
   };
+
+  // FETCH BUDGET BY ID # - USED BY EXPENSES/ID 
+  const getBudgetById = async (budgetId) => {
+    if (!user || !user.id) {
+      console.warn("User object or ID is not available.");
+      return null;
+    }
+    try {
+      const result = await db
+        .select({
+          ...getTableColumns(budget_data),
+          totalSpend: sql`SUM(${expense_data.amount})`.mapWith(Number), // Sum of expense amounts
+          totalItems: sql`COUNT(${expense_data.id})`.mapWith(Number), // Count of expenses
+        })
+        .from(budget_data)
+        .leftJoin(expense_data, eq(budget_data.id, expense_data.budget_id))
+        .where(eq(budget_data.user_id, user.id)) // Ensure the budget belongs to the logged-in user
+        .where(eq(budget_data.id, budgetId)) // Filter by the specific budget ID
+        .groupBy(budget_data.id);
   
+      return result[0]; // Return the first (and only) result
+    } catch (error) {
+      console.error("Error fetching budget by ID:", error);
+      return null;
+    }
+  };
+
   // FETCH INCOMES - Incomes are linked to users via user_id
   const fetchUserIncomes = async () => {
-    console.warn('fetchUserIncomes function is not implemented yet.');
+    if (!user || !user.id) {
+      console.warn('User object or ID is not available.');
+      return null;
+    }
+
+    console.log('Fetching incomes for user ID:', user.id);
+
+    try {
+      setLoadingIncomes(true);
+
+      // Ensure user.id is a string
+      if (typeof user.id !== 'string') {
+        throw new Error(`Invalid user ID: ${user.id}`);
+      }
+
+      // Fetch budgets with aggregated expense data
+      const incomes = await db
+        .select()
+        .from(income_data)
+        .where(eq(income_data.user_id, user.id))
+        .groupBy(income_data.id)
+        .orderBy(desc(income_data.id));
+
+      setexpenseData(incomes); // Update expenses
+
+      console.log('Fetched budgets with aggregates:', budgetsWithAggregates);
+      console.log('Fetched expenses:', expenses);
+
+      return { budgets: budgetsWithAggregates, expenses };
+    } catch (error) {
+      console.error('Error fetching budgets and expenses:', error);
+      return null;
+    } finally {
+      setLoadingBudgets(false);
+      setLoadingExpenses(false);
+    }
   };
 
 
-  //
   // FUNCTIONS FOR ADDING DATA TO DATABASE
+  //
   //
 
   const addBudget = async (budget) => {
-    
+
     if (!isUserAvailable()) return null;
 
     try {
@@ -156,8 +218,8 @@ export const DatabaseProvider = ({ children }) => {
   const deleteIncome = async () => {
     console.warn('deleteIncome function is not implemented yet.');
   };
-  //
   // FUNCTIONS TO UPDATE DATA IN THE DATABASE
+  //
   //
   // UPDATE USER SETTINGS
   const updateUserSettings = async (user_id, settings) => {
@@ -172,8 +234,25 @@ export const DatabaseProvider = ({ children }) => {
       console.error('Error updating user settings:', error);
     }
   };
-  const updateBudget = async () => {
-    console.warn('updateBudget function is not implemented yet.');
+
+  const updateBudget = async (budget_id, updates) => {
+    try {
+      const updatedBudget = await db
+        .update(budget_data)
+        .set({
+          ...updates, // Spread the updates (e.g., icon, name, amount)
+          updated_at: new Date(), // Explicitly set the updated_at timestamp
+        })
+        .where(eq(budget_data.id, budget_id)) // Target the specific budget by ID
+        .returning(); // Return the updated budget
+      console.log('Testing Function');
+      await fetchBudgetExpenseData();
+        console.log("Budget Successfully Updated", updatedBudget)
+    return updatedBudget; // Return the updated budget
+  } catch (error) {
+    console.error('Error updating budget:', error);
+    return null;
+  }
   };
 
   const updateIncome = async () => {
@@ -205,6 +284,9 @@ export const DatabaseProvider = ({ children }) => {
         fetchBudgetExpenseData,
         fetchUserIncomes,
         addBudget,
+        updateUserSettings,
+        updateBudget,
+        getBudgetById,
       }}
     >
       {children}
