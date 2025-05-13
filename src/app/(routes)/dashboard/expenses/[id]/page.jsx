@@ -1,36 +1,75 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-//import AddExpense from "../_components/AddExpense";
 import { useParams } from "next/navigation";
-//import ExpensesTable from "../_components/ExpensesTable";
-import { useDatabase } from '@/context/DatabaseContext';
+import { useDatabase } from "@/context/DatabaseContext";
 import ExpensesByBudgetCard from "../_components/ExpensesByBudgetCard";
+import CreateExpense from "../_components/CreateExpense";
+import ExpensesTable from "../_components/ExpensesTable";
+import Loading from "@/app/_components/Loading";
 
 export default function ExpensesById() {
-  const { user } = useUser();
-  const { id } = useParams();
-  const { getBudgetById, userData } = useDatabase();
+  const { user } = useUser(); // Get the logged-in user
+  const { id } = useParams(); // Get the budget ID from the URL
+  const { fetchBudgetExpenseDataById, fetchUserData, addExpense } = useDatabase(); // Access the fetch function from DatabaseContext
 
-  const [budgetInfo, setBudgetInfo] = useState();
-  const [expensesList, setExpensesList] = useState([]);
+  const [budgetInfo, setBudgetInfo] = useState(null); // State for budget details
+  const [expensesInfo, setExpensesInfo] = useState([]); // State for expenses
+  const [userData, setUserData] = useState();
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
+  // Fetch budget and expenses when the component mounts or when the user changes
   useEffect(() => {
     if (user) {
-      fetchBudgetInfo();
+      fetchAllData(); // Fetch all required data
     }
-  }, [user]); // Script runs only when `user` is available
-
-  const fetchBudgetInfo = async () => {
-    const budget = await getBudgetById(id);
-    setBudgetInfo(budget);
-    fetchExpensesList()
+  }, [user]);
+  
+  const fetchAllData = async () => {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      // Fetch user data
+      const userData = await fetchUserData();
+      console.log("fetched user data", userData)
+      setUserData(userData); // Store user data in state
+  
+      // Fetch budget and expenses
+      const data = await fetchBudgetExpenseDataById(id);
+      if (data) {
+        setBudgetInfo(data.budgets); // Set budget details
+        setExpensesInfo(data.expenses); // Set expenses
+      } else {
+        setError("Failed to fetch budget data.");
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError("An error occurred while fetching data.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const fetchExpensesList = async () => {
-    console.log("Coming soon")
+   // Function to handle adding a new expense
+   const handleAddExpense = async (expense) => {
+    try {
+      const newExpense = await addExpense(expense);
+      if (newExpense) {
+        console.log("Expense added successfully:", newExpense);
+        fetchAllData(); // Refresh data after adding an expense
+      } else {
+        console.error("Failed to add expense.");
+      }
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
-  console.log("Page User Data:", userData)
+    if (loading) {
+      return <Loading />
+    }
+
     return (
     <>
       <div>
@@ -38,22 +77,23 @@ export default function ExpensesById() {
       </div>
       <div className="grid grid-cols-2 p-5 gap-5">
          {budgetInfo ? ( // Render only when budgetInfo is available
-           <ExpensesByBudgetCard budget={budgetInfo} user={userData[0]} />
+           <ExpensesByBudgetCard budget={budgetInfo} user={userData} />
         ) : (
           <div className="p-5">Loading...</div> // Show a loading state
         )}
-         {/* <AddExpense
+         <CreateExpense
+          user={userData}
           budgetId={id}
-          user={user}
-          refreshData={() => getBudgetInfo()}
-        />  */}
+          onExpenseCreated={fetchAllData} // Calls function to add expense to database then refresh function to re-fetch data/
+          />
       </div>
       <div className="p-5">
-         {/* <ExpensesTable
-          expensesList={expensesList}
-          dateFormat={user?.publicMetadata?.selectedDateFormat || "YYYY-MM-DD"} // CONVERT TO DATABASE INTEGRATION
-          getExpensesList={fetchBudgetInfo} // Pass the function to refresh the list
-        />  */}
+          <ExpensesTable
+          budget={budgetInfo}
+          expenses={expensesInfo}
+          user={userData}
+          refreshData={fetchAllData} // Pass the function to refresh the list
+        /> 
       </div>
     </>
   );

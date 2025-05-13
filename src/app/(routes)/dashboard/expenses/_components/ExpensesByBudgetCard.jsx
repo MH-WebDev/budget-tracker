@@ -12,7 +12,6 @@ function ExpensesByBudgetCard({ budget, user }, index) {
              }
          }, [budget.amount, budget.totalSpend]);
 
-    console.log("User Data", user)
     return (
       <div className="">
         <div className="border rounded-md p-5 flex h-[220px] flex-col shadow-sm text-gray-700">
@@ -28,7 +27,7 @@ function ExpensesByBudgetCard({ budget, user }, index) {
             <h3 className="text-md font-semibold text-gray-700">
               Total Amount:{" "}
               <span className="font-normal">
-                {user.preferredCurrency}
+                {user[0].preferred_currency_symbol}
                 {budget.amount}
               </span>
             </h3>
@@ -36,10 +35,10 @@ function ExpensesByBudgetCard({ budget, user }, index) {
           <div className="w-full">
             <div className="flex flex-row justify-between px-1 items-center mb-2">
               <h2 className="text-xs">
-                ${budget.totalSpend ? budget.totalSpend : 0} Spent
+              {user[0].preferred_currency_symbol}{budget.totalSpend ? budget.totalSpend : 0.00} Spent
               </h2>
               <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
-            ${Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
+              {user[0].preferred_currency_symbol}{Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
           </h2>
             </div>
             <div className="w-full bg-slate-300 h-2 rounded-full">

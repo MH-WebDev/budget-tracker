@@ -12,21 +12,22 @@ function DashboardLayout({children}) {
     const { budgets, loadingBudgets, fetchBudgetExpenseData } = useDatabase(); // HOOK TO CHECKIFUSERBUDGETS
 
     // Check if the user has created budgets
-  useEffect(() => {
-    if (user && !loadingBudgets) {
-      checkIfUserBudgets();
-    }
-  }, [user, loadingBudgets, budgets]);
+    // BROKEN - SCRIPT NEEDS TO RUN ONLY AFTER DATA IS RETRIEVED
+  // useEffect(() => {
+  //   if (user && !loadingBudgets) {
+  //     checkIfUserBudgets();
+  //   }
+  // }, [user, loadingBudgets, budgets]);
 
-  const checkIfUserBudgets = () => {
-    const userBudgets = budgets.filter((budget) => budget.user_id === user.id); // Filter budgets by user ID
-    console.log("User budgets:", userBudgets);
+  // const checkIfUserBudgets = () => {
+  //   const userBudgets = budgets.filter((budget) => budget.user_id === user.id); // Filter budgets by user ID
+  //   console.log("User budgets:", userBudgets);
 
-    if (userBudgets.length === 0) {
-      console.log("No budgets, redirecting...");
-      router.replace("/dashboard/budgets");
-    }
-  };
+  //   if (userBudgets.length === 0) {
+  //     console.log("No budgets, redirecting...");
+  //     router.replace("/dashboard/budgets");
+  //   }
+  // };
 
   return (
     <div className="flex flex-row"> 

@@ -55,10 +55,11 @@ export const DatabaseProvider = ({ children }) => {
   // FETCH BUDGETS & EXPENSES - Budgets & Expenses are linked to users via user_id.
   const fetchBudgetExpenseData = async () => {
     if (!user || !user.id) {
-      console.warn('User object or ID is not available.');
+      console.warn("User object or ID is not available.");
+      setLoadingBudgets(false);
+      setLoadingExpenses(false);
       return null;
     }
-    console.log('Fetching budgets and expenses for user ID:', user.id);
 
     try {
       setLoadingBudgets(true);
@@ -91,10 +92,7 @@ export const DatabaseProvider = ({ children }) => {
   
       setbudgetData(budgetsWithAggregates); // Update budgets with aggregated data
       setexpenseData(expenses); // Update expenses
-  
-      console.log('Fetched budgets with aggregates:', budgetsWithAggregates);
-      console.log('Fetched expenses:', expenses);
-  
+    
       return { budgets: budgetsWithAggregates, expenses };
     } catch (error) {
       console.error('Error fetching budgets and expenses:', error);
@@ -105,30 +103,51 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  // FETCH BUDGET BY ID # - USED BY EXPENSES/ID 
-  const getBudgetById = async (budgetId) => {
+  // FETCH BUDGET BY ID # - USED BY EXPENSES/ID
+  const fetchBudgetExpenseDataById = async (budgetId) => {
     if (!user || !user.id) {
       console.warn("User object or ID is not available.");
+      setLoadingBudgets(false);
+      setLoadingExpenses(false);
       return null;
     }
     try {
-      const result = await db
-        .select({
-          ...getTableColumns(budget_data),
-          totalSpend: sql`SUM(${expense_data.amount})`.mapWith(Number), // Sum of expense amounts
-          totalItems: sql`COUNT(${expense_data.id})`.mapWith(Number), // Count of expenses
-        })
-        .from(budget_data)
-        .leftJoin(expense_data, eq(budget_data.id, expense_data.budget_id))
-        .where(eq(budget_data.user_id, user.id)) // Ensure the budget belongs to the logged-in user
-        .where(eq(budget_data.id, budgetId)) // Filter by the specific budget ID
-        .groupBy(budget_data.id);
-  
-      return result[0]; // Return the first (and only) result
-    } catch (error) {
-      console.error("Error fetching budget by ID:", error);
-      return null;
-    }
+      setLoadingBudgets(true);
+      setLoadingExpenses(true);
+
+      if (typeof user.id !== 'string') {
+        throw new Error(`Invalid user ID: ${user.id}`);
+      }
+      const expensesByBudgetId = await db
+      .select({
+        ...getTableColumns(budget_data),
+        amount: sql`${budget_data.amount}`.mapWith(Number),
+        totalSpend: sql`SUM(${expense_data.amount})`.mapWith(Number),
+        totalItems: sql`COUNT(${expense_data.id})`.mapWith(Number),
+      })
+      .from(budget_data)
+      .leftJoin(expense_data, eq(budget_data.id, expense_data.budget_id))
+      .where(eq(budget_data.user_id, user.id)) // Ensure the budget belongs to the logged-in user
+      .where(eq(budget_data.id, budgetId)) // Filter by the specific budget ID of current page via params
+      .groupBy(budget_data.id);
+
+    // Fetch raw expenses
+    const expenses = await db
+      .select()
+      .from(expense_data)
+      .where(eq(expense_data.budget_id, budgetId));
+
+    setbudgetData(expensesByBudgetId[0]); // Update budgets with aggregated data
+    setexpenseData(expenses); // Update expenses
+
+    return { budgets: expensesByBudgetId[0], expenses };
+  } catch (error) {
+    console.error('Error fetching budget and expenses:', error);
+    throw new Error('Failed to fetch budget and expenses.');
+  } finally {
+    setLoadingBudgets(false);
+    setLoadingExpenses(false);
+  }
   };
 
   // FETCH INCOMES - Incomes are linked to users via user_id
@@ -171,7 +190,6 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-
   // FUNCTIONS FOR ADDING DATA TO DATABASE
   //
   //
@@ -199,8 +217,28 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const addExpense = async (expenses) => {
-    console.warn('addExpense function is not implemented yet.');
+  const addExpense = async (expense) => {
+
+    if (!isUserAvailable()) return null;
+
+    try {
+      const { amount, budget_id, category, icon, description } = expense;
+      const newExpense = await db
+      .insert(expense_data)
+      .values({
+        user_id: user.id,
+        amount: parseFloat(expense.amount),
+        budget_id,
+        category,
+        icon,
+        description,
+      })
+      .returning()
+      return newExpense;
+    } catch (error) {
+      console.error('Error adding expense:', error);
+      return null;
+    }
   };
 
   const addIncome = async (incomes) => {
@@ -245,7 +283,6 @@ export const DatabaseProvider = ({ children }) => {
         })
         .where(eq(budget_data.id, budget_id)) // Target the specific budget by ID
         .returning(); // Return the updated budget
-      console.log('Testing Function');
       await fetchBudgetExpenseData();
         console.log("Budget Successfully Updated", updatedBudget)
     return updatedBudget; // Return the updated budget
@@ -282,11 +319,12 @@ export const DatabaseProvider = ({ children }) => {
         //loadingIncomes,
         fetchUserData,
         fetchBudgetExpenseData,
+        fetchBudgetExpenseDataById,
         fetchUserIncomes,
         addBudget,
+        addExpense,
         updateUserSettings,
         updateBudget,
-        getBudgetById,
       }}
     >
       {children}
