@@ -30,11 +30,7 @@ export default function ExpensesById() {
     setLoading(true);
     setError(null);
   
-    try {
-      // // Fetch user data
-      // const userData = await fetchUserData();
-      // setUserData(userData); // Store user data in state
-  
+    try {  
       // Fetch budget and expenses
       const data = await fetchBudgetExpenseDataById(
         id,
