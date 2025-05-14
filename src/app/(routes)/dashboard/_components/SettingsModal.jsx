@@ -63,7 +63,7 @@ function SettingsModal({isNavbarExpanded}) {
     <div className={`pt-1`}>
       <Dialog>
         <DialogTrigger asChild>
-          <p className={`flex ${isNavbarExpanded ? "justify-center" : ""} gap-5 cursor-pointer hover:text-purple-500`}>
+          <p className={`flex ${isNavbarExpanded ? "justify-center md:justify-start" : ""} gap-5 cursor-pointer hover:text-purple-500`}>
             <Settings /> <span className={`${isNavbarExpanded ? "hidden" : ""} md:inline`}>Settings</span>
           </p>
         </DialogTrigger>

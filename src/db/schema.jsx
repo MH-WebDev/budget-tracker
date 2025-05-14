@@ -19,7 +19,7 @@ export const user_data = pgTable('user_data', {
   account_created_timestamp: timestamp('account_created_timestamp').defaultNow().notNull(),
   preferred_currency: varchar('preferred_currency').default('USD').notNull(),
   preferred_currency_symbol: varchar('preferred_currency_symbol').default('$').notNull(),
-  selected_date_format: varchar('selected_date_format').default('MM/DD/YYYY').notNull(),
+  selected_date_format: varchar('selected_date_format').default('MM/dd/yyyy').notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull()
 }, (columns) => ({
   userIdIndex: index('user_id_idx').on(columns.user_id), // Use columns parameter

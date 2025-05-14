@@ -33,11 +33,12 @@ export default function ExpensesById() {
     try {
       // Fetch user data
       const userData = await fetchUserData();
-      console.log("fetched user data", userData)
       setUserData(userData); // Store user data in state
   
       // Fetch budget and expenses
-      const data = await fetchBudgetExpenseDataById(id);
+      const data = await fetchBudgetExpenseDataById(
+        id,
+        userData[0]?.selected_date_format || "MM/dd/yyyy");
       if (data) {
         setBudgetInfo(data.budgets); // Set budget details
         setExpensesInfo(data.expenses); // Set expenses

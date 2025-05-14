@@ -74,7 +74,7 @@ function SideNav() {
             <div className="pt-10 flex flex-col gap-1">
                 {menuLinks.map((menu, index)=>(
                     <Link key={index} href={menu.path} className="">
-                        <h2 className={`flex flex-row ${isNavbarExpanded ? "justify-center" : ""} gap-5
+                        <h2 className={`flex flex-row ${isNavbarExpanded ? "justify-center md:justify-start" : ""}  gap-5
                             items-center py-2 cursor-pointer hover:text-purple-500
                             ${currentLinkHighlight === menu.path && "text-purple-700"}
                             `}>
@@ -85,7 +85,7 @@ function SideNav() {
                 ))}
                 <SettingsModal isNavbarExpanded={isNavbarExpanded}/>
             </div>
-            <div className={`fixed bottom-0 flex flex-row ${isNavbarExpanded ? "justify-center" : ""} gap-5 items-center py-5 cursor-pointer hover:text-purple-500`}>
+            <div className={`fixed bottom-0 flex flex-row ${isNavbarExpanded ? "justify-center md:justify-start" : ""} gap-5 items-center py-5 cursor-pointer hover:text-purple-500`}>
                 <UserButton /><span className="hidden md:inline">Profile</span>
             </div>
         </div>

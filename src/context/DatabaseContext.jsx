@@ -5,6 +5,7 @@ import { user_data, budget_data, expense_data, income_data } from '@/db/schema';
 import { useUser } from '@clerk/nextjs';
 import { desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { format } from 'date-fns';
 
 const DatabaseContext = createContext();
 
@@ -104,7 +105,7 @@ export const DatabaseProvider = ({ children }) => {
   };
 
   // FETCH BUDGET BY ID # - USED BY EXPENSES/ID
-  const fetchBudgetExpenseDataById = async (budgetId) => {
+  const fetchBudgetExpenseDataById = async (budgetId, userDateFormat) => {
     if (!user || !user.id) {
       console.warn("User object or ID is not available.");
       setLoadingBudgets(false);
@@ -118,6 +119,8 @@ export const DatabaseProvider = ({ children }) => {
       if (typeof user.id !== 'string') {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
+
+
       const expensesByBudgetId = await db
       .select({
         ...getTableColumns(budget_data),
@@ -137,10 +140,19 @@ export const DatabaseProvider = ({ children }) => {
       .from(expense_data)
       .where(eq(expense_data.budget_id, budgetId));
 
-    setbudgetData(expensesByBudgetId[0]); // Update budgets with aggregated data
-    setexpenseData(expenses); // Update expenses
+      // Formatting of expenses date for display
+    const formattedExpenses = expenses.map((expense) => ({
+      ...expense,
+      expense_created_timestamp: format(
+        new Date(expense.expense_created_timestamp),
+        userDateFormat || "MM/dd/yyyy" // Defaults to this format if userDateFormat is not provided
+      )
+    }))
 
-    return { budgets: expensesByBudgetId[0], expenses };
+    setbudgetData(expensesByBudgetId[0]); // Update budgets with aggregated data
+    setexpenseData(formattedExpenses); // Update expenses
+
+    return { budgets: expensesByBudgetId[0], expenses: formattedExpenses };
   } catch (error) {
     console.error('Error fetching budget and expenses:', error);
     throw new Error('Failed to fetch budget and expenses.');

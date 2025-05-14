@@ -6,10 +6,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { sum } from "drizzle-orm";
 import EditBudget from "./EditBudget";
 //import EditBudget from "./EditBudget";
 

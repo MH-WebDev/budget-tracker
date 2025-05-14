@@ -12,7 +12,6 @@ function ExpensesTable({ budget, expenses, user, refreshData }) {
   };
   console.log(user[0].selected_date_format)
   const formatDate = (date) => {
-    console.log("Date input", date)
     try {
       return format(new Date(date), dateFormat); // Format the date using the preferred format
     } catch {
@@ -22,11 +21,11 @@ function ExpensesTable({ budget, expenses, user, refreshData }) {
 
   return (
     <div>
-      <div className="grid grid-cols-10 text-center bg-gray-100 rounded-t-md font-semibold py-1 border-t border-x border-gray-300">
-        <p className="col-span-2">Category</p>
-        <p className="col-span-2">Amount</p>
-        <p className="col-span-3">Description</p>
-        <p className="col-span-2">Date</p>
+      <div className="grid grid-cols-9 text-center bg-gray-100 rounded-t-md font-semibold py-1 border-t border-x border-gray-300">
+        <p className="col-span-1">Category</p>
+        <p className="col-span-1">Amount</p>
+        <p className="col-span-5">Description</p>
+        <p className="col-span-1">Date</p>
         <p className="col-span-1">Delete</p>
       </div>
       <div>
@@ -34,22 +33,22 @@ function ExpensesTable({ budget, expenses, user, refreshData }) {
           <React.Fragment key={index}>
             {/* Main Row */}
             <div
-              className="grid grid-cols-10 text-center bg-gray-50 even:bg-gray-100"
+              className="grid grid-cols-9 text-center bg-gray-50 even:bg-gray-100"
             >
-              <p className="border-x border-b border-gray-300 py-1 col-span-2">
+              <p className="border-x border-b border-gray-300 py-1 col-span-1">
                 {expense.category}
               </p>
-              <p className="border-x border-b border-gray-300 py-1 col-span-2">
-                {expense.amount}
+              <p className="border-x border-b border-gray-300 py-1 col-span-1">
+              {user?.[0]?.preferred_currency_symbol || "$"}{expense.amount}
               </p>
               <p
-                className="border-x border-b border-gray-300 py-1 col-span-3 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+                className="border-x border-b border-gray-300 py-1 px-2 col-span-5 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
                 onClick={() => toggleRow(index)} // Toggle the expanded row on click
                 title="Click to expand"
               >
                 {expense.description}
               </p>
-              <p className="border-x border-b border-gray-300 py-1 col-span-2">
+              <p className="border-x border-b border-gray-300 py-1 col-span-1">
                 {formatDate(expense.expense_created_timestamp)}
               </p>
               <p className="border-x border-b border-gray-300 py-1 col-span-1 text-red-500">
