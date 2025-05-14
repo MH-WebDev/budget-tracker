@@ -11,11 +11,11 @@ import Loading from "@/app/_components/Loading";
 export default function ExpensesById() {
   const { user } = useUser(); // Get the logged-in user
   const { id } = useParams(); // Get the budget ID from the URL
-  const { fetchBudgetExpenseDataById, fetchUserData, addExpense } = useDatabase(); // Access the fetch function from DatabaseContext
+  const { fetchBudgetExpenseDataById, userData, addExpense } = useDatabase(); // Access the fetch function from DatabaseContext
 
   const [budgetInfo, setBudgetInfo] = useState(null); // State for budget details
   const [expensesInfo, setExpensesInfo] = useState([]); // State for expenses
-  const [userData, setUserData] = useState();
+  //const [userData, setUserData] = useState();
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
@@ -24,16 +24,16 @@ export default function ExpensesById() {
     if (user) {
       fetchAllData(); // Fetch all required data
     }
-  }, [user]);
+  }, [userData, user]);
   
   const fetchAllData = async () => {
     setLoading(true);
     setError(null);
   
     try {
-      // Fetch user data
-      const userData = await fetchUserData();
-      setUserData(userData); // Store user data in state
+      // // Fetch user data
+      // const userData = await fetchUserData();
+      // setUserData(userData); // Store user data in state
   
       // Fetch budget and expenses
       const data = await fetchBudgetExpenseDataById(

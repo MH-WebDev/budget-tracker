@@ -20,8 +20,6 @@ function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateB
              setPercentage(Math.min(calculatedPercentage, 100));
          }
      }, [budget.amount, budget.totalSpend]);
-     
-  
 
   const preferredCurrencySymbol = user?.preferred_currency_symbol || " ";
 
@@ -49,10 +47,10 @@ function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateB
       <div className="w-full">
         <div className="flex flex-row justify-between px-1 items-center mb-2">
           <h2 className="text-xs">
-            ${budget.totalSpend ? budget.totalSpend : 0} Spent
+            {preferredCurrencySymbol}{budget.totalSpend ? budget.totalSpend : 0} Spent
           </h2>
           <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
-            ${Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
+            {preferredCurrencySymbol}{Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
           </h2>
         </div>
         <div className="w-full bg-slate-300 h-2 rounded-full">
@@ -70,7 +68,7 @@ function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateB
         <span className="text-2xl flex justify-center items-center border border-gray-300 rounded-md w-12 h-12">
           {budget.icon}
         </span>
-        <span className="text-left">{budget.budgetName}</span>
+        <span className="text-left">{budget.budget_name}</span>
       </DialogTitle>
       <div className="flex gap-10 justify-between py-5">
         <div>
@@ -98,10 +96,10 @@ function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateB
       <div className="w-full">
         <div className="flex flex-row justify-between px-1 items-center mb-2">
           <h2 className="text-xs">
-            ${budget.totalSpend} Spent
+            {preferredCurrencySymbol}{budget.totalSpend} Spent
           </h2>
           <h2 className={`text-xs ${(budget.amount - budget.totalSpend) <= 0 ? "text-red-500 font-bold" : ""}`}>
-            ${Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
+            {preferredCurrencySymbol}{Math.abs(budget.amount - budget.totalSpend).toFixed(2)} {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
           </h2>
         </div>
         <div className="w-full bg-slate-300 h-2 rounded-full">

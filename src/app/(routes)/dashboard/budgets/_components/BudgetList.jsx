@@ -18,7 +18,7 @@ function BudgetList() {
   // Fetch data when the component mounts
   useEffect(() => {
     refreshBudgetsAndExpenses();
-  }, []);
+  }, [userData]);
   
   // if (loading) {
   //   return <Loading />

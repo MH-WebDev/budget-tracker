@@ -40,7 +40,9 @@ export default function CreateExpense( { onExpenseCreated, user, budgetId }) {
           toast("An error occurred, please try again later or contact support if the problem persists");
         }
       };
-      console.log("imported user data", user)
+      
+  const preferredCurrencySymbol = user[0]?.preferred_currency_symbol || " "; //TODO Implement this for conformity with other pages.
+
   return (
     <>
       <Dialog className="p-5">
