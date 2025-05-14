@@ -4,8 +4,8 @@ import { db } from '@/utils/dbConfig';
 import { user_data, budget_data, expense_data, income_data } from '@/db/schema';
 import { useUser } from '@clerk/nextjs';
 import { desc, eq, getTableColumns, sql } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/node-postgres';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 const DatabaseContext = createContext();
 
@@ -169,8 +169,6 @@ export const DatabaseProvider = ({ children }) => {
       return null;
     }
 
-    console.log('Fetching incomes for user ID:', user.id);
-
     try {
       setLoadingIncomes(true);
 
@@ -189,16 +187,12 @@ export const DatabaseProvider = ({ children }) => {
 
       setexpenseData(incomes); // Update expenses
 
-      console.log('Fetched budgets with aggregates:', budgetsWithAggregates);
-      console.log('Fetched expenses:', expenses);
-
-      return { budgets: budgetsWithAggregates, expenses };
+      return { incomes };
     } catch (error) {
-      console.error('Error fetching budgets and expenses:', error);
+      console.error('Error fetching incomes:', error);
       return null;
     } finally {
-      setLoadingBudgets(false);
-      setLoadingExpenses(false);
+      setLoadingIncomes(false);
     }
   };
 
@@ -257,12 +251,40 @@ export const DatabaseProvider = ({ children }) => {
     console.warn('addIncome function is not implemented yet.');
   };
 
-  const deleteBudget = async () => {
-    console.warn('deleteBudget function is not implemented yet.');
+  const deleteBudget = async (butgetId) => {
+    try {
+      const result = await db
+      .delete(budget_data)
+      .where(eq(budget_data.id, butgetId))
+      .returning();
+
+      if(result) {
+        toast("Budget successfully deleted");
+        return true;
+      } 
+    } catch (error) {
+      console.error("Error deleting budget:", error);
+      toast("An error occured");
+      return false;
+    }
   };
 
-  const deleteExpense = async () => {
-    console.warn('deleteExpense function is not implemented yet.');
+  const deleteExpense = async (expenseId) => {
+    try {
+      const result = await db
+      .delete(expense_data)
+      .where(eq(expense_data.id, expenseId))
+      .returning();
+
+      if(result) {
+        toast("Expense successfully deleted");
+        return true;
+      } 
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+      toast("An error occured");
+      return false;
+    }
   };
 
   const deleteIncome = async () => {
@@ -278,7 +300,6 @@ export const DatabaseProvider = ({ children }) => {
         .update(user_data)
         .set(settings)
         .where(eq(user_data.user_id, user.id)); // Update the user's settings in the database
-      //console.log('User settings updated successfully.');
       await fetchUserData(); // Refresh the user data after the update
     } catch (error) {
       console.error('Error updating user settings:', error);
@@ -296,7 +317,6 @@ export const DatabaseProvider = ({ children }) => {
         .where(eq(budget_data.id, budget_id)) // Target the specific budget by ID
         .returning(); // Return the updated budget
       await fetchBudgetExpenseData();
-        console.log("Budget Successfully Updated", updatedBudget)
     return updatedBudget; // Return the updated budget
   } catch (error) {
     console.error('Error updating budget:', error);
@@ -337,6 +357,8 @@ export const DatabaseProvider = ({ children }) => {
         addExpense,
         updateUserSettings,
         updateBudget,
+        deleteBudget,
+        deleteExpense,
       }}
     >
       {children}

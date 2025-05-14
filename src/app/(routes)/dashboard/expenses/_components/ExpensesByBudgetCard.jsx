@@ -20,7 +20,7 @@ function ExpensesByBudgetCard({ budget, user }, index) {
               <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
                 {budget?.icon}
               </p>
-              <h2 className="text-lg font-semibold">{budget.budgetName}</h2>
+              <h2 className="text-lg font-semibold">{budget.budget_name}</h2>
             </div>
           </div>
           <div className="py-5">

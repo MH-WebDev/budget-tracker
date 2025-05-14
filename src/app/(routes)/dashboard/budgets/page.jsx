@@ -7,7 +7,7 @@ import { useUser } from '@clerk/nextjs';
 
 function page() {
     const { user } = useUser();
-    const { budgets, expenses, userData, fetchBudgetExpenseData, updateBudget } = useDatabase(); // Access data and fetch function from DatabaseProvider
+    const { budgets, expenses, userData, fetchBudgetExpenseData, updateBudget, deleteBudget } = useDatabase(); // Access data and fetch function from DatabaseProvider
     const [loading, setLoading] = useState(true); // Loading state
 
 // Refresh budgets and expenses
@@ -38,7 +38,8 @@ function page() {
           budgets={budgets} // Pass the current budget
           expenses={expenses} // Filter expenses by budget ID
           refreshData={refreshBudgetsAndExpenses}
-          updateBudget={updateBudget}/>
+          updateBudget={updateBudget}
+          deleteBudget={deleteBudget}/>
     </div>
   )
 }

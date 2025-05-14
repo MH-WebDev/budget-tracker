@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
 import EmojiPicker from 'emoji-picker-react';
 
-function EditBudget({ budget, refreshData, updateBudget }) {
+function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
   const [name, setName] = useState(budget.budget_name);
   const [amount, setAmount] = useState(budget.amount);
   const [emojiIcon,setEmojiIcon] = useState('🏡');
@@ -38,20 +38,12 @@ function EditBudget({ budget, refreshData, updateBudget }) {
     }
   };
 
-//
-// updateBudget is not a function
-// refreshData is not a function
-// Confirmed that updateBudget is passed properly from DatabaseContext, and that the function within DatabaseContext works as expected.
-// The function is working despite stating that it is not.
-//
-//ReferenceError: updatedBudget is not defined
-// at updateBudget (https://equal-hedgehog-broadly.ngrok-free.app/_next/static/chunks/src_0beab9e2._.js:373:13)
-//  at async onSaveChanges (https://equal-hedgehog-broadly.ngrok-free.app/_next/static/chunks/src_fbb7cd58._.js?id=%255Bproject%255D%252Fsrc%252Fapp%252F%2528routes%2529%252Fdashboard%252Fbudgets%252F_components%252FEditBudget.jsx+%255Bapp-client%255D+%2528ecmascript%2529:38:13)
-//
-//
-//
   // DELETE BUDGET AND RELATED EXPENSES
-  const onDeleteBudget = async () => {
+  const handleDelete = async (budgetId) => {
+    const success = await deleteBudget(budgetId);
+    if (success) {
+      refreshData();
+    }
   };
   
   return (
@@ -97,7 +89,7 @@ function EditBudget({ budget, refreshData, updateBudget }) {
         <Alert
             title="Are you absolutely sure?"
             description="Deleting a budget will remove all associated expenses and CANNOT be undone."
-            onConfirm={() => onDeleteBudget}
+            onConfirm={() => handleDelete(budget.id)}
             onCancel={() => toast("Delete action canceled.")} // Optional cancel action
             triggerText={
                 "Delete Budget"

@@ -9,9 +9,8 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import EditBudget from "./EditBudget";
-//import EditBudget from "./EditBudget";
 
-function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateBudget, refreshData }) {
+function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateBudget, deleteBudget, refreshData }) {
     const [ percentage, setPercentage ] = useState(0);
 
      useEffect(() => {
@@ -118,7 +117,8 @@ function BudgetCard({ budget, user, expenses, refreshBudgetsAndExpenses, updateB
         <EditBudget 
           budget={budget}
           updateBudget={updateBudget}
-          refreshData={refreshData} />
+          refreshData={refreshData}
+          deleteBudget={deleteBudget} />
       </div>
     </DialogHeader>
   </DialogContent>
