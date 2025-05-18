@@ -63,7 +63,7 @@ export const expense_data = pgTable('expense_data', {
 export const income_data = pgTable('income_data', {
   id: serial().primaryKey(),
   user_id: varchar('user_id', { length: 255 }).references(() => user_data.user_id, { onDelete: 'cascade' }).notNull(),
-  income_name: varchar('income_name', { length: 30 }).notNull(),
+  category: varchar('category').notNull(),
   amount: numeric('amount').notNull(),
   icon: varchar().default('💸'),
   comment: varchar(),

@@ -25,21 +25,22 @@ export default function ExpensesById() {
       fetchAllData(); // Fetch all required data
     }
   }, [userData, user]);
-  
+
   const fetchAllData = async () => {
     setLoading(true);
     setError(null);
-  
-    try {  
+
+    try {
       // Fetch budget and expenses
       const data = await fetchBudgetExpenseDataById(
         id,
-        userData[0]?.selected_date_format || "MM/dd/yyyy");
+        userData[0]?.selected_date_format || "MM/dd/yyyy"
+      );
       if (data) {
         setBudgetInfo(data.budgets); // Set budget details
         setExpensesInfo(data.expenses); // Set expenses
       } else {
-        setError("Failed to fetch budget data.");
+        setError("Failed to fetch data.");
       }
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -49,8 +50,8 @@ export default function ExpensesById() {
     }
   };
 
-   // Function to handle adding a new expense
-   const handleAddExpense = async (expense) => {
+  // Function to handle adding a new expense
+  const handleAddExpense = async (expense) => {
     try {
       const newExpense = await addExpense(expense);
       if (newExpense) {
@@ -63,36 +64,31 @@ export default function ExpensesById() {
       console.error("Error adding expense:", error);
     }
   };
-    if (loading) {
-      return <Loading />
-    }
+  if (loading) {
+    return <Loading />;
+  }
 
-    return (
+  return (
     <>
       <div>
         <h2 className="text-xl p-5 font-semibold">Expenses Sheet</h2>
       </div>
       <div className="grid grid-cols-2 p-5 gap-5">
-         {budgetInfo ? ( // Render only when budgetInfo is available
-           <ExpensesByBudgetCard budget={budgetInfo} user={userData} />
-        ) : (
-          <div className="p-5">Loading...</div> // Show a loading state
-        )}
-         <CreateExpense
+        <ExpensesByBudgetCard budget={budgetInfo} user={userData} />
+        <CreateExpense
           user={userData}
           budgetId={id}
           onExpenseCreated={fetchAllData} // Calls function to add expense to database then refresh function to re-fetch data/
-          />
+        />
       </div>
       <div className="p-5">
-          <ExpensesTable
+        <ExpensesTable
           budget={budgetInfo}
           expenses={expensesInfo}
           user={userData}
           refreshData={fetchAllData} // Pass the function to refresh the list
-        /> 
+        />
       </div>
     </>
   );
 }
-
