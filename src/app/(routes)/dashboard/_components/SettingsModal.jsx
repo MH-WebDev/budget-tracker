@@ -1,13 +1,20 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogFooter } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { useDatabase } from '@/context/DatabaseContext';
-import { toast } from 'sonner'
-import { Settings } from 'lucide-react'
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useDatabase } from "@/context/DatabaseContext";
+import { toast } from "sonner";
+import { Settings } from "lucide-react";
 
-
-function SettingsModal({isNavbarExpanded}) {
+function SettingsModal({ isNavbarExpanded }) {
   const currencies = [
     { id: "1", currencyName: "United States Dollar", currencySymbol: "$" },
     { id: "2", currencyName: "Euro", currencySymbol: "€" },
@@ -22,9 +29,9 @@ function SettingsModal({isNavbarExpanded}) {
   ];
 
   const { userData, updateUserSettings } = useDatabase(); // Access user data and update function from DatabaseProvider
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
-  const [selectedDateFormat, setSelectedDateFormat] = useState('MM/DD/YYYY');
-  const [selectedSymbol, setSelectedSymbol] = useState('$');
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [selectedDateFormat, setSelectedDateFormat] = useState("MM/DD/YYYY");
+  const [selectedSymbol, setSelectedSymbol] = useState("$");
 
   const getCurrencySymbol = (currencyName) => {
     const currency = currencies.find((c) => c.currencyName === currencyName);
@@ -33,16 +40,16 @@ function SettingsModal({isNavbarExpanded}) {
 
   useEffect(() => {
     if (userData && userData.length > 0) {
-    const userSettings = userData[0];
-    setSelectedCurrency(userSettings.preferred_currency || 'USD');
-    setSelectedDateFormat(userSettings.selected_date_format || 'MM/DD/YYYY');
-    setSelectedSymbol(userSettings.preferred_currency_symbol || '$');
+      const userSettings = userData[0];
+      setSelectedCurrency(userSettings.preferred_currency || "USD");
+      setSelectedDateFormat(userSettings.selected_date_format || "MM/DD/YYYY");
+      setSelectedSymbol(userSettings.preferred_currency_symbol || "$");
     }
   }, [userData]);
 
   const updateSettings = async () => {
     if (!selectedCurrency) {
-      alert('Please select a currency.');
+      alert("Please select a currency.");
       return;
     }
 
@@ -52,10 +59,10 @@ function SettingsModal({isNavbarExpanded}) {
         preferred_currency_symbol: selectedSymbol,
         selected_date_format: selectedDateFormat,
       });
-      toast('Settings updated successfully!');
+      toast("Settings updated successfully!");
     } catch (error) {
-        //console.error('Error updating settings:', error);
-      alert('An error occurred while updating settings. Please try again.');
+      //console.error('Error updating settings:', error);
+      alert("An error occurred while updating settings. Please try again.");
     }
   };
 
@@ -63,8 +70,15 @@ function SettingsModal({isNavbarExpanded}) {
     <div className={`pt-1`}>
       <Dialog>
         <DialogTrigger asChild>
-          <p className={`flex ${isNavbarExpanded ? "justify-center md:justify-start" : ""} gap-5 cursor-pointer hover:text-purple-500`}>
-            <Settings /> <span className={`${isNavbarExpanded ? "hidden" : ""} md:inline`}>Settings</span>
+          <p
+            className={`flex ${
+              isNavbarExpanded ? "justify-center md:justify-start" : ""
+            } gap-5 cursor-pointer hover:text-purple-500`}
+          >
+            <Settings />{" "}
+            <span className={`${isNavbarExpanded ? "hidden" : ""} md:inline`}>
+              Settings
+            </span>
           </p>
         </DialogTrigger>
         <DialogContent className="h-64">
@@ -73,16 +87,18 @@ function SettingsModal({isNavbarExpanded}) {
             <div className="py-6">
               <div className="flex flex-col gap-5">
                 <div className="grid grid-cols-6 gap-8 items-center">
-                  <label htmlFor="currency" className="col-span-2">Currency:</label>
+                  <label htmlFor="currency" className="col-span-2">
+                    Currency:
+                  </label>
                   <select
                     className="col-span-4 border border-gray-300 rounded-md px-4 py-1"
                     id="currency"
                     value={selectedCurrency}
                     onChange={(e) => {
-                        const newCurrency = e.target.value;
-                        setSelectedCurrency(newCurrency); // Update selectedCurrency
-                        setSelectedSymbol(getCurrencySymbol(newCurrency)); // Update selectedSymbol based on the new currency
-                      }}
+                      const newCurrency = e.target.value;
+                      setSelectedCurrency(newCurrency); // Update selectedCurrency
+                      setSelectedSymbol(getCurrencySymbol(newCurrency)); // Update selectedSymbol based on the new currency
+                    }}
                   >
                     {currencies.map(({ id, currencyName, currencySymbol }) => (
                       <option key={id} value={currencyName} id={currencyName}>
@@ -92,7 +108,9 @@ function SettingsModal({isNavbarExpanded}) {
                   </select>
                 </div>
                 <div className="grid grid-cols-6 gap-8 items-center">
-                  <label htmlFor="date-format" className="col-span-2">Date Format:</label>
+                  <label htmlFor="date-format" className="col-span-2">
+                    Date Format:
+                  </label>
                   <select
                     className="col-span-4 border border-gray-300 rounded-md px-4 py-1"
                     id="date-format"

@@ -34,7 +34,7 @@ function CreateBudget({ onBudgetCreated }) {
       }
     } catch (error) {
       console.error("Error creating budget:", error);
-      toast("An error occurred, please try again later or contact support");
+      toast("An error occurred, please try again later or contact support if the problem persists");
     }
   };
 
@@ -43,7 +43,7 @@ function CreateBudget({ onBudgetCreated }) {
       {" "}
       {/* POPUP DIALOG FOR CREATING BUDGETS */}
       <DialogTrigger asChild>
-        <div className="border rounded-md text-center p-5 flex flex-col justify-center items-center h-[200px] shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
+        <div className="order-first md:order-last border rounded-md text-center p-5 flex flex-col justify-center items-center h-[200px] shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
           <h2 className="text-2xl font-bold">+</h2>
           <h2 className="text-md">Create New Budget</h2>
         </div>
@@ -52,34 +52,34 @@ function CreateBudget({ onBudgetCreated }) {
         <DialogHeader>
           <DialogTitle>New Budget</DialogTitle>
         </DialogHeader>
-        <div className="pb-6">
-          <Button
-            variant="outline"
-            size="lg"
-            className="text-lg"
-            onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
-          >
-            {emojiIcon}
-          </Button>
-          <div className="absolute z-50">
-            <EmojiPicker
-              open={openEmojiPicker}
-              onEmojiClick={(e) => {
-                setEmojiIcon(e.emoji);
-                setOpenEmojiPicker(false);
-              }}
-            />
-          </div>
-
-          <div className="grid grid-cols-6 gap-5 items-center py-2">
+        <div className="py-5">
+          <div className="grid grid-cols-6 gap-5 items-center py-5">
+            <h2 className="col-span-2 text-right">Select an Icon:</h2>
+            <div className="col-span-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-lg"
+                onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
+              >
+                {emojiIcon}
+              </Button>
+               <div className="absolute z-50"> {/*Emoji picker container */}
+                <EmojiPicker
+                  open={openEmojiPicker}
+                  onEmojiClick={(e) => {
+                    setEmojiIcon(e.emoji);
+                    setOpenEmojiPicker(false);
+                  }}
+                />
+              </div>
+            </div>
             <h2 className="col-span-2 text-right">Budget Name:</h2>
             <Input
               placeholder="e.g 'Home Renovations'"
               className="col-span-4"
               onChange={(e) => setName(e.target.value)}
             />
-          </div>
-          <div className="grid grid-cols-6 gap-5 items-center py-2">
             <h2 className="col-span-2 text-right">Amount:</h2>
             <Input
               placeholder="e.g '1250.00'"

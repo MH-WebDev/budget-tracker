@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import BudgetList from "./_components/BudgetList";
+import BudgetCard from "./_components/BudgetCard";
 import Loading from "@/app/_components/Loading";
 import { useUser } from "@clerk/nextjs";
+import CreateBudget from "./_components/CreateBudget";
+import BudgetsInfo from "./_components/BudgetsInfo";
 
 function page() {
   const { user } = useUser();
@@ -39,16 +41,23 @@ function page() {
     return <Loading />;
   }
   return (
-    <div>
-      Budgets
-      <BudgetList
-        user={userData[0]} // Pass the first user object
-        budgets={budgets} // Pass the current budget
-        expenses={expenses} // Filter expenses by budget ID
-        refreshData={refreshBudgetsAndExpenses}
-        updateBudget={updateBudget}
-        deleteBudget={deleteBudget}
-      />
+    <div className="p-5">
+      <h2>Budgets:</h2>
+      <div  className="grid grid-cols-1 md:grid-cols-2 py-5 gap-5">
+        <BudgetsInfo budget={budgets} user={userData[0]} className="order-last"/>
+        <CreateBudget  onBudgetCreated={refreshBudgetsAndExpenses}/>
+      </div>
+      <hr className="pb-5"/>
+      <div>
+        <BudgetCard
+          user={userData[0]} // Pass the first user object
+          budget={budgets} // Pass the current budget
+          expenses={expenses} // Filter expenses by budget ID
+          refreshData={refreshBudgetsAndExpenses}
+          updateBudget={updateBudget}
+          deleteBudget={deleteBudget}
+        />
+      </div>
     </div>
   );
 }

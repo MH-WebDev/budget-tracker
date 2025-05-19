@@ -2,7 +2,7 @@ import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
-import { DatabaseProvider, useDatabase } from '@/context/DatabaseContext';
+import { DatabaseProvider, useDatabase } from "@/context/DatabaseContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 const roboto = Roboto({
   variable: "--font-roboto",
-  subsets: ["latin"]
+  subsets: ["latin"],
 });
 
 export const metadata = {
@@ -29,7 +29,9 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <DatabaseProvider>
         <html lang="en">
-          <body className={`${roboto.variable} ${geistMono.variable} antialiased`}>
+          <body
+            className={`${roboto.variable} ${geistMono.variable} antialiased`}
+          >
             <Toaster />
             {children}
           </body>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   AlertDialog,
@@ -13,12 +12,19 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-function Alert({ title, description, onConfirm, onCancel, triggerText, variant }) {
+function Alert({
+  title,
+  description,
+  onConfirm,
+  onCancel,
+  triggerText,
+  variant,
+}) {
   return (
     <AlertDialog>
-        <AlertDialogTrigger asChild>
-            <Button variant={variant}>{triggerText}</Button>
-        </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
+        <Button variant={variant}>{triggerText}</Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

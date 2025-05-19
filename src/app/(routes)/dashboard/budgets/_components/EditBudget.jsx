@@ -13,13 +13,13 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
-import EmojiPicker from 'emoji-picker-react';
+import EmojiPicker from "emoji-picker-react";
 
 function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
   const [name, setName] = useState(budget.budget_name);
   const [amount, setAmount] = useState(budget.amount);
-  const [emojiIcon,setEmojiIcon] = useState('🏡');
-  const [openEmojiPicker, setOpenEmojiPicker] = useState(false)
+  const [emojiIcon, setEmojiIcon] = useState("🏡");
+  const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
   // FUNCTION TO UPDATE BUDGET
   const onSaveChanges = async () => {
@@ -45,7 +45,7 @@ function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
       refreshData();
     }
   };
-  
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -56,14 +56,22 @@ function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
           <DialogTitle>Edit Budget</DialogTitle>
         </DialogHeader>
         <div className="pb-6">
-          <Button variant="outline" size="lg" className="text-lg" onClick={() => setOpenEmojiPicker(!openEmojiPicker)}>
-              {emojiIcon}
+          <Button
+            variant="outline"
+            size="lg"
+            className="text-lg"
+            onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
+          >
+            {emojiIcon}
           </Button>
           <div className="absolute z-50">
-              <EmojiPicker open={openEmojiPicker} onEmojiClick={(e) => {
-                  setEmojiIcon(e.emoji)
-                  setOpenEmojiPicker(false)
-              }}/>
+            <EmojiPicker
+              open={openEmojiPicker}
+              onEmojiClick={(e) => {
+                setEmojiIcon(e.emoji);
+                setOpenEmojiPicker(false);
+              }}
+            />
           </div>
           <div className="grid grid-cols-6 gap-5 items-center py-2">
             <h2 className="col-span-2 text-right">Budget Name:</h2>
@@ -86,18 +94,16 @@ function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
           </div>
         </div>
         <div className="flex justify-between">
-        <Alert
+          <Alert
             title="Are you absolutely sure?"
             description="Deleting a budget will remove all associated expenses and CANNOT be undone."
             onConfirm={() => handleDelete(budget.id)}
             onCancel={() => toast("Delete action canceled.")} // Optional cancel action
-            triggerText={
-                "Delete Budget"
-            }
+            triggerText={"Delete Budget"}
             variant={"destructive"}
           />
           <DialogClose asChild>
-          <Button
+            <Button
               disabled={!(name && amount)}
               className="bg-gray-700"
               onClick={onSaveChanges}

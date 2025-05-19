@@ -311,9 +311,9 @@ export const DatabaseProvider = ({ children }) => {
   const deleteIncome = async (incomeId) => {
     try {
       const result = await db
-      .delete(income_data)
-      .where(eq(income_data.id, incomeId))
-      .returning();
+        .delete(income_data)
+        .where(eq(income_data.id, incomeId))
+        .returning();
 
       if (result) {
         toast("Income successfully deleted");
@@ -321,11 +321,13 @@ export const DatabaseProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error deleting income:", error);
-      toast("An error occured, please try again later or contact support if this problem persists");
+      toast(
+        "An error occured, please try again later or contact support if this problem persists"
+      );
       return false;
     }
   };
-  
+
   // FUNCTIONS TO UPDATE DATA IN THE DATABASE
   //
   //
