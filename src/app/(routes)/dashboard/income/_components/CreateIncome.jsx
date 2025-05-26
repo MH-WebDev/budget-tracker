@@ -98,7 +98,7 @@ export default function CreateIncome({ onIncomeCreated, addIncome }) {
               onChange={(e) => setAmount(e.target.value)}
             />
           </div>
-          <div>
+          <div className="grid grid-cols-6 gap-5 items-center py-2">
             <h2 className="col-span-2 text-right">Comment:</h2>
             <textarea
               onChange={(e) => setComment(e.target.value)}

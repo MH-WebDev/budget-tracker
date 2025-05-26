@@ -32,7 +32,7 @@
 -- Add date created to income card detail view
 -- Add overflow text state to income notes column
 
-
+-- Forwarding after sign up or sign in
 
 ## WISH LIST
 
