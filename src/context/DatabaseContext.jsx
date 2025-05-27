@@ -92,7 +92,10 @@ export const DatabaseProvider = ({ children }) => {
 
       // Fetch raw expenses
       const expenses = await db
-        .select()
+        .select({
+          ...getTableColumns(expense_data),
+          amount: sql`${expense_data.amount}`.mapWith(Number),
+        })
         .from(expense_data)
         .where(eq(expense_data.user_id, user.id));
 
@@ -172,25 +175,23 @@ export const DatabaseProvider = ({ children }) => {
       console.warn("User object or ID is not available.");
       return null;
     }
-
     try {
       setLoadingIncomes(true);
-
       // Ensure user.id is a string
       if (typeof user.id !== "string") {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
-
       // Fetch budgets with aggregated expense data
       const incomes = await db
-        .select()
+        .select({
+          ...getTableColumns(income_data),
+          amount: sql`${income_data.amount}`.mapWith(Number),
+        })
         .from(income_data)
         .where(eq(income_data.user_id, user.id))
         .groupBy(income_data.id)
         .orderBy(desc(income_data.id));
-
       setincomeData(incomes); // Update expenses
-
       return incomes;
     } catch (error) {
       console.error("Error fetching incomes:", error);
