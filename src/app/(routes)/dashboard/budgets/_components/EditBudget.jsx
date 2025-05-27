@@ -23,7 +23,6 @@ function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
 
   // FUNCTION TO UPDATE BUDGET
   const onSaveChanges = async () => {
-    console.log("updateBudget in EditBudget:", updateBudget);
     try {
       await updateBudget(budget.id, {
         icon: emojiIcon,

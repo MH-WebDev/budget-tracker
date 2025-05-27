@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 
 function page() {
   const { user } = useUser();
-  const { fetchBudgetExpenseData, userData, addExpense } = useDatabase();
+  const { fetchBudgetExpenseData, userData, fetchIncomeData } = useDatabase();
   const [budgetInfo, setBudgetInfo] = useState(null);
   const [expenseInfo, setExpenseInfo] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,15 +46,19 @@ function page() {
 
   const totalBudgetAmount = budgetInfo.reduce((acc, budget) => acc + budget.amount, 0);
   const totalExpenseAmount = expenseInfo.reduce((acc, expense) => acc + expense.amount, 0);
-
+  const totalIncomeAmount = 0;
+  const preferredCurrencySymbol = user?.[0]?.preferred_currency_symbol || " ";
+  console.log("Currency", userData[0]?.preferred_currency_symbol);
+  console.log("Date Format", userData[0]?.selected_date_format);
   return (
     <div className="p-5">
       Dashboard
       <div className="flex flex-row gap-5 justify-center items-center py-5">
         <div className="border border-gray-300 rounded-md h-52 w-full">
           <h2>Totals</h2>
-          <h3>Total budget amount: {totalBudgetAmount}</h3>
-          <h3>Total Expenses: {totalExpenseAmount}</h3>
+          <h3>Total budget amount: {preferredCurrencySymbol}{totalBudgetAmount}</h3>
+          <h3>Total Expenses: {preferredCurrencySymbol}{totalExpenseAmount}</h3>
+          <h3>Total Income: {preferredCurrencySymbol}{totalIncomeAmount}</h3>
         </div>
         <div className="border border-gray-300 rounded-md h-52 w-full">
           <h2>Latest Expenses</h2>

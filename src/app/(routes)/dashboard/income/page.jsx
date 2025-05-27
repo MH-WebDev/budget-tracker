@@ -8,8 +8,8 @@ import CreateIncome from "./_components/CreateIncome";
 
 function page() {
   const { user } = useUser(); // Gets logged in data from clerk
-  const { fetchUserIncomes, userData, addIncome } = useDatabase();
-  const [incomeInfo, setIncomeInfo] = useState();
+  const { fetchIncomeData, userData, addIncome, editIncome, deleteIncome, updateIncome } = useDatabase();
+  const [incomeData, setIncomeData] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,7 +20,7 @@ function page() {
     }
   }, [userData, user]);
 
-  const preferredCurrencySymbol =
+  const userCurrencySymbol =
     userData?.[0]?.preferred_currency_symbol || " ";
 
   const fetchAllData = async () => {
@@ -28,10 +28,9 @@ function page() {
     setError(null);
 
     try {
-      const data = await fetchUserIncomes();
+      const data = await fetchIncomeData();
       if (data) {
-        setIncomeInfo(data);
-        console.log(data);
+        setIncomeData(data);
       } else {
         setError("Failed to fetch data.");
       }
@@ -55,8 +54,11 @@ function page() {
       <div>
         <IncomeCard
           userData={userData}
-          incomeInfo={incomeInfo}
-          preferredCurrencySymbol={preferredCurrencySymbol}
+          incomeData={incomeData}
+          userCurrencySymbol={userCurrencySymbol}
+          updateIncome={updateIncome}
+          deleteIncome={deleteIncome}
+          refreshData={fetchAllData}
         />
       </div>
     </div>

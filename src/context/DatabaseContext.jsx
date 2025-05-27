@@ -170,7 +170,7 @@ export const DatabaseProvider = ({ children }) => {
   };
 
   // FETCH INCOMES - Incomes are linked to users via user_id
-  const fetchUserIncomes = async () => {
+  const fetchIncomeData = async () => {
     if (!user || !user.id) {
       console.warn("User object or ID is not available.");
       return null;
@@ -386,7 +386,7 @@ export const DatabaseProvider = ({ children }) => {
     if (user) {
       fetchUserData(); // Fetch user data only when the user object is available
       fetchBudgetExpenseData();
-      //fetchUserIncomes();
+      //fetchIncomeData();
     }
   }, [user]); // Trigger fetchUserData when the user changes
 
@@ -404,7 +404,7 @@ export const DatabaseProvider = ({ children }) => {
         fetchUserData,
         fetchBudgetExpenseData,
         fetchBudgetExpenseDataById,
-        fetchUserIncomes,
+        fetchIncomeData,
         addBudget,
         addExpense,
         addIncome,
