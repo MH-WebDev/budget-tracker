@@ -30,10 +30,10 @@ return (
     <div className="col-span-8 lg:col-span-6 w-full border rounded-md p-5 flex flex-row gap-5 justify-between items-center h-[200px] shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
         <div className="flex flex-col gap-5 font-semibold">
             <p>Income sources: <span className="font-normal">{totalIncomeQuantity}</span></p>
-            <p>Total Amount: <span className="font-normal">{userCurrencySymbol}{totalIncomeAmount}</span></p>
+            <p>Total Income: <span className="font-normal">{userCurrencySymbol}{totalIncomeAmount}</span></p>
         </div>
         <div>
-            <PieChartIncome pieData={pieData} userData={userData[0]}/>
+            <PieChartIncome pieData={pieData} userData={userData}/>
         </div>
     </div>
   )
