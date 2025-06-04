@@ -4,7 +4,7 @@ import { useDatabase } from '@/context/DatabaseContext';
 import { useUser } from '@clerk/nextjs';
 import React, { useEffect, useState } from 'react'
 
-function page() {
+export default function page() {
   const { user } = useUser();
   const { fetchBudgetExpenseData, userData, fetchIncomeData } = useDatabase();
   const [budgetInfo, setBudgetInfo] = useState(null);
@@ -25,11 +25,11 @@ function page() {
     try {
       //Fetching budget and expense data
       const data = await fetchBudgetExpenseData(
-        userData[0]?.selected_date_format || "MM/dd/yyyy"
+        userData?.selected_date_format || "MM/dd/yyyy"
       );
       if (data) {
-        setBudgetInfo(data.budgets);
-        setExpenseInfo(data.expenses);
+        setBudgetInfo(data?.budgets);
+        setExpenseInfo(data?.expenses);
       } else {
         setError("Failed to fetch data");
       }
@@ -47,18 +47,16 @@ function page() {
   const totalBudgetAmount = budgetInfo.reduce((acc, budget) => acc + budget.amount, 0);
   const totalExpenseAmount = expenseInfo.reduce((acc, expense) => acc + expense.amount, 0);
   const totalIncomeAmount = 0;
-  const preferredCurrencySymbol = user?.[0]?.preferred_currency_symbol || " ";
-  console.log("Currency", userData[0]?.preferred_currency_symbol);
-  console.log("Date Format", userData[0]?.selected_date_format);
+  const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
   return (
     <div className="p-5">
       Dashboard
       <div className="flex flex-row gap-5 justify-center items-center py-5">
         <div className="border border-gray-300 rounded-md h-52 w-full">
           <h2>Totals</h2>
-          <h3>Total budget amount: {preferredCurrencySymbol}{totalBudgetAmount}</h3>
-          <h3>Total Expenses: {preferredCurrencySymbol}{totalExpenseAmount}</h3>
-          <h3>Total Income: {preferredCurrencySymbol}{totalIncomeAmount}</h3>
+          <h3>Total budget amount: {userCurrencySymbol}{totalBudgetAmount}</h3>
+          <h3>Total Expenses: {userCurrencySymbol}{totalExpenseAmount}</h3>
+          <h3>Total Income: {userCurrencySymbol}{totalIncomeAmount}</h3>
         </div>
         <div className="border border-gray-300 rounded-md h-52 w-full">
           <h2>Latest Expenses</h2>
@@ -68,4 +66,3 @@ function page() {
   )
 }
 
-export default page

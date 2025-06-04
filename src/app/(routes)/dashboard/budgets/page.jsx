@@ -7,7 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import CreateBudget from "./_components/CreateBudget";
 import BudgetsInfo from "./_components/BudgetsInfo";
 
-function page() {
+export default function page() {
   const { user } = useUser();
   const {
     budgets,
@@ -44,13 +44,13 @@ function page() {
     <div className="p-5">
       <h2>Budgets:</h2>
       <div  className="grid grid-cols-1 md:grid-cols-2 py-5 gap-5">
-        <BudgetsInfo budget={budgets} user={userData[0]} className="order-last"/>
+        <BudgetsInfo budget={budgets} userData={userData} className="order-last"/>
         <CreateBudget  onBudgetCreated={refreshBudgetsAndExpenses}/>
       </div>
       <hr className="pb-5"/>
       <div>
         <BudgetCard
-          user={userData[0]} // Pass the first user object
+          userData={userData} // Pass the first user object
           budget={budgets} // Pass the current budget
           expenses={expenses} // Filter expenses by budget ID
           refreshData={refreshBudgetsAndExpenses}
@@ -62,4 +62,4 @@ function page() {
   );
 }
 
-export default page;
+

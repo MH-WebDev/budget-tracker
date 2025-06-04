@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import EmojiPicker from "emoji-picker-react";
 
-export default function CreateExpense({ onExpenseCreated, user, budgetId }) {
+export default function CreateExpense({ onExpenseCreated, userData, budgetId }) {
   const { addExpense } = useDatabase();
   const [emojiIcon, setEmojiIcon] = useState("💸");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
@@ -43,7 +43,7 @@ export default function CreateExpense({ onExpenseCreated, user, budgetId }) {
     }
   };
 
-  const preferredCurrencySymbol = user[0]?.preferred_currency_symbol || " "; //TODO Implement this for conformity with other pages.
+  const userCurrencySymbol = userData?.preferred_currency_symbol || " "; //TODO Implement this for conformity with other pages.
 
   return (
     <>
@@ -114,7 +114,7 @@ export default function CreateExpense({ onExpenseCreated, user, budgetId }) {
                   type="number"
                   className="col-span-4"
                   placeholder={`e.g ${
-                    user?.[0]?.preferred_currency_symbol || "$"
+                    userData?.preferred_currency_symbol || "$"
                   }99.99`}
                   onChange={(e) => setAmount(e.target.value)}
                 />

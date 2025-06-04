@@ -14,7 +14,7 @@ import EditBudget from "./EditBudget";
 export default function BudgetCard({
   budget,
   expenses,
-  user,
+  userData,
   refreshData,
   updateBudget,
   deleteBudget,
@@ -22,22 +22,22 @@ export default function BudgetCard({
   const [percentage, setPercentage] = useState(0);
 
     useEffect(() => {
-      if (budget.amount > 0) {
+      if (budget?.amount > 0) {
         const calculatedPercentage = (
-          (budget.totalSpend / budget.amount) *
+          (budget?.totalSpend / budget?.amount) *
           100
         ).toFixed(0);
         setPercentage(Math.min(calculatedPercentage, 100));
       }
     }, [budget.amount, budget.totalSpend]);
 
-    const userCurrencySymbol = user?.preferred_currency_symbol || " ";
+    const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
       {budget.map((budget, index) => {
   const percentage =
-    budget.amount > 0
-      ? Math.min(((budget.totalSpend / budget.amount) * 100).toFixed(0), 100)
+    budget?.amount > 0
+      ? Math.min(((budget?.totalSpend / budget?.amount) * 100).toFixed(0), 100)
       : 0;
   return (
         <Dialog key={index}>
@@ -48,7 +48,7 @@ export default function BudgetCard({
               <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
                 {budget?.icon}
               </p>
-              <h2 className="text-lg font-semibold">{budget.budget_name}</h2>
+              <h2 className="text-lg font-semibold">{budget?.budget_name}</h2>
             </div>
           </div>
           <div className="py-5">
@@ -56,7 +56,7 @@ export default function BudgetCard({
               Total Amount:{" "}
               <span className="font-normal">
                 {userCurrencySymbol}
-                {budget.amount}
+                {budget?.amount}
               </span>
             </h3>
           </div>
@@ -64,18 +64,18 @@ export default function BudgetCard({
             <div className="flex flex-row justify-between px-1 items-center mb-2">
               <h2 className="text-xs">
                 {userCurrencySymbol}
-                {budget.totalSpend ? budget.totalSpend : 0} Spent
+                {budget?.totalSpend ? budget?.totalSpend : 0} Spent
               </h2>
               <h2
                 className={`text-xs ${
-                  budget.amount - budget.totalSpend <= 0
+                  budget?.amount - budget?.totalSpend <= 0
                     ? "text-red-500 font-bold"
                     : ""
                 }`}
               >
                 {userCurrencySymbol}
-                {Math.abs(budget.amount - budget.totalSpend).toFixed(2)}{" "}
-                {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
+                {Math.abs(budget?.amount - budget?.totalSpend).toFixed(2)}{" "}
+                {budget?.totalSpend > budget?.amount ? "Overspend" : "Remaining"}
               </h2>
             </div>
             <div className="w-full bg-slate-300 h-2 rounded-full">
@@ -91,9 +91,9 @@ export default function BudgetCard({
         <DialogHeader>
           <DialogTitle className="flex gap-10 items-center">
             <span className="text-2xl flex justify-center items-center border border-gray-300 rounded-md w-12 h-12">
-              {budget.icon}
+              {budget?.icon}
             </span>
-            <span className="text-left">{budget.budget_name}</span>
+            <span className="text-left">{budget?.budget_name}</span>
           </DialogTitle>
           <div className="flex gap-10 justify-between py-5">
             <div>
@@ -101,19 +101,19 @@ export default function BudgetCard({
                 Starting Budget:
                 <span className=" pl-3 font-semibold">
                   {userCurrencySymbol}
-                  {budget.amount}
+                  {budget?.amount}
                 </span>
               </p>
             </div>
             <div>
               <h3>
                 Transaction Count:
-                <span className=" pl-3 font-semibold">{budget.totalItems}</span>
+                <span className=" pl-3 font-semibold">{budget?.totalItems}</span>
               </h3>
               <h4>
                 Created By:{" "}
                 <span className=" pl-3 font-semibold">
-                  {user ? `${user.first_name}` : "Loading..."}
+                  {userData ? `${userData?.first_name}` : "Loading..."}
                 </span>
               </h4>
             </div>
@@ -122,18 +122,18 @@ export default function BudgetCard({
             <div className="flex flex-row justify-between px-1 items-center mb-2">
               <h2 className="text-xs">
                 {userCurrencySymbol}
-                {budget.totalSpend ? budget.totalSpend : 0} Spent
+                {budget?.totalSpend ? budget?.totalSpend : 0} Spent
               </h2>
               <h2
                 className={`text-xs ${
-                  budget.amount - budget.totalSpend <= 0
+                  budget?.amount - budget?.totalSpend <= 0
                     ? "text-red-500 font-bold"
                     : ""
                 }`}
               >
                 {userCurrencySymbol}
-                {Math.abs(budget.amount - budget.totalSpend).toFixed(2)}{" "}
-                {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
+                {Math.abs(budget?.amount - budget?.totalSpend).toFixed(2)}{" "}
+                {budget?.totalSpend > budget?.amount ? "Overspend" : "Remaining"}
               </h2>
             </div>
             <div className="w-full bg-slate-300 h-2 rounded-full">

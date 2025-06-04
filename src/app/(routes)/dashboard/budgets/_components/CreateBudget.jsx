@@ -13,7 +13,7 @@ import EmojiPicker from "emoji-picker-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-function CreateBudget({ onBudgetCreated }) {
+export default function CreateBudget({ onBudgetCreated }) {
   const { addBudget } = useDatabase();
   const [emojiIcon, setEmojiIcon] = useState("🏡");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
@@ -103,4 +103,4 @@ function CreateBudget({ onBudgetCreated }) {
   );
 }
 
-export default CreateBudget;
+

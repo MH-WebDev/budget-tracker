@@ -14,7 +14,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import { toast } from "sonner";
 import { Settings } from "lucide-react";
 
-function SettingsModal({ isNavbarExpanded }) {
+export default function SettingsModal({ isNavbarExpanded }) {
   const currencies = [
     { id: "1", currencyName: "United States Dollar", currencySymbol: "$" },
     { id: "2", currencyName: "Euro", currencySymbol: "€" },
@@ -40,7 +40,7 @@ function SettingsModal({ isNavbarExpanded }) {
 
   useEffect(() => {
     if (userData && userData.length > 0) {
-      const userSettings = userData[0];
+      const userSettings = userData;
       setSelectedCurrency(userSettings.preferred_currency || "USD");
       setSelectedDateFormat(userSettings.selected_date_format || "MM/DD/YYYY");
       setSelectedSymbol(userSettings.preferred_currency_symbol || "$");
@@ -54,7 +54,7 @@ function SettingsModal({ isNavbarExpanded }) {
     }
 
     try {
-      await updateUserSettings(userData[0]?.user_id, {
+      await updateUserSettings(userData?.user_id, {
         preferred_currency: selectedCurrency,
         preferred_currency_symbol: selectedSymbol,
         selected_date_format: selectedDateFormat,
@@ -138,4 +138,4 @@ function SettingsModal({ isNavbarExpanded }) {
   );
 }
 
-export default SettingsModal;
+

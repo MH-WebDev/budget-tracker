@@ -45,7 +45,7 @@ export default function CreateIncome({ onIncomeCreated, addIncome }) {
       {" "}
       {/* POPUP DIALOG FOR CREATING INCOMES */}
       <DialogTrigger asChild>
-        <div className="w-full border rounded-md text-center p-5 flex flex-col justify-center items-center h-[200px] shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
+        <div className="col-span-8 lg:col-span-2 w-full border rounded-md text-center p-5 flex flex-col justify-center items-center h-[200px] shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
           <h2 className="text-2xl font-bold">+</h2>
           <h2 className="text-md">Create New Income</h2>
         </div>

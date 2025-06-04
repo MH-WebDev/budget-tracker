@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
 import EmojiPicker from "emoji-picker-react";
 
-function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
+export default function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
   const [name, setName] = useState(budget.budget_name);
   const [amount, setAmount] = useState(budget.amount);
   const [emojiIcon, setEmojiIcon] = useState("🏡");
@@ -116,4 +116,4 @@ function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
   );
 }
 
-export default EditBudget;
+

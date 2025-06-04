@@ -5,10 +5,10 @@ import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
 import { useDatabase } from "@/context/DatabaseContext";
 
-function ExpensesTable({ expenses, user, refreshData }) {
+function ExpensesTable({ expenses, userData, refreshData }) {
   const { deleteExpense } = useDatabase();
   const [expandedRow, setExpandedRow] = useState(null); // Track the expanded row
-  const dateFormat = user[0].selected_date_format;
+  const dateFormat = userData.selected_date_format;
 
   const handleDelete = async (expenseId) => {
     const success = await deleteExpense(expenseId);
@@ -26,8 +26,8 @@ function ExpensesTable({ expenses, user, refreshData }) {
       return date; // Fallback to raw date if formatting fails
     }
   };
-  const preferredCurrencySymbol = user?.[0]?.preferred_currency_symbol || " ";
-  console.log("Currency:", preferredCurrencySymbol);
+  const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
+  ;
   return (
     <div>
       <div className="grid grid-cols-9 text-center bg-gray-100 rounded-t-md font-semibold py-1 border-t border-x border-gray-300">
@@ -51,7 +51,7 @@ function ExpensesTable({ expenses, user, refreshData }) {
               >
                 <p className="py-1 col-span-1">{expense.category}</p>
                 <p className="py-1 col-span-1 w-full">
-                  {user?.[0]?.preferred_currency_symbol || "$"}
+                  {userCurrencySymbol}
                   {expense.amount}
                 </p>
                 <p className="py-1 px-2 col-span-5 overflow-hidden text-ellipsis whitespace-nowrap">

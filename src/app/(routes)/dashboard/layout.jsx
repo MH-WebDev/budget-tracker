@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import DashboardHeader from './_components/DashboardHeader';
 import SideNav from './_components/SideNav';
 
-function DashboardLayout({children}) {
+export default function DashboardLayout({children}) {
     const {user} = useUser();
     const router = useRouter();
     const { budgets, loadingBudgets, fetchBudgetExpenseData } = useDatabase(); // HOOK TO CHECKIFUSERBUDGETS
@@ -42,4 +42,3 @@ function DashboardLayout({children}) {
   )
 }
 
-export default DashboardLayout

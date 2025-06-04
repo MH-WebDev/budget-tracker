@@ -8,7 +8,7 @@
     Filter by:
         Category
         Date Range
-    
+
     Sort by:
         Date added
         Amount
@@ -33,6 +33,8 @@
 -- Add overflow text state to income notes column
 
 -- Forwarding after sign up or sign in
+
+-- Fix Navbar scrolling on large pages
 
 ## WISH LIST
 

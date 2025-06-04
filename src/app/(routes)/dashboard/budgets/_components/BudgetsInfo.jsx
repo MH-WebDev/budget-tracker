@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-function BudgetsInfo({budget, user}) {
+export default function BudgetsInfo({budget, userData}) {
   const totalBudgetQuantity = budget.length
   const totalBudgetAmount = budget.reduce((a,v) => a = a +v.amount, 0)
   const totalBudgetSpent = budget.reduce((a,v) => a = a +v.totalSpend, 0)
-  const userCurrencySymbol = user.preferred_currency_symbol || " ";
+  const userCurrencySymbol = userData.preferred_currency_symbol || " ";
   const [percentage, setPercentage] = useState(0);
 
     useEffect(() => {
@@ -37,4 +37,3 @@ function BudgetsInfo({budget, user}) {
   )
 }
 
-export default BudgetsInfo

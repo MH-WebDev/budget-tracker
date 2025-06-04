@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
 import EmojiPicker from "emoji-picker-react";
 
-function EditIncome({
+export default function EditIncome({
   income,
   userData,
   userCurrencySymbol,
@@ -23,8 +23,8 @@ function EditIncome({
   refreshData
  }) {
     const [category, setCategory] = useState(income.category);
-    const [amount, setAmount] = useState(income.amount);
-    const [comment, setComment] = useState(income.comment);
+    const [amount, setAmount] = useState(income.amount || "0");
+    const [comment, setComment] = useState(income.comment || "");
     const [emojiIcon, setEmojiIcon] = useState(income.icon);
     const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
@@ -87,7 +87,7 @@ function EditIncome({
                     <h2 className="col-span-2 text-right">Category:</h2>
                     <select
                       className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
-                      value={income.category}
+                      value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     >
                       <option value="Other">
@@ -102,7 +102,7 @@ function EditIncome({
                     <h2 className="col-span-2 text-right">Amount:</h2>
                     <Input
                       placeholder="e.g '1250.00'"
-                      value={income.amount}
+                      value={amount}
                       type="number"
                       className="col-span-4"
                       onChange={(e) => setAmount(e.target.value)}
@@ -112,7 +112,7 @@ function EditIncome({
                     <h2 className="col-span-2 text-right">Comment:</h2>
                     <textarea
                       onChange={(e) => setComment(e.target.value)}
-                      value={income.comment}
+                      value={comment}
                       className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
                       placeholder="e.g 'Car Payment'"
                       >
@@ -143,4 +143,3 @@ function EditIncome({
   )
 }
 
-export default EditIncome

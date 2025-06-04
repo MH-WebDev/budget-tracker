@@ -17,9 +17,8 @@ export default function IncomeCard({
   deleteIncome,
   refreshData
 }) {
-  const user = userData ? userData[0] : null;
+  const user = userData ? userData : null;
 
-  console.log(incomeData[0].income_created_timestamp)
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 py-5">
       {incomeData.map((incomes, index) => (
@@ -29,9 +28,9 @@ export default function IncomeCard({
               <div className="flex flex-row justify-between items-center w-auto">
                 <div className="flex flex-row items-center gap-5">
                   <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
-                    {incomes.icon}
+                    {incomes?.icon}
                   </p>
-                  <h2 className="text-lg font-semibold">{incomes.category}</h2>
+                  <h2 className="text-lg font-semibold">{incomes?.category}</h2>
                 </div>
               </div>
               <div className="py-5">
@@ -39,13 +38,13 @@ export default function IncomeCard({
                   Total Amount:{" "}
                   <span className="font-normal">
                     {userCurrencySymbol}
-                    {incomes.amount}
+                    {incomes?.amount}
                   </span>
                 </h3>
               </div>
               <div className="pt-5 flex flex-row gap-5 items-center">
                 <h3 className="font-semibold">Notes:</h3>
-                <h3 className="truncate">{incomes.comment}</h3>
+                <h3 className="truncate">{incomes?.comment}</h3>
               </div>
             </div>
           </DialogTrigger>
@@ -53,9 +52,9 @@ export default function IncomeCard({
             <DialogHeader>
               <DialogTitle className="flex gap-10 items-center">
                 <span className="text-2xl flex justify-center items-center border border-gray-300 rounded-md w-12 h-12">
-                  {incomes.icon}
+                  {incomes?.icon}
                 </span>
-                <span className="text-left">{incomes.category}</span>
+                <span className="text-left">{incomes?.category}</span>
               </DialogTitle>
               <div className="flex gap-10 justify-between py-5">
                 <div>
@@ -63,7 +62,7 @@ export default function IncomeCard({
                     Income Amount:
                     <span className=" pl-3 font-semibold">
                       {userCurrencySymbol}
-                      {incomes.amount}
+                      {incomes?.amount}
                     </span>
                   </p>
                 </div>
@@ -71,15 +70,15 @@ export default function IncomeCard({
                   <h3>
                     Date Created:
                     <span className=" pl-3 font-semibold">
-                      {format(new Date(incomes.income_created_timestamp), 
-                      userData[0]?.selected_date_format || "MM/dd/yyyy")}
+                      {format(new Date(incomes.income_created_timestamp),
+                      userData?.selected_date_format || "MM/dd/yyyy")}
                     </span>
                   </h3>
                 </div>
               </div>
               <div className="pt-5 flex flex-row gap-5 items-center">
                 <h3 className="font-semibold">Notes:</h3>
-                <h3 className="wrap">{incomes.comment}</h3>
+                <h3 className="wrap">{incomes?.comment}</h3>
               </div>
               <div className="flex items-center justify-center gap-5">
                 <EditIncome

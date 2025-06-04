@@ -5,8 +5,9 @@ import { useDatabase } from "@/context/DatabaseContext";
 import Loading from "@/app/_components/Loading";
 import IncomeCard from "./_components/IncomeCard";
 import CreateIncome from "./_components/CreateIncome";
+import IncomesInfo from "./_components/IncomesInfo";
 
-function page() {
+export default function page() {
   const { user } = useUser(); // Gets logged in data from clerk
   const { fetchIncomeData, userData, addIncome, editIncome, deleteIncome, updateIncome } = useDatabase();
   const [incomeData, setIncomeData] = useState();
@@ -21,7 +22,7 @@ function page() {
   }, [userData, user]);
 
   const userCurrencySymbol =
-    userData?.[0]?.preferred_currency_symbol || " ";
+    userData?.preferred_currency_symbol || " ";
 
   const fetchAllData = async () => {
     setLoading(true);
@@ -47,8 +48,8 @@ function page() {
   }
   return (
     <div className="p-5">
-      <div>
-        <div></div>
+      <div className="grid grid-cols-8 gap-5 items-center">
+        <IncomesInfo userData={userData} incomeData={incomeData} userCurrencySymbol={userCurrencySymbol} />
         <CreateIncome addIncome={addIncome} onIncomeCreated={fetchAllData} />
       </div>
       <div>
@@ -65,4 +66,4 @@ function page() {
   );
 }
 
-export default page;
+

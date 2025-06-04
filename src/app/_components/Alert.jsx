@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-function Alert({
+export default function Alert({
   title,
   description,
   onConfirm,
@@ -38,5 +38,3 @@ function Alert({
     </AlertDialog>
   );
 }
-
-export default Alert;

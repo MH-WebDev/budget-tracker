@@ -34,7 +34,7 @@ export default function ExpensesById() {
       // Fetch budget and expenses
       const data = await fetchBudgetExpenseDataById(
         id,
-        userData[0]?.selected_date_format || "MM/dd/yyyy"
+        userData?.selected_date_format || "MM/dd/yyyy"
       );
       if (data) {
         setBudgetInfo(data.budgets); // Set budget details
@@ -55,7 +55,6 @@ export default function ExpensesById() {
     try {
       const newExpense = await addExpense(expense);
       if (newExpense) {
-        console.log("Expense added successfully:", newExpense);
         fetchAllData(); // Refresh data after adding an expense
       } else {
         console.error("Failed to add expense.");
@@ -74,9 +73,9 @@ export default function ExpensesById() {
         <h2 className="text-xl p-5 font-semibold">Expenses Sheet</h2>
       </div>
       <div className="grid grid-cols-2 p-5 gap-5">
-        <ExpensesByBudgetCard budget={budgetInfo} user={userData} />
+        <ExpensesByBudgetCard budget={budgetInfo} userData={userData} />
         <CreateExpense
-          user={userData}
+          userData={userData}
           budgetId={id}
           onExpenseCreated={fetchAllData} // Calls function to add expense to database then refresh function to re-fetch data/
         />
@@ -85,7 +84,7 @@ export default function ExpensesById() {
         <ExpensesTable
           budget={budgetInfo}
           expenses={expensesInfo}
-          user={userData}
+          userData={userData}
           refreshData={fetchAllData} // Pass the function to refresh the list
         />
       </div>

@@ -17,7 +17,7 @@ const DatabaseContext = createContext();
 
 export const DatabaseProvider = ({ children }) => {
   const { user } = useUser();
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState(null);
   const [budgetData, setbudgetData] = useState([]);
   const [expenseData, setexpenseData] = useState([]);
   const [incomeData, setincomeData] = useState([]);
@@ -48,8 +48,8 @@ export const DatabaseProvider = ({ children }) => {
         .select()
         .from(user_data)
         .where(eq(user_data.user_id, user.id)); // Query the users table for the logged-in user
-      setUserData(data); // Update the userData state
-      return data;
+      setUserData(data[0]); // Update the userData state
+      return data[0];
     } catch (error) {
       console.error("Error fetching user data:", error); // Log any errors
       return null;

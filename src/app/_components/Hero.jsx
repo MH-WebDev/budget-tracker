@@ -2,7 +2,7 @@
 import { useAuth } from "@clerk/nextjs";
 import React from "react";
 
-function Hero() {
+export default function Hero() {
   // Hero page uses an a tag to conditionally take a user to the dashboard or sign up page based on their authentication state.
   const { isSignedIn } = useAuth();
   return (
@@ -28,5 +28,3 @@ function Hero() {
     </section>
   );
 }
-
-export default Hero;

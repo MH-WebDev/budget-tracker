@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import SettingsModal from "./SettingsModal";
 
-function SideNav() {
+export default function SideNav() {
   const menuLinks = [
     {
       id: 1,
@@ -127,4 +127,4 @@ function SideNav() {
   );
 }
 
-export default SideNav;
+

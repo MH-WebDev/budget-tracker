@@ -1,9 +1,11 @@
+import { user_data } from "@/db/schema";
 import React, { useEffect, useState } from "react";
 
-function ExpensesByBudgetCard({ budget, user }, index) {
+function ExpensesByBudgetCard({ budget, userData }, index) {
   // This component displays the budget header for expenses, including the budget name, total amount, and a progress bar showing the percentage spent.
 
   const [percentage, setPercentage] = useState(0); // Setup for percentage bar calculation
+  const userCurrencySymbol = userData.preferred_currency_symbol || " ";
 
   useEffect(() => {
     if (budget.amount > 0) {
@@ -23,34 +25,34 @@ function ExpensesByBudgetCard({ budget, user }, index) {
             <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
               {budget?.icon}
             </p>
-            <h2 className="text-lg font-semibold">{budget.budget_name}</h2>
+            <h2 className="text-lg font-semibold">{budget?.budget_name}</h2>
           </div>
         </div>
         <div className="py-5">
           <h3 className="text-md font-semibold text-gray-700">
             Total Amount:{" "}
             <span className="font-normal">
-              {user[0].preferred_currency_symbol}
-              {budget.amount}
+              {userCurrencySymbol}
+              {budget?.amount}
             </span>
           </h3>
         </div>
         <div className="w-full">
           <div className="flex flex-row justify-between px-1 items-center mb-2">
             <h2 className="text-xs">
-              {user[0].preferred_currency_symbol}
-              {budget.totalSpend ? budget.totalSpend : 0.0} Spent
+              {userCurrencySymbol}
+              {budget?.totalSpend ? budget?.totalSpend : 0.0} Spent
             </h2>
             <h2
               className={`text-xs ${
-                budget.amount - budget.totalSpend <= 0
+                budget?.amount - budget?.totalSpend <= 0
                   ? "text-red-500 font-bold"
                   : ""
               }`}
             >
-              {user[0].preferred_currency_symbol}
-              {Math.abs(budget.amount - budget.totalSpend).toFixed(2)}{" "}
-              {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
+              {userCurrencySymbol}
+              {Math.abs(budget?.amount - budget?.totalSpend).toFixed(2)}{" "}
+              {budget?.totalSpend > budget?.amount ? "Overspend" : "Remaining"}
             </h2>
           </div>
           <div className="w-full bg-slate-300 h-2 rounded-full">

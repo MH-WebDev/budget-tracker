@@ -10,7 +10,7 @@ import {
   useUser,
 } from "@clerk/nextjs";
 
-function Header() {
+export default function Header() {
   const { user, isSignedIn } = useUser();
   return (
     <div className="p-5 bg-purple-700 text-white flex flex-row justify-end items-center shadow-md">
@@ -31,5 +31,3 @@ function Header() {
     </div>
   );
 }
-
-export default Header;

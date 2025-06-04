@@ -26,7 +26,7 @@ function page() {
     try {
       //Fetching budget and expense data
       const data = await fetchBudgetExpenseData(
-        userData[0]?.selected_date_format || "MM/dd/yyyy"
+        userData?.selected_date_format || "MM/dd/yyyy"
       );
       if (data) {
         setBudgetInfo(data.budgets);
@@ -44,7 +44,6 @@ function page() {
   if (loading) {
     return <Loading />;
   }
-  console.log("imported data", expenseInfo);
   return (
     <>
       <div className="p-5">
@@ -52,7 +51,7 @@ function page() {
         <ExpensesTable
           budget={budgetInfo}
           expenses={expenseInfo}
-          user={userData}
+          userData={userData}
           refreshData={fetchAllData} // Pass the function to refresh the list
         />
       </div>
