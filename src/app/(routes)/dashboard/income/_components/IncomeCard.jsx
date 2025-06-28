@@ -41,8 +41,15 @@ export default function IncomeCard({
                     {incomes?.amount}
                   </span>
                 </h3>
+                <h3 className="text-md font-semibold text-gray-700">
+                    Date Created:
+                    <span className="pl-3 font-normal">
+                      {format(new Date(incomes.income_created_timestamp),
+                      userData?.selected_date_format || "MM/dd/yyyy")}
+                    </span>
+                  </h3>
               </div>
-              <div className="pt-5 flex flex-row gap-5 items-center">
+              <div className=" flex flex-row gap-5 items-center">
                 <h3 className="font-semibold">Notes:</h3>
                 <h3 className="truncate">{incomes?.comment}</h3>
               </div>
@@ -72,6 +79,22 @@ export default function IncomeCard({
                     <span className=" pl-3 font-semibold">
                       {format(new Date(incomes.income_created_timestamp),
                       userData?.selected_date_format || "MM/dd/yyyy")}
+                    </span>
+                  </h3>
+                  <h3
+                    className={`${
+                      Math.floor(new Date(incomes.updated_at).getTime() / 1000) >
+                      Math.floor(new Date(incomes.income_created_timestamp).getTime() / 1000)
+                        ? "inline-block"
+                        : "hidden"
+                    }`}
+                  >
+                    Last Updated:
+                    <span className="pl-3 font-semibold">
+                      {format(
+                        new Date(incomes.updated_at),
+                        userData?.selected_date_format || "MM/dd/yyyy"
+                      )}
                     </span>
                   </h3>
                 </div>
