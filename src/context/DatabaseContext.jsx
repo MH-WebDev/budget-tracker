@@ -18,7 +18,7 @@ const DatabaseContext = createContext();
 export const DatabaseProvider = ({ children }) => {
   const { user } = useUser();
   const [userData, setUserData] = useState(null);
-  const [budgetData, setbudgetData] = useState([]);
+  const [budgetData, setbudgetData] = useState(null);
   const [expenseData, setexpenseData] = useState([]);
   const [incomeData, setincomeData] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
@@ -333,7 +333,7 @@ export const DatabaseProvider = ({ children }) => {
   //
   //
   // UPDATE USER SETTINGS
-  const updateUserSettings = async (user_id, settings) => {
+  const updateUserSettings = async (settings) => {
     try {
       await db
         .update(user_data)

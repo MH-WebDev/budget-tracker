@@ -14,7 +14,8 @@
         Amount
         Category
 
--- Fix auto-forwarder when no budgets are found
+-- Fix auto-forwarder when no budgets are found -- DONE!
+
 -- Restart Dashboard 
     Total income -- Partial
     Total Budget -- Partial
