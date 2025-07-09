@@ -9,7 +9,7 @@ import SideNav from './_components/SideNav';
 export default function DashboardLayout({children}) {
     const {user} = useUser();
     const router = useRouter();
-    const { budgets, loadingBudgets, fetchBudgetExpenseData } = useDatabase(); // HOOK TO CHECKIFUSERBUDGETS
+    const { budgets, loadingBudgets } = useDatabase(); // HOOK TO CHECKIFUSERBUDGETS
 
     // Check if the user has created budgets and forward to budget page if not.
    useEffect(() => {
@@ -19,9 +19,9 @@ export default function DashboardLayout({children}) {
    }, [user, loadingBudgets, budgets]);
 
    const checkIfUserBudgets = () => {
-     if (Array.isArray(budgets) && budgets.length === 0) {
-       console.log("No budgets, redirecting...");
-       router.replace("/dashboard/budgets");
+     if (Array.isArray(budgets) && budgets.length === 0) { // Check if budget array is empty
+       //console.log("No budgets, redirecting...");
+       router.replace("/dashboard/budgets"); // Redirects to /budgets
      }
    };
 

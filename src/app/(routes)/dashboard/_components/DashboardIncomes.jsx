@@ -1,5 +1,6 @@
 import PieChart from '@/app/_components/PieChart';
 import React, { useState } from 'react'
+import DateRangeButtons from './DateRangeButtons';
 
 export default function DashboardIncomes({ incomeData, userData, userCurrencySymbol}) {
     const totalIncomeQuantity = incomeData.length
@@ -46,13 +47,9 @@ export default function DashboardIncomes({ incomeData, userData, userCurrencySym
                 <PieChart chartData={chartData} userCurrency={userCurrencySymbol} chartWidth={"100%"} chartHeight={"300px"}/>
             </div>
             <div className="w-full border rounded-md p-5 h-[350px]">
-                <h3>Recent Incomes:</h3>
-                <div className="flex flex-row gap-5 py-2">
-                    <button onClick={() => setDaysFilter(7)} className={`${daysFilter === 7 ? "font-bold underline" : ""}`}>7 days</button>
-                    <button onClick={() => setDaysFilter(14)} className={daysFilter === 14 ? "font-bold underline" : ""}>14 days</button>
-                    <button onClick={() => setDaysFilter(30)} className={daysFilter === 30 ? "font-bold underline" : ""}>30 days</button>
-                </div>
-                <div className=" overflow-y-scroll h-[250px]">
+                <h3 className="font-semibold pb-2">Recent Incomes:</h3>
+            <DateRangeButtons daysFilter={daysFilter} setDaysFilter={setDaysFilter}/>
+                <div className=" overflow-y-scroll h-[250px] pt-5">
                     <ul>
                         {filteredIncomes.length === 0 && <li>No incomes found during this time period.</li>}
                         {filteredIncomes.map((income, idx) => (
@@ -68,6 +65,5 @@ export default function DashboardIncomes({ incomeData, userData, userCurrencySym
             </div>
         </div>
     </div>
-    
   )
 }
