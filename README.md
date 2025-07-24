@@ -1,27 +1,27 @@
-## To-Do List:
+To-Do List:
+===========
 
--- Breadcrumbs
+## **MAJOR**
+
 -- Finalize Styling on each page
-
 -- Filters & Sort Functions
     Filter by:
-        Category
-        Date Range - Partial. (Filter by specified date range?)
+    >Category
+    >Date Range - ~ Partial. (Filter by specified date range?)
 
     Sort by:
-        Date added
-        Amount
-        Category
+    >Date added
+    >Amount
+    >Category
 
+-- Restart Dashboard
+>Total income -- ~ Partial
+>Total Budget -- ~ Partial
+>Total spending
+>percentage of total budget spent bar
+>percentage of total income spent bar
 
--- Restart Dashboard 
-    Total income -- Partial
-    Total Budget -- Partial
-    Total spending
-    percentage of total budget spent bar
-    percentage of total income spent bar
-
-    Pie chart for expense types
+>Pie chart for expense types
 
 -- Add upcoming Expenses
     Include date column with logic to forward-date an expense and move it to expenses table on selected date.
@@ -30,49 +30,53 @@
 
 -- Remove plugins: D3, Mui-X
 
-## SECURITY
+
+
+## **SECURITY**
 
     ## Authentication/Authorization
-        -- Ensure sensitive routes and API endpoints require authentication
-        -- Prevent user access/modification of other user data (Enforce user ownership on all queries)
+        > Ensure sensitive routes and API endpoints require authentication
+        > Prevent user access/modification of other user data (Enforce user ownership on all queries)
 
     ## Data Validation/Sanitization
-        -- Add Validation and sanitization to *all* text inputs. Ensure any malicious code cannot be executed.
-        -- Database Anonymizer 
-        -- Parameterized queries or ORM methods preventing SQL injection
+        > Add Validation and sanitization to *all* text inputs. Ensure any malicious code cannot be executed.
+        > Database Anonymizer
+        > Parameterized queries or ORM methods preventing SQL injection
 
     ## Session/Token security
-        -- httpOnly cookies for session tokens
-        -- Session expiration and renewal policies
-        -- CSRF protection for state-changing requests
+        > httpOnly cookies for session tokens
+        > Session expiration and renewal policies
+        > CSRF protection for state-changing requests
 
     ## Transport Security
-        -- HTTPS All the things
-        -- Set HSTS Headers
+        > HTTPS All the things
+        > Set HSTS Headers
 
     ## Error handling & Logging
-        -- Prevent exposing stack traces or sensitive error messages to users
-        -- Log errors securely, avoid logging sensitive data
+        > Prevent exposing stack traces or sensitive error messages to users
+        > Log errors securely, avoid logging sensitive data
 
     ## Dependencies
-        -- Audit dependencies
-        -- Remove unused packages/plugins
+        > Audit dependencies
+        > Remove unused packages/plugins
 
     ## Content Security Policy
-        -- Strict CSP header to prevent XSS attack
+        > Strict CSP header to prevent XSS attack
 
     ## Rate Limiting & Abuse Prevention
-        -- Rate Limit APIs to prevent brute force
-        -- CAPTCHA for sensitive actions if necessary
+        > Rate Limit APIs to prevent brute force
+        > CAPTCHA for sensitive actions if necessary
 
     ## Other
-        -- Ensure proper CORS configuration
-        -- Database backup schedule
-        -- verify third party services for least-privilige access
+        > Ensure proper CORS configuration
+        > Database backup schedule
+        > verify third party services for least-privilige access
 
+## **Minor**
 
+-- Breadcrumbs
 
-## WISHLIST
+## **WISHLIST**
 
     Recurring expenses/incomes
 
@@ -90,7 +94,7 @@
                 -- Delete Debt
 
 
-## COMPLETED
+## **COMPLETED**
 
 
 -- Complete refactor to bring all scripts into uniform standard - DONE
