@@ -16,10 +16,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import SettingsModal from "./SettingsModal";
 
 export default function SideNav() {
+  const userButtonRef = useRef(null);
   const menuLinks = [
     {
       id: 1,
@@ -67,8 +68,7 @@ export default function SideNav() {
   const currentLinkHighlight = usePathname();
 
   useEffect(() => {
-    // This effect runs when the current link is changed
-  }, [currentLinkHighlight]);
+  }, [currentLinkHighlight]); // This effect runs when the current link is changed
 
   const [isNavbarExpanded, setIsNavbarExpanded] = useState(true);
 
@@ -77,30 +77,23 @@ export default function SideNav() {
   };
 
   return (
-    <div className="md:w-48 w-fit md:block h-full">
+    <div className="lg:w-48 w-fit md:block h-full">
       <div className="h-full p-5 border-r shadow-md bg-gray-100 font-semibold">
-        <div>
-          <button onClick={toggleNavbar}><ChevronRight /></button>
+        <div className="lg:hidden">
+          <button onClick={toggleNavbar} className={`scale-125 hover:scale-150 transition-all duration-300 ${isNavbarExpanded ? "rotate-0" : "rotate-180"}`}><ChevronRight /></button>
         </div>
         <div className="pt-10 flex flex-col gap-1">
           {menuLinks.map((menu, index) => (
             <Link key={index} href={menu.path} className="">
               <h2
-                className={`flex flex-row ${
-                  isNavbarExpanded ? "justify-center md:justify-start" : ""
-                }  gap-5
-                            items-center py-2 cursor-pointer hover:text-purple-500
-                            ${
-                              currentLinkHighlight === menu.path &&
-                              "text-purple-700"
-                            }
-                            `}
+                className={`flex flex-row ${isNavbarExpanded ? "justify-center lg:justify-start" : ""}  gap-5
+                            items-center py-2 cursor-pointer hover:text-purple-500 ${currentLinkHighlight === menu.path && "text-purple-700"}`}
               >
                 <menu.icon />
                 <span
                   className={`${
                     isNavbarExpanded ? "hidden" : "inline"
-                  } md:inline`}
+                  } lg:inline`}
                 >
                   {menu.name}
                 </span>
@@ -108,14 +101,6 @@ export default function SideNav() {
             </Link>
           ))}
           <SettingsModal isNavbarExpanded={isNavbarExpanded} />
-        </div>
-        <div
-          className={`fixed bottom-0 flex flex-row ${
-            isNavbarExpanded ? "justify-center md:justify-start" : ""
-          } gap-5 items-center py-5 cursor-pointer hover:text-purple-500`}
-        >
-          <UserButton />
-          <span className="hidden md:inline">Profile</span>
         </div>
       </div>
     </div>

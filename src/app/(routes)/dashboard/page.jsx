@@ -64,7 +64,7 @@ export default function page() {
   return (
     <div className="p-5">
       <div className="flex flex-col md:flex-row gap-5 justify-center items-center py-5">
-        <div className="border border-gray-300 rounded-md h-52 w-full p-5">
+        <div className="border border-gray-300 rounded-md h-64 lg:h-52 w-full p-5">
           <h2 className="font-semibold text-lg pb-5">Totals</h2>
           <div className="flex flex-col justify-between gap-2">
             <h3 className="font-semibold">Total budget amount: <span className="font-normal">{userCurrencySymbol}{totalBudgetAmount}</span></h3>
@@ -72,7 +72,7 @@ export default function page() {
             <h3 className="font-semibold">Total Income: <span className="font-normal">{userCurrencySymbol}{totalIncomeAmount}</span></h3>
           </div>
         </div>
-        <div className="border border-gray-300 rounded-md h-52 w-full p-5">
+        <div className="border border-gray-300 rounded-md h-64 lg:h-52 w-full p-5">
           <h2 className="font-semibold text-lg pb-5">Latest Expenses</h2>
           <div className="flex flex-col justify-between gap-2">
             {expenseData
@@ -80,16 +80,17 @@ export default function page() {
               .sort((a, b) => new Date(b.expense_created_timestamp) - new Date(a.expense_created_timestamp)) // Sort by most recent
               .slice(0, 3) // Limit to 3 most recent expenses
               .map((expense, index) => (
-                <div key={index} className="grid grid-cols-9 gap-2">
+                <div key={index} className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2">
                   <span className="col-span-1">{expense.icon}</span>
                   <span className="col-span-2">{expense.category}</span>
                   <span className="col-span-2">{format(new Date(expense.expense_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span>
-                  <span className="col-span-4 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
+                  <span className="col-span-2 lg:col-span-4 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
+                  <hr className="col-span-4 lg:col-span-9"></hr>
                 </div>
               ))}
           </div>
         </div>
-        <div className="border border-gray-300 rounded-md h-52 w-full p-5">
+        <div className="border border-gray-300 rounded-md h-64 lg:h-52 w-full p-5">
           <h2 className="font-semibold text-lg pb-5">Latest Incomes</h2>
           <div className="flex flex-col justify-between gap-2">
             {incomeData
@@ -97,11 +98,12 @@ export default function page() {
               .sort((a, b) => new Date(b.income_created_timestamp) - new Date(a.income_created_timestamp)) // Sort by most recent
               .slice(0, 3) // Limit to 3 most recent incomes
               .map((income, index) => (
-                <div key={index} className="grid grid-cols-9 gap-2">
+                <div key={index} className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2">
                   <span className="col-span-1">{income.icon}</span>
                   <span className="col-span-2">{income.category}</span>
                   <span className="col-span-2">{format(new Date(income.income_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span> {/*Display date as selected in user settings */}
-                  <span className="col-span-4 text-left">{userCurrencySymbol}{income.amount.toFixed(2)}</span>
+                  <span className="col-span-2 lg:col-span-4 text-left">{userCurrencySymbol}{income.amount.toFixed(2)}</span>
+                  <hr className="col-span-4 lg:col-span-9"></hr>
                 </div>
               ))}
           </div>

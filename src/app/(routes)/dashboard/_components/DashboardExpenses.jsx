@@ -90,7 +90,7 @@ const filteredExpenseAmount = filteredExpenses
   return (
     <div className="border rounded-md p-5">
       <h2 className="font-semibold text-lg pb-5">Expenses {daysFilter === 0 ? "" : `(Past ${daysFilter} days)`}</h2>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-col md:flex-row justify-between md:items-end">
         <div className="flex flex-col gap-2 mb-5">
           <h3 className="font-semibold">
             Total Expenses:<span className="font-normal"> {totalExpenseQuantity}</span>
@@ -99,10 +99,12 @@ const filteredExpenseAmount = filteredExpenses
             Total Expenses Amount:<span className="font-normal"> {userCurrencySymbol}{filteredExpenseAmount}</span>
           </h3>
         </div>
-        <DateRangeButtons
+        <div className="mb-5">
+          <DateRangeButtons
           daysFilter={daysFilter}
           setDaysFilter={setDaysFilter}
-        />
+          />
+        </div>
       </div>
       <div className="w-full border rounded-md p-5">
         <h2>Daily expenses over time:</h2>

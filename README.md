@@ -16,8 +16,6 @@ To-Do List:
 
 -- Restart Dashboard
 >Total income -- ~ Partial
->Total Budget -- ~ Partial
->Total spending
 >percentage of total budget spent bar
 >percentage of total income spent bar
 
@@ -27,10 +25,6 @@ To-Do List:
     Include date column with logic to forward-date an expense and move it to expenses table on selected date.
 
 -- Fix Navbar scrolling on large pages
-
--- Remove plugins: D3, Mui-X
-
-
 
 ## **SECURITY**
 
@@ -111,3 +105,9 @@ To-Do List:
 -- Add overflow text state to income notes column
 
 -- Forwarding after sign up or sign in
+
+
+>Total Budget
+>Total spending
+
+-- Remove plugins: D3, Mui-X

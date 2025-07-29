@@ -5,8 +5,8 @@ import DateRangeButtons from './DateRangeButtons';
 export default function DashboardIncomes({ incomeData, userData, userCurrencySymbol}) {
     const totalIncomeQuantity = incomeData.length
     const totalIncomeAmount = incomeData.reduce((a,v) => a = a +v.amount, 0).toFixed(2) || 0;
-    const [daysFilter, setDaysFilter] = useState(7); // Default filter to 7 days
-    
+    const [daysFilter, setDaysFilter] = useState(30); // Default filter to 30 days
+
 // CHART DATA PROCESSING
     // Group by category and sum amounts
      const categoryTotals = incomeData.reduce((acc, curr) => {
@@ -27,20 +27,27 @@ export default function DashboardIncomes({ incomeData, userData, userCurrencySym
      ];
 // END OF CHART DATA PROCESSING
 // BEGIN RECENT INCOME FILTER PROCESSING
-     const now = new Date();
-     const filteredIncomes = incomeData.filter(income => {
+    const now = new Date();
+    const filteredIncomes = daysFilter === 0
+    ? incomeData
+    : incomeData.filter(income => {
         const incomeDate = new Date(income.income_created_timestamp);
         const timeDifference = now - incomeDate;
         const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
         return daysDifference <= daysFilter;
-     });
+        });
 // END RECENT INCOME FILTER PROCESSING
   return (
     <div className="border rounded-md p-5">
         <h2 className="font-semibold text-lg pb-5">Incomes</h2>
-        <div className="flex flex-col gap-2 mb-5">
-            <h3 className="font-semibold">Total Income Sources: <span className="font-normal">{totalIncomeQuantity}</span></h3>
-            <h3 className="font-semibold">Total Income Amount: <span className="font-normal">{userCurrencySymbol}{totalIncomeAmount}</span></h3>
+        <div className="flex flex-col md:flex-row justify-between md:items-end">
+            <div className="flex flex-col gap-2 mb-5">
+                <h3 className="font-semibold">Total Income Sources: <span className="font-normal">{totalIncomeQuantity}</span></h3>
+                <h3 className="font-semibold">Total Income Amount: <span className="font-normal">{userCurrencySymbol}{totalIncomeAmount}</span></h3>
+            </div>
+            <div className="mb-5">
+                <DateRangeButtons daysFilter={daysFilter} setDaysFilter={setDaysFilter}/>
+            </div>
         </div>
         <div className="flex flex-col md:flex-row gap-5 justify-center w-full">
             <div className="border rounded-md p-5 w-full md:h-[350px]">
@@ -48,7 +55,6 @@ export default function DashboardIncomes({ incomeData, userData, userCurrencySym
             </div>
             <div className="w-full border rounded-md p-5 h-auto md:h-[350px]">
                 <h3 className="font-semibold pb-2">Recent Incomes:</h3>
-                <DateRangeButtons daysFilter={daysFilter} setDaysFilter={setDaysFilter}/>
                 <div className=" overflow-y-scroll max-h-[250px] pt-5">
                     <ul>
                         {filteredIncomes.length === 0 && <li>No incomes found during this time period.</li>}
