@@ -3,7 +3,7 @@ import { Chart } from "react-google-charts";
 
 
 
-function AreaChart( {chartWidth, chartHeight, chartData, chartTitle, vTitle, hTitle}) {
+function AreaChart( {chartWidth, chartHeight, chartData, chartTitle, hTitle, columnMin}) {
   
   const options = {
     chart: {
@@ -16,9 +16,9 @@ function AreaChart( {chartWidth, chartHeight, chartData, chartTitle, vTitle, hTi
       isStacked: true,
       backgroundColor: "transparent",
       hAxis: { title: hTitle },
-      vAxis: { minValue: 0, title: vTitle },
       colors: ["#8200db", "#ad46ff", "#dab2ff", "#59168b", "#030712", "#62748e", "#faf5ff"],
-      legend: { position: "top", maxLines: 3 },
+      legend: { position: "left" },
+    
   };
 
   return (

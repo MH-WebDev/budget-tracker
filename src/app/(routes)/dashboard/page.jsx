@@ -94,13 +94,14 @@ export default function page() {
           <div className="flex flex-col justify-between gap-2">
             {incomeData
               .slice() // create a copy so as to not mutate the original array
-              .sort((a, b) => new Date(b.expense_created_timestamp) - new Date(a.expense_created_timestamp)) // Sort by most recent
+              .sort((a, b) => new Date(b.income_created_timestamp) - new Date(a.income_created_timestamp)) // Sort by most recent
               .slice(0, 3) // Limit to 3 most recent incomes
-              .map((expense, index) => (
+              .map((income, index) => (
                 <div key={index} className="grid grid-cols-9 gap-2">
-                  <span className="col-span-1">{expense.icon}</span>
-                  <span className="col-span-2">{expense.category}</span>
-                  <span className="col-span-6 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
+                  <span className="col-span-1">{income.icon}</span>
+                  <span className="col-span-2">{income.category}</span>
+                  <span className="col-span-2">{format(new Date(income.income_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span> {/*Display date as selected in user settings */}
+                  <span className="col-span-4 text-left">{userCurrencySymbol}{income.amount.toFixed(2)}</span>
                 </div>
               ))}
           </div>
