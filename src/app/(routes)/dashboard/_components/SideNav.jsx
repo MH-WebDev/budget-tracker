@@ -6,6 +6,7 @@ import {
   BanknoteArrowDown,
   BanknoteArrowUp,
   CalendarClock,
+  ChevronRight,
   HandCoins,
   LayoutGrid,
   LogOut,
@@ -66,7 +67,7 @@ export default function SideNav() {
   const currentLinkHighlight = usePathname();
 
   useEffect(() => {
-    //console.log(currentLinkHighlight)
+    // This effect runs when the current link is changed
   }, [currentLinkHighlight]);
 
   const [isNavbarExpanded, setIsNavbarExpanded] = useState(true);
@@ -76,16 +77,10 @@ export default function SideNav() {
   };
 
   return (
-    <div className="md:w-48 w-fit md:block">
-      <div className="h-screen p-5 border-r shadow-md bg-gray-100 font-semibold">
+    <div className="md:w-48 w-fit md:block h-full">
+      <div className="h-full p-5 border-r shadow-md bg-gray-100 font-semibold">
         <div>
-          <Button
-            variant="ghost"
-            className="text-center w-10 md:hidden"
-            onClick={toggleNavbar}
-          >
-            Nav
-          </Button>
+          <button onClick={toggleNavbar}><ChevronRight /></button>
         </div>
         <div className="pt-10 flex flex-col gap-1">
           {menuLinks.map((menu, index) => (

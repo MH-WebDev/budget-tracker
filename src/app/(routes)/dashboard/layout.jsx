@@ -20,7 +20,6 @@ export default function DashboardLayout({children}) {
 
    const checkIfUserBudgets = () => {
      if (Array.isArray(budgets) && budgets.length === 0) { // Check if budget array is empty
-       //console.log("No budgets, redirecting...");
        router.replace("/dashboard/budgets"); // Redirects to /budgets
      }
    };

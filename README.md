@@ -76,6 +76,8 @@ To-Do List:
 
 -- Breadcrumbs
 
+-- Finalize Navbar expand/shrink icon
+
 ## **WISHLIST**
 
     Recurring expenses/incomes
