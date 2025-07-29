@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import DashboardIncomes from './_components/DashboardIncomes';
 import DashboardBudgets from './_components/DashboardBudgets';
 import DashboardExpenses from './_components/DashboardExpenses';
+import { format } from 'date-fns';
 
 export default function page() {
   const { user } = useUser();
@@ -82,7 +83,8 @@ export default function page() {
                 <div key={index} className="grid grid-cols-9 gap-2">
                   <span className="col-span-1">{expense.icon}</span>
                   <span className="col-span-2">{expense.category}</span>
-                  <span className="col-span-6 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
+                  <span className="col-span-2">{format(new Date(expense.expense_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span>
+                  <span className="col-span-4 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
                 </div>
               ))}
           </div>

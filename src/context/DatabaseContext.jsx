@@ -333,7 +333,7 @@ export const DatabaseProvider = ({ children }) => {
   //
   //
   // UPDATE USER SETTINGS
-  const updateUserSettings = async (settings) => {
+  const updateUserSettings = async (userId, settings) => {
     try {
       await db
         .update(user_data)
@@ -342,6 +342,7 @@ export const DatabaseProvider = ({ children }) => {
       await fetchUserData(); // Refresh the user data after the update
     } catch (error) {
       console.error("Error updating user settings:", error);
+      throw error;
     }
   };
 

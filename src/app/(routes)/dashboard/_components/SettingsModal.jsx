@@ -22,15 +22,15 @@ export default function SettingsModal({ isNavbarExpanded }) {
     { id: "4", currencyName: "British Pound Sterling", currencySymbol: "£" },
     { id: "5", currencyName: "Australian Dollar", currencySymbol: "$" },
     { id: "6", currencyName: "Canadian Dollar", currencySymbol: "$" },
-    { id: "7", currencyName: "Swiss Franc", currencySymbol: "CHF" },
+    { id: "7", currencyName: "Swiss Franc", currencySymbol: "CHF " },
     { id: "8", currencyName: "Chinese Yuan Renminbi", currencySymbol: "¥" },
-    { id: "9", currencyName: "Swedish Krona", currencySymbol: "kr" },
+    { id: "9", currencyName: "Swedish Krona", currencySymbol: "kr " },
     { id: "10", currencyName: "New Zealand Dollar", currencySymbol: "$" },
   ];
 
   const { userData, updateUserSettings } = useDatabase(); // Access user data and update function from DatabaseProvider
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
-  const [selectedDateFormat, setSelectedDateFormat] = useState("MM/DD/YYYY");
+  const [selectedDateFormat, setSelectedDateFormat] = useState("MM/dd/yyyy");
   const [selectedSymbol, setSelectedSymbol] = useState("$");
 
   const getCurrencySymbol = (currencyName) => {
@@ -42,7 +42,7 @@ export default function SettingsModal({ isNavbarExpanded }) {
     if (userData && userData.length > 0) {
       const userSettings = userData;
       setSelectedCurrency(userSettings.preferred_currency || "USD");
-      setSelectedDateFormat(userSettings.selected_date_format || "MM/DD/YYYY");
+      setSelectedDateFormat(userSettings.selected_date_format || "MM/dd/yyyy");
       setSelectedSymbol(userSettings.preferred_currency_symbol || "$");
     }
   }, [userData]);
