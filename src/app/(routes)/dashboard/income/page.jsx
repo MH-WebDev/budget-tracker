@@ -34,8 +34,7 @@ export default function page() {
     }
   }, [userData, user]);
 
-  const userCurrencySymbol =
-    userData?.preferred_currency_symbol || " ";
+  const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
   // BEGIN DATA FETCHING FUNCTION
   // Fetches income data from the database via DatabaseContext and updates the state
   const fetchAllData = async () => {
@@ -83,7 +82,8 @@ export default function page() {
 
   return (
     <div className="p-5">
-      <div className="grid grid-cols-8 gap-5 items-center">
+      <h2 className="text-xl font-semibold">Income</h2>
+      <div className="grid grid-cols-8 gap-5 py-5 items-center">
         <IncomesInfo userData={userData} incomeData={filteredIncomes} userCurrencySymbol={userCurrencySymbol} />
         <CreateIncome addIncome={addIncome} onIncomeCreated={fetchAllData} />
       </div>

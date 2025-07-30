@@ -42,7 +42,7 @@ export default function page() {
   }
   return (
     <div className="p-5">
-      <h2>Budgets:</h2>
+      <h2 className="text-xl font-semibold">Budgets</h2>
       <div  className="grid grid-cols-1 md:grid-cols-2 py-5 gap-5">
         <BudgetsInfo budget={budgets} userData={userData} className="order-last"/>
         <CreateBudget  onBudgetCreated={refreshBudgetsAndExpenses}/>
@@ -50,7 +50,7 @@ export default function page() {
       <hr className="pb-5"/>
       <div>
         <BudgetCard
-          userData={userData} // Pass the first user object
+          userData={userData} // Pass the user object
           budget={budgets} // Pass the current budget
           expenses={expenses} // Filter expenses by budget ID
           refreshData={refreshBudgetsAndExpenses}

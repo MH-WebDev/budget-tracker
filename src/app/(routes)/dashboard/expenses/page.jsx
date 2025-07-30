@@ -91,7 +91,7 @@ function page() {
   return (
     <>
       <div className="p-5">
-        <h2 className="text-xl p-5 font-semibold">Expenses</h2>
+        <h2 className="text-xl font-semibold">Expenses</h2>
         <FilterComponent
           daysFilter={daysFilter}
           setDaysFilter={setDaysFilter}

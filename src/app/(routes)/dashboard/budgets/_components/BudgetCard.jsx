@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import EditBudget from "./EditBudget";
+import { format } from "date-fns";
 
 export default function BudgetCard({
   budget,
@@ -42,7 +43,7 @@ export default function BudgetCard({
   return (
         <Dialog key={index}>
       <DialogTrigger asChild>
-        <div className="border rounded-md p-5 flex h-[200px] flex-col justify-evenly shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105 text-gray-700">
+        <div className="border rounded-md p-5 flex h-[200px] flex-col justify-evenly shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105 transition-all duration-500 text-gray-700">
           <div className="flex flex-row justify-between items-center w-auto">
             <div className="flex flex-row items-center gap-5">
               <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
@@ -104,27 +105,31 @@ export default function BudgetCard({
                   {budget?.amount}
                 </span>
               </p>
+              <p className="text-left">
+                Created:
+                <span className="pl-3 font-semibold">{format(new Date(budget.budget_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span>
+              </p>
             </div>
             <div>
-              <h3>
+              <p>
                 Transaction Count:
                 <span className=" pl-3 font-semibold">{budget?.totalItems}</span>
-              </h3>
-              <h4>
+              </p>
+              <p>
                 Created By:{" "}
                 <span className=" pl-3 font-semibold">
                   {userData ? `${userData?.first_name}` : "Loading..."}
                 </span>
-              </h4>
+              </p>
             </div>
           </div>
           <div className="w-full">
             <div className="flex flex-row justify-between px-1 items-center mb-2">
-              <h2 className="text-xs">
+              <p className="text-xs">
                 {userCurrencySymbol}
                 {budget?.totalSpend ? budget?.totalSpend : 0} Spent
-              </h2>
-              <h2
+              </p>
+              <p
                 className={`text-xs ${
                   budget?.amount - budget?.totalSpend <= 0
                     ? "text-red-500 font-bold"
@@ -134,7 +139,7 @@ export default function BudgetCard({
                 {userCurrencySymbol}
                 {Math.abs(budget?.amount - budget?.totalSpend).toFixed(2)}{" "}
                 {budget?.totalSpend > budget?.amount ? "Overspend" : "Remaining"}
-              </h2>
+              </p>
             </div>
             <div className="w-full bg-slate-300 h-2 rounded-full">
               <div
@@ -145,7 +150,7 @@ export default function BudgetCard({
           </div>
           <div className="flex flex-row justify-evenly items-center gap-5">
             <Link className="w-full" href={"/dashboard/expenses/" + budget?.id}>
-              <Button className="bg-gray-700 w-full">View Expenses</Button>
+              <Button className="bg-gray-700 w-full">View/Manage Expenses</Button>
             </Link>
           </div>
           <div className="flex items-center justify-center gap-5">

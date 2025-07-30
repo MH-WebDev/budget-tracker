@@ -4,11 +4,8 @@ To-Do List:
 ## **MAJOR**
 
 -- Finalize Styling on each page
--- Filters & Sort Functions
-    Filter by:
-    >Category
-    >Date Range - ~ Partial. (Filter by specified date range?)
 
+-- Filters & Sort Functions
     Sort by:
     >Date added
     >Amount
@@ -17,8 +14,6 @@ To-Do List:
 -- Restart Dashboard
 >percentage of total budget spent bar
 >percentage of total income spent bar
-
->Pie chart for expense types
 
 -- Add upcoming Expenses
     Include date column with logic to forward-date an expense and move it to expenses table on selected date.
@@ -115,3 +110,8 @@ To-Do List:
 -- Finalize Navbar expand/shrink icon
 
 -- Fix Navbar scrolling on large pages
+
+-- Filters & Sort Functions
+    Filter by:
+    >Category
+    >Date Range - ~ Partial. (Filter by specified date range?)
