@@ -77,7 +77,7 @@ export default function SideNav() {
   };
 
   return (
-    <div className="lg:w-48 w-fit md:block h-full">
+    <div className="lg:w-48 w-fit md:block h-full min-h-screen">
       <div className="h-full p-5 border-r shadow-md bg-gray-100 font-semibold">
         <div className="lg:hidden">
           <button onClick={toggleNavbar} className={`scale-125 hover:scale-150 transition-all duration-300 ${isNavbarExpanded ? "rotate-0" : "rotate-180"}`}><ChevronRight /></button>

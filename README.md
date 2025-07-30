@@ -15,7 +15,6 @@ To-Do List:
     >Category
 
 -- Restart Dashboard
->Total income -- ~ Partial
 >percentage of total budget spent bar
 >percentage of total income spent bar
 
@@ -23,8 +22,6 @@ To-Do List:
 
 -- Add upcoming Expenses
     Include date column with logic to forward-date an expense and move it to expenses table on selected date.
-
--- Fix Navbar scrolling on large pages
 
 ## **SECURITY**
 
@@ -70,7 +67,9 @@ To-Do List:
 
 -- Breadcrumbs
 
--- Finalize Navbar expand/shrink icon
+-- Create component to hold categories for both expenses and incomes as props to be passed to both create* and filter components
+
+-- Custom date filters?
 
 ## **WISHLIST**
 
@@ -109,5 +108,10 @@ To-Do List:
 
 >Total Budget
 >Total spending
+>Total income -- ~ Partial
 
 -- Remove plugins: D3, Mui-X
+
+-- Finalize Navbar expand/shrink icon
+
+-- Fix Navbar scrolling on large pages

@@ -20,6 +20,7 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
   const [amount, setAmount] = useState();
   const [category, setCategory] = useState("Other");
   const [description, setDescription] = useState();
+  //const userCurrencySymbol = userData?.preferred_currency_symbol || " "; //TODO Implement this for conformity with other pages.
 
   const handleCreateExpense = async () => {
     const newExpense = {
@@ -43,8 +44,7 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
     }
   };
 
-  const userCurrencySymbol = userData?.preferred_currency_symbol || " "; //TODO Implement this for conformity with other pages.
-
+  // ENSURE FILTERCOMPONENT.JSX IS UPDATED IF CATEGORY VALUES ARE MODIFIED
   return (
     <>
       <Dialog className="p-5">
@@ -84,7 +84,7 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
                 <select
                   className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
                   onChange={(e) => setCategory(e.target.value)}
-                >
+                > 
                   <option value="Other" defaultValue>
                     Other
                   </option>

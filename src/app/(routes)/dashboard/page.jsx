@@ -83,8 +83,8 @@ export default function page() {
                 <div key={index} className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2">
                   <span className="col-span-1">{expense.icon}</span>
                   <span className="col-span-2">{expense.category}</span>
-                  <span className="col-span-2">{format(new Date(expense.expense_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span>
-                  <span className="col-span-2 lg:col-span-4 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
+                  <span className="col-span-2 lg:col-span-3">{format(new Date(expense.expense_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span>
+                  <span className="col-span-2 lg:col-span-3 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
                   <hr className="col-span-4 lg:col-span-9"></hr>
                 </div>
               ))}
@@ -101,8 +101,8 @@ export default function page() {
                 <div key={index} className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2">
                   <span className="col-span-1">{income.icon}</span>
                   <span className="col-span-2">{income.category}</span>
-                  <span className="col-span-2">{format(new Date(income.income_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span> {/*Display date as selected in user settings */}
-                  <span className="col-span-2 lg:col-span-4 text-left">{userCurrencySymbol}{income.amount.toFixed(2)}</span>
+                  <span className="col-span-2 lg:col-span-3">{format(new Date(income.income_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span> {/*Display date as selected in user settings */}
+                  <span className="col-span-2 lg:col-span-3 text-left">{userCurrencySymbol}{income.amount.toFixed(2)}</span>
                   <hr className="col-span-4 lg:col-span-9"></hr>
                 </div>
               ))}
