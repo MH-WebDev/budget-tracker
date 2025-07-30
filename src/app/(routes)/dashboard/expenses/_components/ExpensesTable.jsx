@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
 import { useDatabase } from "@/context/DatabaseContext";
 
-function ExpensesTable({ expenses, userData, refreshData }) {
+function ExpensesTable({ expenses, userData, refreshData, userCurrencySymbol }) {
   const { deleteExpense } = useDatabase();
   const [expandedRow, setExpandedRow] = useState(null); // Track the expanded row
   const dateFormat = userData.selected_date_format;
@@ -26,7 +26,6 @@ function ExpensesTable({ expenses, userData, refreshData }) {
       return date; // Fallback to raw date if formatting fails
     }
   };
-  const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
   ;
   return (
     <div>

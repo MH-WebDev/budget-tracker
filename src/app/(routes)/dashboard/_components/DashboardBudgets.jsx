@@ -10,14 +10,14 @@ export default function DashboardBudgets({ budgetData, expenseData, userData, us
     const [daysFilter, setDaysFilter] = useState(30); // Default filter to 30 days
 
     const dateFormat = userData?.selected_date_format || "dd/MM/yyyy";
-    // CHART DATA GENERATION
+    // BEGIN CHART DATA GENERATION
     // Remove year tokens from the format string
     const formatWithoutYear = dateFormat.replace(/[-/.,\s]*y{1,4}[-/.,\s]*/gi, "");
     // Find the earliest expense date for "All" option
     const allDates = expenseData.map(exp => new Date(exp.updated_at));
     const earliestDate = allDates.length > 0 ? new Date(Math.min(...allDates)) : new Date();
     const today = new Date();
-    // Calculate total days for "All" or default to 30
+    // Calculate total days for "All (0)" or default to 30
     const totalDays = daysFilter === 0
       ? Math.ceil((today - earliestDate) / (1000 * 60 * 60 * 24)) + 1
       : 30;
@@ -29,11 +29,11 @@ export default function DashboardBudgets({ budgetData, expenseData, userData, us
     });
     // Only including days within the selected date range
     const filteredDays = daysFilter === 0 ? days : days.slice(-daysFilter);
-    // 2. Build chart data: header row first
+    // Build chart data: header row first
     const chartData = [
       ["Date", ...budgetData.map(b => b.budget_name)]
     ];
-    // 3. For each day, calculate available budget for each budget
+    // For each day, calculate available budget for each budget
     filteredDays.forEach(dateObj => {
       // Format date as per user preference set in userData
       // Removes year from the date format to keep things tidy

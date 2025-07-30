@@ -18,6 +18,7 @@ function page() {
 
   const allCategoryValues = selectExpenseOptions.filter(opt => opt.value !== "All").map(opt => opt.value);
   const [selectedCategories, setSelectedCategories] = useState(allCategoryValues);
+  const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
 
   useEffect(() => {
     if (user) {
@@ -97,6 +98,7 @@ function page() {
           <ExpensesTable
             budget={budgetInfo}
             expenses={filteredExpenses}
+            userCurrencySymbol={userCurrencySymbol}
             userData={userData}
             refreshData={fetchAllData} // Pass the function to refresh the list
           />

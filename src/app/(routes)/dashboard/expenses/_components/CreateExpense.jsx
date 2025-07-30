@@ -21,8 +21,7 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
   const [amount, setAmount] = useState();
   const [category, setCategory] = useState("Other");
   const [description, setDescription] = useState();
-  //const userCurrencySymbol = userData?.preferred_currency_symbol || " "; //TODO Implement this for conformity with other pages.
-
+  const userCurrencySymbol = userData?.preferred_currency_symbol || " ";
   const handleCreateExpense = async () => {
     const newExpense = {
       category,
@@ -45,7 +44,6 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
     }
   };
 
-  // ENSURE FILTERCOMPONENT.JSX IS UPDATED IF CATEGORY VALUES ARE MODIFIED
   return (
     <>
       <Dialog className="p-5">
@@ -108,7 +106,7 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
                   type="number"
                   className="col-span-4"
                   placeholder={`e.g ${
-                    userData?.preferred_currency_symbol || "$"
+                    userCurrencySymbol
                   }99.99`}
                   onChange={(e) => setAmount(e.target.value)}
                 />

@@ -23,9 +23,9 @@ function ExpensesByBudgetCard({ budget, userData }, index) {
         <div className="flex flex-row justify-between items-center w-auto pb-5">
           <div className="flex flex-row items-center gap-5">
             <p className="text-xl h-[50px] w-[50px] text-center p-2 rounded-md border bg-gray-50 shadow-sm">
-              {budget?.icon}
+              {budget.icon}
             </p>
-            <h2 className="text-lg font-semibold">{budget?.budget_name}</h2>
+            <h2 className="text-lg font-semibold">{budget.budget_name}</h2>
           </div>
         </div>
         <div className="py-5">
@@ -33,7 +33,7 @@ function ExpensesByBudgetCard({ budget, userData }, index) {
             Total Amount:{" "}
             <span className="font-normal">
               {userCurrencySymbol}
-              {budget?.amount}
+              {budget.amount}
             </span>
           </h3>
         </div>
@@ -41,18 +41,18 @@ function ExpensesByBudgetCard({ budget, userData }, index) {
           <div className="flex flex-row justify-between px-1 items-center mb-2">
             <h2 className="text-xs">
               {userCurrencySymbol}
-              {budget?.totalSpend ? budget?.totalSpend : 0.0} Spent
+              {budget.totalSpend ? budget.totalSpend : 0.0} Spent
             </h2>
             <h2
               className={`text-xs ${
-                budget?.amount - budget?.totalSpend <= 0
+                budget.amount - budget.totalSpend <= 0
                   ? "text-red-500 font-bold"
                   : ""
               }`}
             >
               {userCurrencySymbol}
-              {Math.abs(budget?.amount - budget?.totalSpend).toFixed(2)}{" "}
-              {budget?.totalSpend > budget?.amount ? "Overspend" : "Remaining"}
+              {Math.abs(budget.amount - budget.totalSpend).toFixed(2)}{" "}
+              {budget.totalSpend > budget.amount ? "Overspend" : "Remaining"}
             </h2>
           </div>
           <div className="w-full bg-slate-300 h-2 rounded-full">
