@@ -5,6 +5,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import ExpensesTable from "./_components/ExpensesTable";
 import Loading from "@/app/_components/Loading";
 import FilterComponent from "../_components/FilterComponent";
+import { selectExpenseOptions } from "@/app/_components/Categories";
 
 function page() {
   const { user } = useUser();
@@ -15,20 +16,9 @@ function page() {
   const [error, setError] = useState(null);
   const [daysFilter, setDaysFilter] = useState(0); // Default time filter to last 30 days
 
-  const selectOptions = [
-    {value: "Other", label: "Other"},
-    {value: "Entertainment", label: "Entertainment"},
-    {value: "Finance", label: "Finance"},
-    {value: "Food", label: "Food"},
-    {value: "Housing", label: "Housing"},
-    {value: "Pets", label: "Pets"},
-    {value: "Travel", label: "Travel"},
-    {value: "Utilities", label: "Utilities"}
-  ]; // Category options for filtering expenses. Needs to be updated if categories are modified in CreateExpense.jsx
-
-  const allCategoryValues = selectOptions.filter(opt => opt.value !== "All").map(opt => opt.value);
+  const allCategoryValues = selectExpenseOptions.filter(opt => opt.value !== "All").map(opt => opt.value);
   const [selectedCategories, setSelectedCategories] = useState(allCategoryValues);
-  
+
   useEffect(() => {
     if (user) {
       fetchAllData();
@@ -72,7 +62,7 @@ function page() {
 
   const filteredExpenses = expenseInfo.filter(exp => { // Array output of filter function
     // Category filter
-    
+
   if (selectedCategories.length === 0) return false;
     const categoryMatch =
       selectedCategories.length === 0 || selectedCategories.includes(exp.category);
@@ -95,7 +85,7 @@ function page() {
         <FilterComponent
           daysFilter={daysFilter}
           setDaysFilter={setDaysFilter}
-          selectOptions={selectOptions}
+          selectOptions={selectExpenseOptions}
           selectedCategories={selectedCategories}
           setSelectedCategories={setSelectedCategories}
         />

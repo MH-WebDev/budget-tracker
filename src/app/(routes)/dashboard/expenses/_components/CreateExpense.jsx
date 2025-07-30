@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import EmojiPicker from "emoji-picker-react";
+import { selectExpenseOptions } from "@/app/_components/Categories";
 
 export default function CreateExpense({ onExpenseCreated, userData, budgetId }) {
   const { addExpense } = useDatabase();
@@ -81,20 +82,13 @@ export default function CreateExpense({ onExpenseCreated, userData, budgetId }) 
                   </div>
                 </div>
                 <h2 className="col-span-2 text-right">Category:</h2>
-                <select
-                  className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
-                  onChange={(e) => setCategory(e.target.value)}
-                > 
-                  <option value="Other" defaultValue>
-                    Other
-                  </option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Food">Food</option>
-                  <option value="Housing">Housing</option>
-                  <option value="Pets">Pets</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Utilities">Utilities</option>
+                <select className="col-span-4 border h-9 w-full border-gray-300 p-1 rounded-md bg-transparent px-3 py-1 shadow-xs transition-[color, box-shadow] outline-none text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground"
+                value={category} onChange={(e) => setCategory(e.target.value)} >
+                  {selectExpenseOptions.map(opt => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="grid grid-cols-6 gap-5 items-center py-2">
