@@ -3,20 +3,17 @@ To-Do List:
 
 ## **MAJOR**
 
--- Finalize Styling on each page
-
 -- Filters & Sort Functions
     Sort by:
     >Date added
     >Amount
     >Category
 
+
 -- Restart Dashboard
 >percentage of total budget spent bar
 >percentage of total income spent bar
 
--- Add upcoming Expenses
-    Include date column with logic to forward-date an expense and move it to expenses table on selected date.
 
 ## **SECURITY**
 
@@ -83,9 +80,13 @@ To-Do List:
                 -- Edit details
                 -- Delete Debt
 
+    Add upcoming Expenses
+    Include date column with logic to forward-date an expense and move it to expenses table on selected date.
 
 ## **COMPLETED**
 
+
+-- Finalize Styling on each page
 
 -- Complete refactor to bring all scripts into uniform standard - DONE
 
@@ -115,3 +116,5 @@ To-Do List:
     Filter by:
     >Category
     >Date Range - ~ Partial. (Filter by specified date range?)
+    
+-- Add filters to ExpensesByBudget

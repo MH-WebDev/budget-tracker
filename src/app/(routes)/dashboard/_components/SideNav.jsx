@@ -5,14 +5,12 @@ import {
   Banknote,
   BanknoteArrowDown,
   BanknoteArrowUp,
-  CalendarClock,
   ChevronRight,
-  HandCoins,
   LayoutGrid,
+  CalendarClock,
+  HandCoins,
   LogOut,
   PiggyBank,
-  Settings,
-  User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,7 +18,6 @@ import React, { useEffect, useState, useRef } from "react";
 import SettingsModal from "./SettingsModal";
 
 export default function SideNav() {
-  const userButtonRef = useRef(null);
   const menuLinks = [
     {
       id: 1,
@@ -46,31 +43,33 @@ export default function SideNav() {
       icon: BanknoteArrowDown,
       path: "/dashboard/expenses",
     },
-    {
-      id: 5,
-      name: "Debts",
-      icon: HandCoins,
-      path: "/dashboard/debts",
-    },
-    {
-      id: 6,
-      name: "Upcoming",
-      icon: CalendarClock,
-      path: "/dashboard/upcoming",
-    },
-    {
-      id: 7,
-      name: "Goals",
-      icon: PiggyBank,
-      path: "/dashboard/goals",
-    },
   ];
+
+  
+    // {
+    //   id: 5,
+    //   name: "Debts",
+    //   icon: HandCoins,
+    //   path: "/dashboard/debts",
+    // },
+    // {
+    //   id: 6,
+    //   name: "Upcoming",
+    //   icon: CalendarClock,
+    //   path: "/dashboard/upcoming",
+    // },
+    // {
+    //   id: 7,
+    //   name: "Goals",
+    //   icon: PiggyBank,
+    //   path: "/dashboard/goals",
+    // },
   const currentLinkHighlight = usePathname();
+  const [isNavbarExpanded, setIsNavbarExpanded] = useState(true);
 
   useEffect(() => {
   }, [currentLinkHighlight]); // This effect runs when the current link is changed
 
-  const [isNavbarExpanded, setIsNavbarExpanded] = useState(true);
 
   const toggleNavbar = () => {
     setIsNavbarExpanded(!isNavbarExpanded);
