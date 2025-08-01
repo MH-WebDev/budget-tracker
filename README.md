@@ -3,7 +3,7 @@ To-Do List:
 
 ## **MAJOR**
 
-
+BUG: Budget amount is not rounding to 2 decimal places. (BudgetsInfo, possibly)
 
 
 -- Restart Dashboard

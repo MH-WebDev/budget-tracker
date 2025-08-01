@@ -45,7 +45,7 @@ export default function page() {
       const incomes = await fetchIncomeData();
       setIncomeData(incomes || []);
     } catch (err) {
-      console.error("Error fetching data:", err);
+      console.error("Error fetching data");
       setError("An error occurred while fetching data.");
     } finally {
       setLoading(false);

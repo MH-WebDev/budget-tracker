@@ -51,7 +51,7 @@ export const DatabaseProvider = ({ children }) => {
       setUserData(data[0]); // Update the userData state
       return data[0];
     } catch (error) {
-      console.error("Error fetching user data:", error); // Log any errors
+      console.error("Error fetching user data"); // Avoid logging sensitive info
       return null;
     } finally {
       setLoadingUser(false); // Reset loading state
@@ -104,7 +104,7 @@ export const DatabaseProvider = ({ children }) => {
 
       return { budgets: budgetsWithAggregates, expenses };
     } catch (error) {
-      console.error("Error fetching budgets and expenses:", error);
+      console.error("Error fetching budgets and expenses");
       return null;
     } finally {
       setLoadingBudgets(false);
@@ -161,7 +161,7 @@ export const DatabaseProvider = ({ children }) => {
 
       return { budgets: expensesByBudgetId[0], expenses: formattedExpenses };
     } catch (error) {
-      console.error("Error fetching budget and expenses:", error);
+      console.error("Error fetching budget and expenses");
       throw new Error("Failed to fetch budget and expenses.");
     } finally {
       setLoadingBudgets(false);
@@ -194,7 +194,7 @@ export const DatabaseProvider = ({ children }) => {
       setincomeData(incomes); // Update expenses
       return incomes;
     } catch (error) {
-      console.error("Error fetching incomes:", error);
+      console.error("Error fetching incomes");
       return null;
     } finally {
       setLoadingIncomes(false);

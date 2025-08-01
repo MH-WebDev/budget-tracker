@@ -49,7 +49,7 @@ export default function ExpensesById() {
         setError("Failed to fetch data.");
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
+      console.error("Error fetching data");
       setError("An error occurred while fetching data.");
     } finally {
       setLoading(false);
@@ -64,10 +64,10 @@ export default function ExpensesById() {
       if (newExpense) {
         fetchAllData(); // Refresh data after adding an expense
       } else {
-        console.error("Failed to add expense.");
+        console.error("Failed to add expense");
       }
     } catch (error) {
-      console.error("Error adding expense:", error);
+      console.error("Error adding expense");
     }
   };
   if (loading) {
@@ -101,7 +101,6 @@ export default function ExpensesById() {
       <div>
         <h2 className="text-xl p-5 font-semibold">Expenses Sheet</h2>
       </div>
-      
       <div className="grid grid-cols-2 p-5 gap-5">
         <ExpensesByBudgetCard budget={budgetInfo} userData={userData} />
         <CreateExpense

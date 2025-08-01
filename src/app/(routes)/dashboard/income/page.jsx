@@ -49,7 +49,7 @@ export default function page() {
         setError("Failed to fetch data.");
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
+      console.error("Error fetching data");
       setError("An error occured while fetching data.");
     } finally {
       setLoading(false);
