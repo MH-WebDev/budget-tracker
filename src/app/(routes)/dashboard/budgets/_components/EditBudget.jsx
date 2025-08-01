@@ -15,10 +15,15 @@ import { toast } from "sonner";
 import Alert from "@/app/_components/Alert";
 import EmojiPicker from "emoji-picker-react";
 
-export default function EditBudget({ budget, refreshData, updateBudget, deleteBudget }) {
+export default function EditBudget({
+  budget,
+  refreshData,
+  updateBudget,
+  deleteBudget,
+}) {
   const [name, setName] = useState(budget.budget_name);
   const [amount, setAmount] = useState(budget.amount);
-  const [emojiIcon, setEmojiIcon] = useState("🏡");
+  const [emojiIcon, setEmojiIcon] = useState(budget.icon || "🏡"); // Use budget.icon as initial value
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
   // FUNCTION TO UPDATE BUDGET
@@ -115,5 +120,3 @@ export default function EditBudget({ budget, refreshData, updateBudget, deleteBu
     </Dialog>
   );
 }
-
-

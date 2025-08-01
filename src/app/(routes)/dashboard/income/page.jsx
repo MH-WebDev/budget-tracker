@@ -10,8 +10,8 @@ import FilterComponent from "../_components/FilterComponent";
 
 export default function page() {
   const { user } = useUser(); // Gets logged in data from clerk
-  const { fetchIncomeData, userData, addIncome, editIncome, deleteIncome, updateIncome } = useDatabase();
-  const [incomeData, setIncomeData] = useState();
+  const { fetchIncomeData, userData, addIncome, deleteIncome, updateIncome } = useDatabase();
+  const [incomeData, setIncomeData] = useState([]); // Default to empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [daysFilter, setDaysFilter] = useState(0); // Default time filter to last 30 days
@@ -67,14 +67,15 @@ export default function page() {
 
   const filteredIncomes = incomeData.filter(inc => {
     if (selectedCategories.length === 0) return false;
-    //Category filter
-    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(inc.category);
+    // Category filter
+    const categoryMatch = selectedCategories.includes(inc.category);
 
     // Date filter
     if (daysFilter === 0) {
       return categoryMatch; // No date filter applied
     } else {
-      const incDate = new Date(inc.updated_at || inc.date || inc.created_at);
+      // Use updated_at or fallback to created_at
+      const incDate = new Date(inc.updated_at || inc.income_created_timestamp || inc.date);
       const daysDifference = (now - incDate) / (1000 * 60 * 60 * 24);
       return categoryMatch && daysDifference <= daysFilter;
     }

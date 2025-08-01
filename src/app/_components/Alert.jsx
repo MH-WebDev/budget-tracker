@@ -22,6 +22,7 @@ export default function Alert({
 }) {
   return (
     <AlertDialog>
+      {/* Confirmation dialog for destructive actions */}
       <AlertDialogTrigger asChild>
         <Button variant={variant}>{triggerText}</Button>
       </AlertDialogTrigger>

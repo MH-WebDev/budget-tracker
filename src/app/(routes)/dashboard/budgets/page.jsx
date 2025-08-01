@@ -43,11 +43,15 @@ export default function page() {
   return (
     <div className="p-5">
       <h2 className="text-xl font-semibold">Budgets</h2>
-      <div  className="grid grid-cols-1 md:grid-cols-2 py-5 gap-5">
-        <BudgetsInfo budget={budgets} userData={userData} className="order-last"/>
-        <CreateBudget  onBudgetCreated={refreshBudgetsAndExpenses}/>
+      <div className="grid grid-cols-1 md:grid-cols-2 py-5 gap-5">
+        <BudgetsInfo
+          budget={budgets}
+          userData={userData}
+          className="order-last"
+        />
+        <CreateBudget onBudgetCreated={refreshBudgetsAndExpenses} />
       </div>
-      <hr className="pb-5"/>
+      <hr className="pb-5" />
       <div>
         <BudgetCard
           userData={userData} // Pass the user object
@@ -61,5 +65,3 @@ export default function page() {
     </div>
   );
 }
-
-

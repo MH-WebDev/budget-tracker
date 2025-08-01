@@ -4,7 +4,7 @@ import PieChart from '@/app/_components/PieChart';
 
 export default function IncomesInfo({incomeData, userData, userCurrencySymbol}) {
     const totalIncomeQuantity = incomeData.length
-    const totalIncomeAmount = incomeData.reduce((a,v) => a = a +v.amount, 0)
+    const totalIncomeAmount = incomeData.reduce((a,v) => a = a +v.amount, 0).toFixed(2);
     const userCurrency = userData?.preferred_currency_symbol || "";
 
     // Group by category and sum amounts
@@ -25,6 +25,7 @@ export default function IncomesInfo({incomeData, userData, userCurrencySymbol}) 
       ])
     ];
 
+    // Find largest income source by category
     const largestSource = Object.entries(categoryTotals).reduce(
       (max, [category, amount]) => 
         amount > max.amount ? {category, amount } : max,

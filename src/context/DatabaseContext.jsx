@@ -273,11 +273,11 @@ export const DatabaseProvider = ({ children }) => {
   // FUNCTIONS REMOVING DATA FROM DB
   //
   //
-  const deleteBudget = async (butgetId) => {
+  const deleteBudget = async (budgetId) => {
     try {
       const result = await db
         .delete(budget_data)
-        .where(eq(budget_data.id, butgetId))
+        .where(eq(budget_data.id, budgetId))
         .returning();
 
       if (result) {

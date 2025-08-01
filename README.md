@@ -3,17 +3,14 @@ To-Do List:
 
 ## **MAJOR**
 
--- Filters & Sort Functions
-    Sort by:
-    >Date added
-    >Amount
-    >Category
+
 
 
 -- Restart Dashboard
 >percentage of total budget spent bar
 >percentage of total income spent bar
 
+-- Add category system to CreateIncome and EditIncome
 
 ## **SECURITY**
 
@@ -39,9 +36,6 @@ To-Do List:
         > Prevent exposing stack traces or sensitive error messages to users
         > Log errors securely, avoid logging sensitive data
 
-    ## Dependencies
-        > Audit dependencies
-        > Remove unused packages/plugins
 
     ## Content Security Policy
         > Strict CSP header to prevent XSS attack
@@ -118,3 +112,11 @@ To-Do List:
     >Date Range - ~ Partial. (Filter by specified date range?)
     
 -- Add filters to ExpensesByBudget
+
+-- Filters & Sort Functions
+    Sort by:
+    >Date added
+    >Amount
+    >Category
+
+    ## Security

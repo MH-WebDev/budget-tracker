@@ -1,12 +1,12 @@
-'use client'
-import Loading from '@/app/_components/Loading';
-import { useDatabase } from '@/context/DatabaseContext';
-import { useUser } from '@clerk/nextjs';
-import React, { useEffect, useState } from 'react'
-import DashboardIncomes from './_components/DashboardIncomes';
-import DashboardBudgets from './_components/DashboardBudgets';
-import DashboardExpenses from './_components/DashboardExpenses';
-import { format } from 'date-fns';
+"use client";
+import Loading from "@/app/_components/Loading";
+import { useDatabase } from "@/context/DatabaseContext";
+import { useUser } from "@clerk/nextjs";
+import React, { useEffect, useState } from "react";
+import DashboardIncomes from "./_components/DashboardIncomes";
+import DashboardBudgets from "./_components/DashboardBudgets";
+import DashboardExpenses from "./_components/DashboardExpenses";
+import { format } from "date-fns";
 
 export default function page() {
   const { user } = useUser();
@@ -41,7 +41,7 @@ export default function page() {
       } else {
         setError("Failed to fetch data");
       }
-       // Fetching income data
+      // Fetching income data
       const incomes = await fetchIncomeData();
       setIncomeData(incomes || []);
     } catch (err) {
@@ -56,9 +56,13 @@ export default function page() {
     return <Loading />;
   }
 
-  const totalBudgetAmount = budgetData.reduce((acc, budget) => acc + budget.amount, 0).toFixed(2) || 0;;
-  const totalExpenseAmount = expenseData.reduce((acc, expense) => acc + expense.amount, 0).toFixed(2) || 0;
-  const totalIncomeAmount = incomeData.reduce((acc, income) => acc + income.amount, 0).toFixed(2) || 0;
+  const totalBudgetAmount =
+    budgetData.reduce((acc, budget) => acc + budget.amount, 0).toFixed(2) || 0;
+  const totalExpenseAmount =
+    expenseData.reduce((acc, expense) => acc + expense.amount, 0).toFixed(2) ||
+    0;
+  const totalIncomeAmount =
+    incomeData.reduce((acc, income) => acc + income.amount, 0).toFixed(2) || 0;
   const userCurrencySymbol = userData?.preferred_currency_symbol || " "; // Defaults to empty space if unavailable
 
   return (
@@ -67,9 +71,27 @@ export default function page() {
         <div className="border border-gray-300 rounded-md h-64 lg:h-52 w-full p-5">
           <h2 className="font-semibold text-lg pb-5">Totals</h2>
           <div className="flex flex-col justify-between gap-2">
-            <h3 className="font-semibold">Total budget amount: <span className="font-normal">{userCurrencySymbol}{totalBudgetAmount}</span></h3>
-            <h3 className="font-semibold">Total Expenses: <span className="font-normal">{userCurrencySymbol}{totalExpenseAmount}</span></h3>
-            <h3 className="font-semibold">Total Income: <span className="font-normal">{userCurrencySymbol}{totalIncomeAmount}</span></h3>
+            <h3 className="font-semibold">
+              Total budget amount:{" "}
+              <span className="font-normal">
+                {userCurrencySymbol}
+                {totalBudgetAmount}
+              </span>
+            </h3>
+            <h3 className="font-semibold">
+              Total Expenses:{" "}
+              <span className="font-normal">
+                {userCurrencySymbol}
+                {totalExpenseAmount}
+              </span>
+            </h3>
+            <h3 className="font-semibold">
+              Total Income:{" "}
+              <span className="font-normal">
+                {userCurrencySymbol}
+                {totalIncomeAmount}
+              </span>
+            </h3>
           </div>
         </div>
         <div className="border border-gray-300 rounded-md h-64 lg:h-52 w-full p-5">
@@ -77,14 +99,29 @@ export default function page() {
           <div className="flex flex-col justify-between gap-2">
             {expenseData
               .slice() // create a copy so as to not mutate the original array
-              .sort((a, b) => new Date(b.expense_created_timestamp) - new Date(a.expense_created_timestamp)) // Sort by most recent
+              .sort(
+                (a, b) =>
+                  new Date(b.expense_created_timestamp) -
+                  new Date(a.expense_created_timestamp)
+              ) // Sort by most recent
               .slice(0, 3) // Limit to 3 most recent expenses
               .map((expense, index) => (
-                <div key={index} className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2">
+                <div
+                  key={index}
+                  className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2"
+                >
                   <span className="col-span-1">{expense.icon}</span>
                   <span className="col-span-2">{expense.category}</span>
-                  <span className="col-span-2 lg:col-span-3">{format(new Date(expense.expense_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span>
-                  <span className="col-span-2 lg:col-span-3 text-left">{userCurrencySymbol}{expense.amount.toFixed(2)}</span>
+                  <span className="col-span-2 lg:col-span-3">
+                    {format(
+                      new Date(expense.expense_created_timestamp),
+                      userData?.selected_date_format || "MM/dd/yyyy"
+                    )}
+                  </span>
+                  <span className="col-span-2 lg:col-span-3 text-left">
+                    {userCurrencySymbol}
+                    {expense.amount.toFixed(2)}
+                  </span>
                   <hr className="col-span-4 lg:col-span-9"></hr>
                 </div>
               ))}
@@ -95,14 +132,30 @@ export default function page() {
           <div className="flex flex-col justify-between gap-2">
             {incomeData
               .slice() // create a copy so as to not mutate the original array
-              .sort((a, b) => new Date(b.income_created_timestamp) - new Date(a.income_created_timestamp)) // Sort by most recent
+              .sort(
+                (a, b) =>
+                  new Date(b.income_created_timestamp) -
+                  new Date(a.income_created_timestamp)
+              ) // Sort by most recent
               .slice(0, 3) // Limit to 3 most recent incomes
               .map((income, index) => (
-                <div key={index} className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2">
+                <div
+                  key={index}
+                  className="grid grid-cols-4 lg:grid-cols-9 lg:gap-2"
+                >
                   <span className="col-span-1">{income.icon}</span>
                   <span className="col-span-2">{income.category}</span>
-                  <span className="col-span-2 lg:col-span-3">{format(new Date(income.income_created_timestamp),userData?.selected_date_format || "MM/dd/yyyy")}</span> {/*Display date as selected in user settings */}
-                  <span className="col-span-2 lg:col-span-3 text-left">{userCurrencySymbol}{income.amount.toFixed(2)}</span>
+                  <span className="col-span-2 lg:col-span-3">
+                    {format(
+                      new Date(income.income_created_timestamp),
+                      userData?.selected_date_format || "MM/dd/yyyy"
+                    )}
+                  </span>{" "}
+                  {/*Display date as selected in user settings */}
+                  <span className="col-span-2 lg:col-span-3 text-left">
+                    {userCurrencySymbol}
+                    {income.amount.toFixed(2)}
+                  </span>
                   <hr className="col-span-4 lg:col-span-9"></hr>
                 </div>
               ))}
@@ -110,11 +163,24 @@ export default function page() {
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <DashboardBudgets budgetData={budgetData} expenseData={expenseData} userData={userData} userCurrencySymbol={userCurrencySymbol}/>
-        <DashboardExpenses budgetData={budgetData} expenseData={expenseData} userData={userData} userCurrencySymbol={userCurrencySymbol}/>
-        <DashboardIncomes incomeData={incomeData} userData={userData} userCurrencySymbol={userCurrencySymbol}/>
+        <DashboardBudgets
+          budgetData={budgetData}
+          expenseData={expenseData}
+          userData={userData}
+          userCurrencySymbol={userCurrencySymbol}
+        />
+        <DashboardExpenses
+          budgetData={budgetData}
+          expenseData={expenseData}
+          userData={userData}
+          userCurrencySymbol={userCurrencySymbol}
+        />
+        <DashboardIncomes
+          incomeData={incomeData}
+          userData={userData}
+          userCurrencySymbol={userCurrencySymbol}
+        />
       </div>
     </div>
-  )
+  );
 }
-

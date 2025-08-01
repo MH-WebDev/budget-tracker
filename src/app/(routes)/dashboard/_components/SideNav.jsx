@@ -45,31 +45,28 @@ export default function SideNav() {
     },
   ];
 
-  
-    // {
-    //   id: 5,
-    //   name: "Debts",
-    //   icon: HandCoins,
-    //   path: "/dashboard/debts",
-    // },
-    // {
-    //   id: 6,
-    //   name: "Upcoming",
-    //   icon: CalendarClock,
-    //   path: "/dashboard/upcoming",
-    // },
-    // {
-    //   id: 7,
-    //   name: "Goals",
-    //   icon: PiggyBank,
-    //   path: "/dashboard/goals",
-    // },
+  // {
+  //   id: 5,
+  //   name: "Debts",
+  //   icon: HandCoins,
+  //   path: "/dashboard/debts",
+  // },
+  // {
+  //   id: 6,
+  //   name: "Upcoming",
+  //   icon: CalendarClock,
+  //   path: "/dashboard/upcoming",
+  // },
+  // {
+  //   id: 7,
+  //   name: "Goals",
+  //   icon: PiggyBank,
+  //   path: "/dashboard/goals",
+  // },
   const currentLinkHighlight = usePathname();
   const [isNavbarExpanded, setIsNavbarExpanded] = useState(true);
 
-  useEffect(() => {
-  }, [currentLinkHighlight]); // This effect runs when the current link is changed
-
+  useEffect(() => {}, [currentLinkHighlight]); // This effect runs when the current link is changed
 
   const toggleNavbar = () => {
     setIsNavbarExpanded(!isNavbarExpanded);
@@ -79,14 +76,26 @@ export default function SideNav() {
     <div className="lg:w-48 w-fit md:block h-full min-h-screen">
       <div className="h-full p-5 border-r shadow-md bg-gray-100 font-semibold">
         <div className="lg:hidden">
-          <button onClick={toggleNavbar} className={`scale-125 hover:scale-150 transition-all duration-300 ${isNavbarExpanded ? "rotate-0" : "rotate-180"}`}><ChevronRight /></button>
+          <button
+            onClick={toggleNavbar}
+            className={`scale-125 hover:scale-150 transition-all duration-300 ${
+              isNavbarExpanded ? "rotate-0" : "rotate-180"
+            }`}
+          >
+            <ChevronRight />
+          </button>
         </div>
         <div className="pt-10 flex flex-col gap-1">
           {menuLinks.map((menu, index) => (
             <Link key={index} href={menu.path} className="">
               <h2
-                className={`flex flex-row ${isNavbarExpanded ? "justify-center lg:justify-start" : ""}  gap-5
-                            items-center py-2 cursor-pointer hover:text-purple-500 ${currentLinkHighlight === menu.path && "text-purple-700"}`}
+                className={`flex flex-row ${
+                  isNavbarExpanded ? "justify-center lg:justify-start" : ""
+                }  gap-5
+                            items-center py-2 cursor-pointer hover:text-purple-500 ${
+                              currentLinkHighlight === menu.path &&
+                              "text-purple-700"
+                            }`}
               >
                 <menu.icon />
                 <span
@@ -105,5 +114,3 @@ export default function SideNav() {
     </div>
   );
 }
-
-

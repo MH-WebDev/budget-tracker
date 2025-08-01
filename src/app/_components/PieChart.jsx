@@ -1,8 +1,12 @@
-import React from 'react'
+import React from "react";
 import { Chart } from "react-google-charts";
 
-export default function PieChart( {chartData, userCurrency, chartWidth, chartHeight} ) {
-  
+export default function PieChart({
+  chartData,
+  userCurrency,
+  chartWidth,
+  chartHeight,
+}) {
   const options = {
     pieHole: 0.2,
     backgroundColor: "transparent",
@@ -10,8 +14,8 @@ export default function PieChart( {chartData, userCurrency, chartWidth, chartHei
       left: 0,
       top: 7,
       bottom: 7,
-      width: '100%',
-      height: '100%',
+      width: "100%",
+      height: "100%",
     },
     legend: {
       position: "middle",

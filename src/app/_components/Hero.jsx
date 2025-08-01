@@ -18,6 +18,7 @@ export default function Hero() {
           <div className="mt-4 pt-10 flex justify-center gap-4 sm:mt-6">
             <a
               className="inline-block rounded-md border border-purple-700 bg-purple-700 px-7 py-3 font-medium text-white shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 ease-in-out hover:bg-purple-600"
+              // Navigates to dashboard if signed in, otherwise to sign-up
               href={isSignedIn ? "/dashboard" : "/sign-up"}
             >
               Lets get Started

@@ -9,6 +9,7 @@ function ExpensesByBudgetCard({ budget, userData }, index) {
 
   useEffect(() => {
     if (budget.amount > 0) {
+      // Calculate the percentage of the budget that has been spent
       const calculatedPercentage = (
         (budget.totalSpend / budget.amount) *
         100
@@ -41,7 +42,7 @@ function ExpensesByBudgetCard({ budget, userData }, index) {
           <div className="flex flex-row justify-between px-1 items-center mb-2">
             <h2 className="text-xs">
               {userCurrencySymbol}
-              {budget.totalSpend ? budget.totalSpend : 0.0} Spent
+              {(budget.totalSpend ? budget.totalSpend : 0.0).toFixed(2)} Spent
             </h2>
             <h2
               className={`text-xs ${

@@ -110,7 +110,7 @@ export default function CreateIncome({ onIncomeCreated, addIncome }) {
         </div>
         <DialogClose asChild>
           <Button
-            disabled={!amount}
+            disabled={!amount || isNaN(parseFloat(amount))}
             className="bg-gray-700"
             onClick={handleCreateIncome}
           >

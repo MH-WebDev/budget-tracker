@@ -11,8 +11,6 @@ function ExpensesTable({ expenses, userData, refreshData, userCurrencySymbol }) 
   const [sortBy, setSortBy] = useState("date"); // Sorting logic state, defaults to sort by date
   const [sortDirection, setSortDirection] = useState("asc"); // "asc" or "desc"
   const dateFormat = userData.selected_date_format;
-  console.log(expenses[0].expense_created_timestamp)
-  console.log(new Date(expenses.expense_created_timestamp))
 
   const handleDelete = async (expenseId) => {
     const success = await deleteExpense(expenseId);
