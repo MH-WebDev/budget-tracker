@@ -76,6 +76,8 @@ export const DatabaseProvider = ({ children }) => {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
 
+      // Set RLS session variable (NeonDB does not support parameterized SET for session vars)
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       // Fetch budgets with aggregated expense data
       const budgetsWithAggregates = await db
         .select({
@@ -104,7 +106,7 @@ export const DatabaseProvider = ({ children }) => {
 
       return { budgets: budgetsWithAggregates, expenses };
     } catch (error) {
-      console.error("Error fetching budgets and expenses");
+      console.error("Error fetching budgets and expenses:");
       return null;
     } finally {
       setLoadingBudgets(false);
@@ -128,6 +130,7 @@ export const DatabaseProvider = ({ children }) => {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
 
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const expensesByBudgetId = await db
         .select({
           ...getTableColumns(budget_data),
@@ -137,8 +140,8 @@ export const DatabaseProvider = ({ children }) => {
         })
         .from(budget_data)
         .leftJoin(expense_data, eq(budget_data.id, expense_data.budget_id))
-        .where(eq(budget_data.user_id, user.id)) // Ensure the budget belongs to the logged-in user
-        .where(eq(budget_data.id, budgetId)) // Filter by the specific budget ID of current page via params
+        .where(eq(budget_data.user_id, user.id))
+        .where(eq(budget_data.id, budgetId))
         .groupBy(budget_data.id);
 
       // Fetch raw expenses
@@ -181,7 +184,7 @@ export const DatabaseProvider = ({ children }) => {
       if (typeof user.id !== "string") {
         throw new Error(`Invalid user ID: ${user.id}`);
       }
-      // Fetch budgets with aggregated expense data
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const incomes = await db
         .select({
           ...getTableColumns(income_data),
@@ -208,6 +211,7 @@ export const DatabaseProvider = ({ children }) => {
     if (!isUserAvailable()) return null;
 
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const newBudget = await db
         .insert(budget_data)
         .values({
@@ -229,6 +233,7 @@ export const DatabaseProvider = ({ children }) => {
     if (!isUserAvailable()) return null;
 
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const { amount, budget_id, category, icon, description } = expense;
       const newExpense = await db
         .insert(expense_data)
@@ -252,6 +257,7 @@ export const DatabaseProvider = ({ children }) => {
     if (!isUserAvailable()) return null;
 
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const newIncome = await db
         .insert(income_data)
         .values({
@@ -275,6 +281,7 @@ export const DatabaseProvider = ({ children }) => {
   //
   const deleteBudget = async (budgetId) => {
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const result = await db
         .delete(budget_data)
         .where(eq(budget_data.id, budgetId))
@@ -293,6 +300,7 @@ export const DatabaseProvider = ({ children }) => {
 
   const deleteExpense = async (expenseId) => {
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const result = await db
         .delete(expense_data)
         .where(eq(expense_data.id, expenseId))
@@ -311,6 +319,7 @@ export const DatabaseProvider = ({ children }) => {
 
   const deleteIncome = async (incomeId) => {
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const result = await db
         .delete(income_data)
         .where(eq(income_data.id, incomeId))
@@ -335,6 +344,7 @@ export const DatabaseProvider = ({ children }) => {
   // UPDATE USER SETTINGS
   const updateUserSettings = async (userId, settings) => {
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       await db
         .update(user_data)
         .set(settings)
@@ -348,6 +358,7 @@ export const DatabaseProvider = ({ children }) => {
 
   const updateBudget = async (budget_id, updates) => {
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const updatedBudget = await db
         .update(budget_data)
         .set({
@@ -366,6 +377,7 @@ export const DatabaseProvider = ({ children }) => {
 
   const updateIncome = async (income_id, updates) => {
     try {
+      await db.execute(`SET jwt.claims.sub = '${user.id}'`);
       const updatedIncome = await db
         .update(income_data)
         .set({

@@ -14,38 +14,16 @@ BUG: Budget amount is not rounding to 2 decimal places. (BudgetsInfo, possibly)
 
 ## **SECURITY**
 
-    ## Authentication/Authorization
-        > Ensure sensitive routes and API endpoints require authentication
-        > Prevent user access/modification of other user data (Enforce user ownership on all queries)
 
     ## Data Validation/Sanitization
-        > Add Validation and sanitization to *all* text inputs. Ensure any malicious code cannot be executed.
         > Database Anonymizer
-        > Parameterized queries or ORM methods preventing SQL injection
-
-    ## Session/Token security
-        > httpOnly cookies for session tokens
-        > Session expiration and renewal policies
-        > CSRF protection for state-changing requests
 
     ## Transport Security
         > HTTPS All the things
         > Set HSTS Headers
 
-    ## Error handling & Logging
-        > Prevent exposing stack traces or sensitive error messages to users
-        > Log errors securely, avoid logging sensitive data
-
-
-    ## Content Security Policy
-        > Strict CSP header to prevent XSS attack
-
-    ## Rate Limiting & Abuse Prevention
-        > Rate Limit APIs to prevent brute force
-        > CAPTCHA for sensitive actions if necessary
 
     ## Other
-        > Ensure proper CORS configuration
         > Database backup schedule
         > verify third party services for least-privilige access
 
@@ -120,3 +98,38 @@ BUG: Budget amount is not rounding to 2 decimal places. (BudgetsInfo, possibly)
     >Category
 
     ## Security
+
+    
+        > Add Validation and sanitization to *all* text inputs. Ensure any malicious code cannot be executed.
+
+        ## Session/Token security
+        > httpOnly cookies for session tokens
+        > Session expiration and renewal policies
+        > CSRF protection for state-changing requests
+
+        
+        ## Content Security Policy
+        > Strict CSP header to prevent XSS attack
+
+        
+        > Ensure proper CORS configuration
+        
+        
+    ## Rate Limiting & Abuse Prevention
+        > CAPTCHA for sensitive actions if necessary
+        > Rate Limit APIs to prevent brute force
+
+        
+    ## Error handling & Logging
+        > Prevent exposing stack traces or sensitive error messages to users
+        > Log errors securely, avoid logging sensitive data
+
+        
+        > Parameterized queries or ORM methods preventing SQL injection
+
+        
+        > Prevent user access/modification of other user data (Enforce user ownership on all queries)
+
+        
+    ## Authentication/Authorization
+        > Ensure sensitive routes and API endpoints require authentication

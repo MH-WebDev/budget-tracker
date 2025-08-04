@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useDatabase } from "@/context/DatabaseContext";
 
-export default function BudgetsInfo({ budget, userData }) {
+export default function BudgetsInfo({ budget }) {
+  const { userData } = useDatabase();
   const totalBudgetQuantity = budget.length;
-  const totalBudgetAmount = budget.reduce((a, v) => (a = a + v.amount), 0);
-  const totalBudgetSpent = budget.reduce((a, v) => (a = a + v.totalSpend), 0);
-  const userCurrencySymbol = userData.preferred_currency_symbol || " ";
+  const totalBudgetAmount = budget.reduce((a, v) => (a = a + v.amount), 0).toFixed(2);
+  const totalBudgetSpent = budget.reduce((a, v) => (a = a + v.totalSpend), 0).toFixed(2);
+  const userCurrencySymbol = userData?.preferred_currency_symbol ?? null;
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
@@ -16,7 +18,6 @@ export default function BudgetsInfo({ budget, userData }) {
       setPercentage(Math.min(calculatedPercentage, 100));
     }
   }, [totalBudgetAmount, totalBudgetSpent]);
-
   return (
     <div className="border rounded-md p-5 flex flex-col justify-center gap-5 h-[200px] font-semibold shadow-sm hover:bg-gray-50 hover:shadow-md hover:scale-105">
       <p>
