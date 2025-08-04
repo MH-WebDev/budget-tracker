@@ -1,135 +1,67 @@
-To-Do List:
-===========
+# **Budget Tracker App**
 
-## **MAJOR**
+Medium scale project to put knowledge into practice.
 
-BUG: Budget amount is not rounding to 2 decimal places. (BudgetsInfo, possibly)
+## **Features:**
 
+This project started out watching a Youtube tutorial but quickly grew in scope. Theres a fairly significant wishlist of items i would like to add someday but for now i just need to move on and get some more knowledge into the arsenal.
 
--- Restart Dashboard
->percentage of total budget spent bar
->percentage of total income spent bar
+### **General:**
+ > Clerk used for Auth and user management
+ > NeonDB Serverless
+ > Drizzle Orm
 
--- Add category system to CreateIncome and EditIncome
+ ### **Dashboard**
+   > Displays Info overview of total budgets, expenses, incomes.
+   > Data filterable by time period (7,14,30 days or all time)
 
-## **SECURITY**
+   #### **Budgets**
+   > Displays totals for all budgets, and a bar showing percentage spent of total budget.
+   > Individual budget cards can be clicked to view more information, add expenses or modify budget.
 
+   #### **Expenses**
+   > dashboard/expenses Displays all expenses in list form, filterable and orderable.
+   > dashboard/expenses/id Displays expenses for a particular budget, accessed via budget page.
 
-    ## Data Validation/Sanitization
-        > Database Anonymizer
+   #### **Incomes**
+   > Displays totals for all income sources, along with statistics for Largest single source category and a chart showing breakdown of incomes.
+   > Filterable by date and category.
+   > Income cards can be clicked for more information and to edit/remove the entry.
 
-    ## Transport Security
-        > HTTPS All the things
-        > Set HSTS Headers
+   #### **Settings**
+   > Allows the user to select their chosen currency icon and date format.
+   > Currency selection does not directly convert to another currency, just displays the proper currency icon as selected.
 
-
-    ## Other
-        > Database backup schedule
-        > verify third party services for least-privilige access
-
-## **Minor**
-
--- Breadcrumbs
-
--- Create component to hold categories for both expenses and incomes as props to be passed to both create* and filter components
-
--- Custom date filters?
+### **Design**
+> Components have been used in as many places as possible to reduce code repetition and make elements easier to update in future. All charts, filtering systems, Alert dialogs and loading icons are universal components.
+> All data fetch and manipulation is performed via a context file with functions that are called as high as possible, with user data passed down to sub components as props.
 
 ## **WISHLIST**
 
-    Recurring expenses/incomes
+ ### **Minor**
 
-    Debts page --
-        -- Debt cards
-            -- Total Debt
-            -- Period
-            -- Interest
-            -- Repayment amount
-            -- Repayment Button
-                -- Amount repaid
-                -- Date
-            -- Edit Debt
-                -- Edit details
-                -- Delete Debt
+ > Breadcrumbs
+ > Custom date filters?
 
-    Add upcoming Expenses
-    Include date column with logic to forward-date an expense and move it to expenses table on selected date.
+ > Recurring expenses/incomes
+    > Will require a fairly significant rewrite of the app as currently there is no method for setting the date for expenses/income.
 
-## **COMPLETED**
+ > Debts page
+        > Debt cards
+            > Total Debt
+            > Period
+            > Interest
+            > Repayment amount
+            > Repayment Button
+                > Amount repaid
+                > Date
+            > Edit Debt
+                > Edit details
+                > Delete Debt
 
+ > Add upcoming Expenses
+ > Include date column with logic to forward-date an expense and move it to expenses table on selected date.
 
--- Finalize Styling on each page
+ > Goals
+    > Savings or spending goals, with due dates and options to automatically deduct from budgets as expenses on set intervals. This will come as part of recurring expenses
 
--- Complete refactor to bring all scripts into uniform standard - DONE
-
--- Line chart for all budgets -- Complete
--- Pie chart for income types -- Complete
-
-
--- Fix auto-forwarder when no budgets are found -- DONE!
-
--- Add date created to income card detail view
--- Add overflow text state to income notes column
-
--- Forwarding after sign up or sign in
-
-
->Total Budget
->Total spending
->Total income -- ~ Partial
-
--- Remove plugins: D3, Mui-X
-
--- Finalize Navbar expand/shrink icon
-
--- Fix Navbar scrolling on large pages
-
--- Filters & Sort Functions
-    Filter by:
-    >Category
-    >Date Range - ~ Partial. (Filter by specified date range?)
-    
--- Add filters to ExpensesByBudget
-
--- Filters & Sort Functions
-    Sort by:
-    >Date added
-    >Amount
-    >Category
-
-    ## Security
-
-    
-        > Add Validation and sanitization to *all* text inputs. Ensure any malicious code cannot be executed.
-
-        ## Session/Token security
-        > httpOnly cookies for session tokens
-        > Session expiration and renewal policies
-        > CSRF protection for state-changing requests
-
-        
-        ## Content Security Policy
-        > Strict CSP header to prevent XSS attack
-
-        
-        > Ensure proper CORS configuration
-        
-        
-    ## Rate Limiting & Abuse Prevention
-        > CAPTCHA for sensitive actions if necessary
-        > Rate Limit APIs to prevent brute force
-
-        
-    ## Error handling & Logging
-        > Prevent exposing stack traces or sensitive error messages to users
-        > Log errors securely, avoid logging sensitive data
-
-        
-        > Parameterized queries or ORM methods preventing SQL injection
-
-        
-        > Prevent user access/modification of other user data (Enforce user ownership on all queries)
-
-        
-    ## Authentication/Authorization
-        > Ensure sensitive routes and API endpoints require authentication
